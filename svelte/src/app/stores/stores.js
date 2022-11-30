@@ -27,5 +27,6 @@ export function ausloggen(){
     const url= "http://localhost:8082/#/";
     window.location = url;
     resetPage();
+    admin.set(false);
     return false
   }

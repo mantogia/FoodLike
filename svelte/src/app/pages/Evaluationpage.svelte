@@ -78,8 +78,14 @@
         })
   }
 
-let adminBool = admin;
+let adminBool;
 
+
+admin.subscribe(value => {
+  adminBool = value;
+	});
+
+console.log(adminBool)
 function reset (){
   getEvaluations(user);
   thisUser = user;

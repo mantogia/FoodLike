@@ -5,6 +5,7 @@
   import LoginComponent from '../component/LoginComponent.svelte';
   import RouterLink from '../component/RouterLink.svelte';
   import StartComponent from '../component/StartComponent.svelte';
+  import UserInfos from '../component/UserInfos.svelte';
   import { admin } from '../stores/stores.js';
   import {resetPage} from '../stores/stores.js';
   import {ausloggen} from '../stores/stores.js';
@@ -29,7 +30,7 @@ $: loggedIn && adminReset();
 
 function adminReset(){
   if (!loggedIn){
-    admin.set(False);
+    admin.set(false);
     console.log(loggedIn)
   } else{
     user = JSON.parse(localStorage.current_user)
@@ -85,6 +86,10 @@ function ausloggenBtn(){
 {:else}
   <button type="button" on:click={ausloggenBtn} class="btn btn-secondary mb-3" >Abmelden</button>
 
+  <UserInfos></UserInfos>
+
   <StartComponent user ={user}/>
+
+
 
 {/if}
