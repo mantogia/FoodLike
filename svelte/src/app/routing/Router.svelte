@@ -37,10 +37,5 @@
 </style>
 
 <main>
-
-  
-
-
-
   <svelte:component this={value}/>
 </main>

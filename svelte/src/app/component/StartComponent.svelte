@@ -41,6 +41,7 @@ function switchUrl(){
         Mit diesen Angaben wird eine erste Evaluation durchgeführt.
         
       </p>
+      
       <button on:click={createNewFragebogen} class="btn btn-primary">Zur Umfrage</button>
     </div>
   </div>

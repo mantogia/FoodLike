@@ -8,10 +8,6 @@ var app = (function () {
 		return tar;
 	}
 
-	function is_promise(value) {
-		return value && typeof value.then === 'function';
-	}
-
 	function add_location(element, file, line, column, char) {
 		element.__svelte_meta = {
 			loc: { file, line, column, char }
@@ -234,67 +230,6 @@ var app = (function () {
 
 	function on_outro(callback) {
 		outros.callbacks.push(callback);
-	}
-
-	function handle_promise(promise, info) {
-		const token = info.token = {};
-
-		function update(type, index, key, value) {
-			if (info.token !== token) return;
-
-			info.resolved = key && { [key]: value };
-
-			const child_ctx = assign(assign({}, info.ctx), info.resolved);
-			const block = type && (info.current = type)(child_ctx);
-
-			if (info.block) {
-				if (info.blocks) {
-					info.blocks.forEach((block, i) => {
-						if (i !== index && block) {
-							group_outros();
-							on_outro(() => {
-								block.d(1);
-								info.blocks[i] = null;
-							});
-							block.o(1);
-							check_outros();
-						}
-					});
-				} else {
-					info.block.d(1);
-				}
-
-				block.c();
-				if (block.i) block.i(1);
-				block.m(info.mount(), info.anchor);
-
-				flush();
-			}
-
-			info.block = block;
-			if (info.blocks) info.blocks[index] = block;
-		}
-
-		if (is_promise(promise)) {
-			promise.then(value => {
-				update(info.then, 1, info.value, value);
-			}, error => {
-				update(info.catch, 2, info.error, error);
-			});
-
-			// if we previously had a then/catch block, destroy it
-			if (info.current !== info.pending) {
-				update(info.pending, 0);
-				return true;
-			}
-		} else {
-			if (info.current !== info.then) {
-				update(info.then, 1, info.value, promise);
-				return true;
-			}
-
-			info.resolved = { [info.value]: promise };
-		}
 	}
 
 	function mount_component(component, target, anchor) {
@@ -1334,7 +1269,7 @@ var app = (function () {
 				p.className = "card-text";
 				add_location(p, file$4, 31, 6, 581);
 				button.className = "btn btn-primary";
-				add_location(button, file$4, 43, 6, 1149);
+				add_location(button, file$4, 44, 6, 1156);
 				div1.className = "card-body";
 				add_location(div1, file$4, 29, 4, 510);
 				div2.className = "card";
@@ -1446,64 +1381,131 @@ var app = (function () {
 	const file$5 = "src\\app\\component\\UserInfos.svelte";
 
 	function create_fragment$5(ctx) {
-		var h1, t1, div3, div0, input0, t2, label0, t4, div1, input1, t5, label1, t7, div2, input2, t8, label2;
+		var div7, div0, t1, div6, p0, t2, u, t4, t5, div1, input0, t6, label0, t8, div2, input1, t9, label1, t11, div3, input2, t12, label2, t14, div4, input3, t15, label3, t17, div5, input4, t18, label4, t20, p1, t21, b, t23, t24, button, dispose;
 
 		return {
 			c: function create() {
-				h1 = element("h1");
-				h1.textContent = "Ihre Angaben";
-				t1 = space();
-				div3 = element("div");
+				div7 = element("div");
 				div0 = element("div");
-				input0 = element("input");
-				t2 = space();
-				label0 = element("label");
-				label0.textContent = "Default switch checkbox input";
-				t4 = space();
-				div1 = element("div");
-				input1 = element("input");
+				div0.textContent = "Ihre Angaben";
+				t1 = space();
+				div6 = element("div");
+				p0 = element("p");
+				t2 = text("Geben Sie bitte an, ob Sie über einzelne \r\n      ");
+				u = element("u");
+				u.textContent = "Allergien/Unverträglichkeiten/Präferenzen";
+				t4 = text(" verfügen. Die Angaben werden benutzt, damit der Fragebogen auf Sie zugeschnitten werden kann.");
 				t5 = space();
-				label1 = element("label");
-				label1.textContent = "Default switch checkbox input";
-				t7 = space();
-				div2 = element("div");
-				input2 = element("input");
+				div1 = element("div");
+				input0 = element("input");
+				t6 = space();
+				label0 = element("label");
+				label0.textContent = "Allergie 1";
 				t8 = space();
+				div2 = element("div");
+				input1 = element("input");
+				t9 = space();
+				label1 = element("label");
+				label1.textContent = "Allergie 2";
+				t11 = space();
+				div3 = element("div");
+				input2 = element("input");
+				t12 = space();
 				label2 = element("label");
-				label2.textContent = "Default switch checkbox input";
-				add_location(h1, file$5, 1, 0, 2);
+				label2.textContent = "Allergie 3";
+				t14 = space();
+				div4 = element("div");
+				input3 = element("input");
+				t15 = space();
+				label3 = element("label");
+				label3.textContent = "Allergie 4";
+				t17 = space();
+				div5 = element("div");
+				input4 = element("input");
+				t18 = space();
+				label4 = element("label");
+				label4.textContent = "Allergie 5";
+				t20 = space();
+				p1 = element("p");
+				t21 = text("Wenn Sie alle Fragen beantwortet haben, können Sie auf ");
+				b = element("b");
+				b.textContent = "Sichern";
+				t23 = text(" drücken. Ihre Angaben sind vorerst nicht anpassbar.");
+				t24 = space();
+				button = element("button");
+				button.textContent = "Sichern";
+				div0.className = "card-header";
+				add_location(div0, file$5, 18, 2, 190);
+				add_location(u, file$5, 23, 6, 328);
+				add_location(p0, file$5, 22, 4, 276);
 				input0.className = "form-check-input";
 				attr(input0, "type", "checkbox");
 				attr(input0, "role", "switch");
-				input0.id = "flexSwitchCheckDefault";
-				add_location(input0, file$5, 6, 8, 101);
+				input0.id = "allergie1";
+				add_location(input0, file$5, 25, 8, 527);
 				label0.className = "form-check-label";
-				label0.htmlFor = "flexSwitchCheckDefault";
-				add_location(label0, file$5, 7, 8, 201);
-				div0.className = "form-check form-switch";
-				add_location(div0, file$5, 5, 4, 55);
+				label0.htmlFor = "allergie1";
+				add_location(label0, file$5, 26, 8, 637);
+				div1.className = "form-check form-switch";
+				add_location(div1, file$5, 24, 4, 481);
 				input1.className = "form-check-input";
 				attr(input1, "type", "checkbox");
 				attr(input1, "role", "switch");
-				input1.id = "flexSwitchCheckDefault";
-				add_location(input1, file$5, 11, 8, 369);
+				input1.id = "allergie2";
+				add_location(input1, file$5, 30, 8, 774);
 				label1.className = "form-check-label";
-				label1.htmlFor = "flexSwitchCheckDefault";
-				add_location(label1, file$5, 12, 8, 469);
-				div1.className = "form-check form-switch";
-				add_location(div1, file$5, 10, 6, 323);
+				label1.htmlFor = "allergie2";
+				add_location(label1, file$5, 31, 8, 884);
+				div2.className = "form-check form-switch";
+				add_location(div2, file$5, 29, 6, 728);
 				input2.className = "form-check-input";
 				attr(input2, "type", "checkbox");
 				attr(input2, "role", "switch");
-				input2.id = "flexSwitchCheckDefault";
-				add_location(input2, file$5, 16, 8, 637);
+				input2.id = "allergie3";
+				add_location(input2, file$5, 35, 8, 1020);
 				label2.className = "form-check-label";
-				label2.htmlFor = "flexSwitchCheckDefault";
-				add_location(label2, file$5, 17, 8, 737);
-				div2.className = "form-check form-switch";
-				add_location(div2, file$5, 15, 6, 591);
-				div3.className = "mb-3";
-				add_location(div3, file$5, 3, 0, 27);
+				label2.htmlFor = "allergie3";
+				add_location(label2, file$5, 36, 8, 1130);
+				div3.className = "form-check form-switch";
+				add_location(div3, file$5, 34, 6, 974);
+				input3.className = "form-check-input";
+				attr(input3, "type", "checkbox");
+				attr(input3, "role", "switch");
+				input3.id = "allergie4";
+				add_location(input3, file$5, 40, 8, 1272);
+				label3.className = "form-check-label";
+				label3.htmlFor = "allergie4";
+				add_location(label3, file$5, 41, 8, 1382);
+				div4.className = "form-check form-switch";
+				add_location(div4, file$5, 39, 6, 1226);
+				input4.className = "form-check-input";
+				attr(input4, "type", "checkbox");
+				attr(input4, "role", "switch");
+				input4.id = "allergie5";
+				add_location(input4, file$5, 45, 8, 1518);
+				label4.className = "form-check-label";
+				label4.htmlFor = "allergie5";
+				add_location(label4, file$5, 46, 8, 1628);
+				div5.className = "form-check form-switch";
+				add_location(div5, file$5, 44, 6, 1472);
+				add_location(b, file$5, 48, 82, 1792);
+				p1.className = "card-text";
+				add_location(p1, file$5, 48, 6, 1716);
+				button.className = "btn btn-primary";
+				add_location(button, file$5, 49, 6, 1870);
+				div6.className = "card-body";
+				add_location(div6, file$5, 21, 2, 247);
+				div7.className = "card mb-3";
+				add_location(div7, file$5, 17, 0, 163);
+
+				dispose = [
+					listen(input0, "change", ctx.input0_change_handler),
+					listen(input1, "change", ctx.input1_change_handler),
+					listen(input2, "change", ctx.input2_change_handler),
+					listen(input3, "change", ctx.input3_change_handler),
+					listen(input4, "change", ctx.input4_change_handler),
+					listen(button, "click", saveAngaben)
+				];
 			},
 
 			l: function claim(nodes) {
@@ -1511,43 +1513,139 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, h1, anchor);
-				insert(target, t1, anchor);
-				insert(target, div3, anchor);
-				append(div3, div0);
-				append(div0, input0);
-				append(div0, t2);
-				append(div0, label0);
-				append(div3, t4);
-				append(div3, div1);
-				append(div1, input1);
-				append(div1, t5);
-				append(div1, label1);
-				append(div3, t7);
-				append(div3, div2);
-				append(div2, input2);
-				append(div2, t8);
-				append(div2, label2);
+				insert(target, div7, anchor);
+				append(div7, div0);
+				append(div7, t1);
+				append(div7, div6);
+				append(div6, p0);
+				append(p0, t2);
+				append(p0, u);
+				append(p0, t4);
+				append(div6, t5);
+				append(div6, div1);
+				append(div1, input0);
+
+				input0.value = ctx.allergie1;
+
+				append(div1, t6);
+				append(div1, label0);
+				append(div6, t8);
+				append(div6, div2);
+				append(div2, input1);
+
+				input1.value = ctx.allergie2;
+
+				append(div2, t9);
+				append(div2, label1);
+				append(div6, t11);
+				append(div6, div3);
+				append(div3, input2);
+
+				input2.value = ctx.allergie3;
+
+				append(div3, t12);
+				append(div3, label2);
+				append(div6, t14);
+				append(div6, div4);
+				append(div4, input3);
+
+				input3.value = ctx.allergie4;
+
+				append(div4, t15);
+				append(div4, label3);
+				append(div6, t17);
+				append(div6, div5);
+				append(div5, input4);
+
+				input4.value = ctx.allergie5;
+
+				append(div5, t18);
+				append(div5, label4);
+				append(div6, t20);
+				append(div6, p1);
+				append(p1, t21);
+				append(p1, b);
+				append(p1, t23);
+				append(div6, t24);
+				append(div6, button);
 			},
 
-			p: noop,
+			p: function update(changed, ctx) {
+				if (changed.allergie1) input0.value = ctx.allergie1;
+				if (changed.allergie2) input1.value = ctx.allergie2;
+				if (changed.allergie3) input2.value = ctx.allergie3;
+				if (changed.allergie4) input3.value = ctx.allergie4;
+				if (changed.allergie5) input4.value = ctx.allergie5;
+			},
+
 			i: noop,
 			o: noop,
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(h1);
-					detach(t1);
-					detach(div3);
+					detach(div7);
 				}
+
+				run_all(dispose);
 			}
+		};
+	}
+
+	function saveAngaben(){
+
+	axios.post("");
+	}
+
+	function instance$5($$self, $$props, $$invalidate) {
+		let allergie1;
+	let allergie2;
+	let allergie3;
+	let allergie4;
+	let allergie5;
+
+		function input0_change_handler() {
+			allergie1 = this.value;
+			$$invalidate('allergie1', allergie1);
+		}
+
+		function input1_change_handler() {
+			allergie2 = this.value;
+			$$invalidate('allergie2', allergie2);
+		}
+
+		function input2_change_handler() {
+			allergie3 = this.value;
+			$$invalidate('allergie3', allergie3);
+		}
+
+		function input3_change_handler() {
+			allergie4 = this.value;
+			$$invalidate('allergie4', allergie4);
+		}
+
+		function input4_change_handler() {
+			allergie5 = this.value;
+			$$invalidate('allergie5', allergie5);
+		}
+
+		return {
+			allergie1,
+			allergie2,
+			allergie3,
+			allergie4,
+			allergie5,
+			input0_change_handler,
+			input1_change_handler,
+			input2_change_handler,
+			input3_change_handler,
+			input4_change_handler
 		};
 	}
 
 	class UserInfos extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, null, create_fragment$5, safe_not_equal, []);
+			init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
 		}
 	}
 
@@ -1598,15 +1696,15 @@ var app = (function () {
 		return {
 			c: function create() {
 				button = element("button");
-				button.textContent = "Abmelden";
+				button.textContent = "Ausloggen";
 				t1 = space();
 				userinfos.$$.fragment.c();
 				t2 = space();
 				startcomponent.$$.fragment.c();
+				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1fla2g2";
 				button.type = "button";
-				button.className = "btn btn-secondary mb-3";
-				add_location(button, file$6, 86, 2, 1739);
-				dispose = listen(button, "click", ctx.ausloggenBtn);
+				add_location(button, file$6, 87, 2, 1769);
+				dispose = listen(button, "click", ausloggen);
 			},
 
 			m: function mount(target, anchor) {
@@ -1683,8 +1781,9 @@ var app = (function () {
 				t0 = space();
 				button = element("button");
 				t1 = text(ctx.text);
+				set_style(button, "margin-top", "1.0em ");
 				button.type = "button";
-				button.className = "btn btn-secondary mb-3";
+				button.className = "btn btn-secondary mb-3 svelte-1fla2g2";
 				add_location(button, file$6, 83, 2, 1636);
 				dispose = listen(button, "click", ctx.btnHandler);
 			},
@@ -1919,7 +2018,7 @@ var app = (function () {
 
 	}
 
-	function instance$5($$self, $$props, $$invalidate) {
+	function instance$6($$self, $$props, $$invalidate) {
 		
 	  let neu = true;
 	  let text = "Bereits ein Konto?";
@@ -1957,12 +2056,6 @@ var app = (function () {
 	  $$invalidate('user', user = JSON.parse(localStorage.current_user));
 	}
 
-
-	function ausloggenBtn(){
-
-	  $$invalidate('loggedIn', loggedIn = ausloggen());
-	}
-
 		$$self.$$.update = ($$dirty = { loggedIn: 1 }) => {
 			if ($$dirty.loggedIn) { loggedIn && adminReset(); }
 		};
@@ -1975,15 +2068,14 @@ var app = (function () {
 			btnHandler,
 			loggedIn,
 			user,
-			einloggen,
-			ausloggenBtn
+			einloggen
 		};
 	}
 
 	class Homepage extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$5, create_fragment$6, safe_not_equal, []);
+			init(this, options, instance$6, create_fragment$6, safe_not_equal, []);
 		}
 	}
 
@@ -2112,95 +2204,7 @@ var app = (function () {
 
 	const file$9 = "src\\app\\pages\\Questionspage.svelte";
 
-	// (1:0) <script>   import { onMount }
-	function create_catch_block(ctx) {
-		return {
-			c: noop,
-			m: noop,
-			p: noop,
-			i: noop,
-			o: noop,
-			d: noop
-		};
-	}
-
-	// (86:0) {:then}
-	function create_then_block(ctx) {
-		var current_block_type_index, if_block, if_block_anchor, current;
-
-		var if_block_creators = [
-			create_if_block$1,
-			create_else_block$1
-		];
-
-		var if_blocks = [];
-
-		function select_block_type(ctx) {
-			if (!ctx.endOfList) return 0;
-			return 1;
-		}
-
-		current_block_type_index = select_block_type(ctx);
-		if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-
-		return {
-			c: function create() {
-				if_block.c();
-				if_block_anchor = empty();
-			},
-
-			m: function mount(target, anchor) {
-				if_blocks[current_block_type_index].m(target, anchor);
-				insert(target, if_block_anchor, anchor);
-				current = true;
-			},
-
-			p: function update(changed, ctx) {
-				var previous_block_index = current_block_type_index;
-				current_block_type_index = select_block_type(ctx);
-				if (current_block_type_index === previous_block_index) {
-					if_blocks[current_block_type_index].p(changed, ctx);
-				} else {
-					group_outros();
-					on_outro(() => {
-						if_blocks[previous_block_index].d(1);
-						if_blocks[previous_block_index] = null;
-					});
-					if_block.o(1);
-					check_outros();
-
-					if_block = if_blocks[current_block_type_index];
-					if (!if_block) {
-						if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-						if_block.c();
-					}
-					if_block.i(1);
-					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-				}
-			},
-
-			i: function intro(local) {
-				if (current) return;
-				if (if_block) if_block.i();
-				current = true;
-			},
-
-			o: function outro(local) {
-				if (if_block) if_block.o();
-				current = false;
-			},
-
-			d: function destroy(detaching) {
-				if_blocks[current_block_type_index].d(detaching);
-
-				if (detaching) {
-					detach(if_block_anchor);
-				}
-			}
-		};
-	}
-
-	// (89:2) {:else}
+	// (88:2) {:else}
 	function create_else_block$1(ctx) {
 		var current;
 
@@ -2236,7 +2240,7 @@ var app = (function () {
 		};
 	}
 
-	// (87:1) {#if !endOfList}
+	// (86:1) {#if !endOfList}
 	function create_if_block$1(ctx) {
 		var current;
 
@@ -2283,48 +2287,23 @@ var app = (function () {
 		};
 	}
 
-	// (84:23)   <p>...waiting</p> {:then}
-	function create_pending_block(ctx) {
-		var p;
-
-		return {
-			c: function create() {
-				p = element("p");
-				p.textContent = "...waiting";
-				add_location(p, file$9, 84, 1, 2014);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, p, anchor);
-			},
-
-			p: noop,
-			i: noop,
-			o: noop,
-
-			d: function destroy(detaching) {
-				if (detaching) {
-					detach(p);
-				}
-			}
-		};
-	}
-
 	function create_fragment$9(ctx) {
-		var button, t1, h1, t3, await_block_anchor, promise, current, dispose;
+		var button, t1, h1, t3, current_block_type_index, if_block, if_block_anchor, current, dispose;
 
-		let info = {
-			ctx,
-			current: null,
-			pending: create_pending_block,
-			then: create_then_block,
-			catch: create_catch_block,
-			value: 'null',
-			error: 'null',
-			blocks: Array(3)
-		};
+		var if_block_creators = [
+			create_if_block$1,
+			create_else_block$1
+		];
 
-		handle_promise(promise = ctx.getInformation, info);
+		var if_blocks = [];
+
+		function select_block_type(ctx) {
+			if (!ctx.endOfList) return 0;
+			return 1;
+		}
+
+		current_block_type_index = select_block_type(ctx);
+		if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
 		return {
 			c: function create() {
@@ -2334,14 +2313,13 @@ var app = (function () {
 				h1 = element("h1");
 				h1.textContent = "Fragebogen";
 				t3 = space();
-				await_block_anchor = empty();
-
-				info.block.c();
+				if_block.c();
+				if_block_anchor = empty();
 				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-e0yqjo";
 				button.type = "button";
-				add_location(button, file$9, 77, 0, 1845);
+				add_location(button, file$9, 78, 0, 1846);
 				h1.className = "svelte-e0yqjo";
-				add_location(h1, file$9, 82, 0, 1969);
+				add_location(h1, file$9, 83, 0, 1970);
 				dispose = listen(button, "click", ausloggen);
 			},
 
@@ -2354,36 +2332,43 @@ var app = (function () {
 				insert(target, t1, anchor);
 				insert(target, h1, anchor);
 				insert(target, t3, anchor);
-				insert(target, await_block_anchor, anchor);
-
-				info.block.m(target, info.anchor = anchor);
-				info.mount = () => await_block_anchor.parentNode;
-				info.anchor = await_block_anchor;
-
+				if_blocks[current_block_type_index].m(target, anchor);
+				insert(target, if_block_anchor, anchor);
 				current = true;
 			},
 
-			p: function update(changed, new_ctx) {
-				ctx = new_ctx;
-				info.ctx = ctx;
+			p: function update(changed, ctx) {
+				var previous_block_index = current_block_type_index;
+				current_block_type_index = select_block_type(ctx);
+				if (current_block_type_index === previous_block_index) {
+					if_blocks[current_block_type_index].p(changed, ctx);
+				} else {
+					group_outros();
+					on_outro(() => {
+						if_blocks[previous_block_index].d(1);
+						if_blocks[previous_block_index] = null;
+					});
+					if_block.o(1);
+					check_outros();
 
-				if (promise !== (promise = ctx.getInformation) && handle_promise(promise, info)) ; else {
-					info.block.p(changed, assign(assign({}, ctx), info.resolved));
+					if_block = if_blocks[current_block_type_index];
+					if (!if_block) {
+						if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+						if_block.c();
+					}
+					if_block.i(1);
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
 				}
 			},
 
 			i: function intro(local) {
 				if (current) return;
-				info.block.i();
+				if (if_block) if_block.i();
 				current = true;
 			},
 
 			o: function outro(local) {
-				for (let i = 0; i < 3; i += 1) {
-					const block = info.blocks[i];
-					if (block) block.o();
-				}
-
+				if (if_block) if_block.o();
 				current = false;
 			},
 
@@ -2393,11 +2378,13 @@ var app = (function () {
 					detach(t1);
 					detach(h1);
 					detach(t3);
-					detach(await_block_anchor);
 				}
 
-				info.block.d(detaching);
-				info = null;
+				if_blocks[current_block_type_index].d(detaching);
+
+				if (detaching) {
+					detach(if_block_anchor);
+				}
 
 				dispose();
 			}
@@ -2406,7 +2393,7 @@ var app = (function () {
 
 	let fragebogen_nr = 1;
 
-	function instance$6($$self, $$props, $$invalidate) {
+	function instance$7($$self, $$props, $$invalidate) {
 		
 	  let endOfList = false;
 
@@ -2483,7 +2470,6 @@ var app = (function () {
 			endOfList,
 			food,
 			food_nr,
-			getInformation,
 			saveRelation,
 			func
 		};
@@ -2492,7 +2478,7 @@ var app = (function () {
 	class Questionspage extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$6, create_fragment$9, safe_not_equal, []);
+			init(this, options, instance$7, create_fragment$9, safe_not_equal, []);
 		}
 	}
 
@@ -2669,7 +2655,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$7($$self, $$props, $$invalidate) {
+	function instance$8($$self, $$props, $$invalidate) {
 		let { evaluation, index } = $$props;
 
 		$$self.$set = $$props => {
@@ -2683,7 +2669,7 @@ var app = (function () {
 	class EvaluationComponent extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$7, create_fragment$a, safe_not_equal, ["evaluation", "index"]);
+			init(this, options, instance$8, create_fragment$a, safe_not_equal, ["evaluation", "index"]);
 
 			const { ctx } = this.$$;
 			const props = options.props || {};
@@ -3315,7 +3301,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$8($$self, $$props, $$invalidate) {
+	function instance$9($$self, $$props, $$invalidate) {
 		
 
 	    let user = JSON.parse(localStorage.current_user);
@@ -3452,7 +3438,7 @@ var app = (function () {
 	class Evaluationpage extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$8, create_fragment$b, safe_not_equal, []);
+			init(this, options, instance$9, create_fragment$b, safe_not_equal, []);
 		}
 	}
 
@@ -3541,7 +3527,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$9($$self, $$props, $$invalidate) {
+	function instance$a($$self, $$props, $$invalidate) {
 		
 	 
 	  let value = Notfound;
@@ -3568,7 +3554,7 @@ var app = (function () {
 	class Router extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$9, create_fragment$c, safe_not_equal, []);
+			init(this, options, instance$a, create_fragment$c, safe_not_equal, []);
 		}
 	}
 
@@ -3889,7 +3875,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$a($$self, $$props, $$invalidate) {
+	function instance$b($$self, $$props, $$invalidate) {
 		
 
 	  let adminRigths;
@@ -3904,7 +3890,7 @@ var app = (function () {
 	class App extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$a, create_fragment$e, safe_not_equal, []);
+			init(this, options, instance$b, create_fragment$e, safe_not_equal, []);
 		}
 	}
 

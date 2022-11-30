@@ -70,10 +70,11 @@
       endOfList = true;
     }
 
-  } 
+  };
 
 
 </script>
+
 
 <button on:click={ausloggen} class="btn btn-secondary position-absolute top-0 end-0" type="button">
   Ausloggen
@@ -81,15 +82,13 @@
 
 
 <h1>Fragebogen</h1>
-{#await getInformation}
-	<p>...waiting</p>
-{:then}
+
 	{#if !endOfList}
     <FoodComponent food_nr={food_nr} on:save-vote={saveRelation} onChange={newFood => food = newFood} />
   {:else}
     <EndComponent ></EndComponent>
   {/if}
-{/await}
+
 
 
 

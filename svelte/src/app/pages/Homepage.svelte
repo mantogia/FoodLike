@@ -81,10 +81,13 @@ function ausloggenBtn(){
 
   {/if}
 
-  <button type="button" on:click={btnHandler} class="btn btn-secondary mb-3" >{text}</button>
+  <button style="margin-top:1.0em ;" type="button" on:click={btnHandler} class="btn btn-secondary mb-3" >{text}</button>
 
 {:else}
-  <button type="button" on:click={ausloggenBtn} class="btn btn-secondary mb-3" >Abmelden</button>
+  
+  <button on:click={ausloggen} class="btn btn-secondary position-absolute top-0 end-0" type="button">
+    Ausloggen
+  </button>
 
   <UserInfos></UserInfos>
 
@@ -93,3 +96,14 @@ function ausloggenBtn(){
 
 
 {/if}
+
+
+<style>
+
+.btn {
+    
+    margin-right: 1.0rem !important;
+    margin-top: 1.0rem !important;
+  }
+
+</style>

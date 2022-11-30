@@ -5,5 +5,6 @@ a.svelte-1b10eml{color:var(--second-color-4)}
 h1.svelte-e0yqjo{display:flex;justify-content:center;align-items:center}.btn.svelte-e0yqjo{margin-top:1.0rem !important;margin-right:1.0rem !important}
 .btn.svelte-1lkipq6{margin-top:1.0rem !important;margin-right:1.0rem !important}
 .card.svelte-129nl5t{color:black}#card-element.svelte-129nl5t{animation:svelte-129nl5t-fade-in 1000ms forwards}@keyframes svelte-129nl5t-slide-up{0%{transform:translateY(100%)}100%{transform:translateY(0%)}}@keyframes svelte-129nl5t-fade-in{0%{opacity:0}100%{opacity:1}}
+.btn.svelte-1fla2g2{margin-right:1.0rem !important;margin-top:1.0rem !important}
 
 /*# sourceMappingURL=bundle.css.map */
