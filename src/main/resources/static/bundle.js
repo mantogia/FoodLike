@@ -3,6 +3,8 @@ var app = (function () {
 
 	function noop() {}
 
+	const identity = x => x;
+
 	function assign(tar, src) {
 		for (const k in src) tar[k] = src[k];
 		return tar;
@@ -34,6 +36,20 @@ var app = (function () {
 		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
 	}
 
+	function validate_store(store, name) {
+		if (!store || typeof store.subscribe !== 'function') {
+			throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+		}
+	}
+
+	function subscribe(component, store, callback) {
+		const unsub = store.subscribe(callback);
+
+		component.$$.on_destroy.push(unsub.unsubscribe
+			? () => unsub.unsubscribe()
+			: unsub);
+	}
+
 	function create_slot(definition, ctx, fn) {
 		if (definition) {
 			const slot_ctx = get_slot_context(definition, ctx, fn);
@@ -51,6 +67,39 @@ var app = (function () {
 		return definition[1]
 			? assign({}, assign(ctx.$$scope.changed || {}, definition[1](fn ? fn(changed) : {})))
 			: ctx.$$scope.changed || {};
+	}
+
+	const tasks = new Set();
+	let running = false;
+
+	function run_tasks() {
+		tasks.forEach(task => {
+			if (!task[0](window.performance.now())) {
+				tasks.delete(task);
+				task[1]();
+			}
+		});
+
+		running = tasks.size > 0;
+		if (running) requestAnimationFrame(run_tasks);
+	}
+
+	function loop(fn) {
+		let task;
+
+		if (!running) {
+			running = true;
+			requestAnimationFrame(run_tasks);
+		}
+
+		return {
+			promise: new Promise(fulfil => {
+				tasks.add(task = [fn, fulfil]);
+			}),
+			abort() {
+				tasks.delete(task);
+			}
+		};
 	}
 
 	function append(target, node) {
@@ -114,6 +163,70 @@ var app = (function () {
 		const e = document.createEvent('CustomEvent');
 		e.initCustomEvent(type, false, false, detail);
 		return e;
+	}
+
+	let stylesheet;
+	let active = 0;
+	let current_rules = {};
+
+	// https://github.com/darkskyapp/string-hash/blob/master/index.js
+	function hash(str) {
+		let hash = 5381;
+		let i = str.length;
+
+		while (i--) hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+		return hash >>> 0;
+	}
+
+	function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+		const step = 16.666 / duration;
+		let keyframes = '{\n';
+
+		for (let p = 0; p <= 1; p += step) {
+			const t = a + (b - a) * ease(p);
+			keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+		}
+
+		const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+		const name = `__svelte_${hash(rule)}_${uid}`;
+
+		if (!current_rules[name]) {
+			if (!stylesheet) {
+				const style = element('style');
+				document.head.appendChild(style);
+				stylesheet = style.sheet;
+			}
+
+			current_rules[name] = true;
+			stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+		}
+
+		const animation = node.style.animation || '';
+		node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
+
+		active += 1;
+		return name;
+	}
+
+	function delete_rule(node, name) {
+		node.style.animation = (node.style.animation || '')
+			.split(', ')
+			.filter(name
+				? anim => anim.indexOf(name) < 0 // remove specific animation
+				: anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+			)
+			.join(', ');
+
+		if (name && !--active) clear_rules();
+	}
+
+	function clear_rules() {
+		requestAnimationFrame(() => {
+			if (active) return;
+			let i = stylesheet.cssRules.length;
+			while (i--) stylesheet.deleteRule(i);
+			current_rules = {};
+		});
 	}
 
 	let current_component;
@@ -213,6 +326,19 @@ var app = (function () {
 		}
 	}
 
+	let promise;
+
+	function wait() {
+		if (!promise) {
+			promise = Promise.resolve();
+			promise.then(() => {
+				promise = null;
+			});
+		}
+
+		return promise;
+	}
+
 	let outros;
 
 	function group_outros() {
@@ -230,6 +356,152 @@ var app = (function () {
 
 	function on_outro(callback) {
 		outros.callbacks.push(callback);
+	}
+
+	function create_in_transition(node, fn, params) {
+		let config = fn(node, params);
+		let running = false;
+		let animation_name;
+		let task;
+		let uid = 0;
+
+		function cleanup() {
+			if (animation_name) delete_rule(node, animation_name);
+		}
+
+		function go() {
+			const {
+				delay = 0,
+				duration = 300,
+				easing = identity,
+				tick: tick$$1 = noop,
+				css
+			} = config;
+
+			if (css) animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
+			tick$$1(0, 1);
+
+			const start_time = window.performance.now() + delay;
+			const end_time = start_time + duration;
+
+			if (task) task.abort();
+			running = true;
+
+			task = loop(now => {
+				if (running) {
+					if (now >= end_time) {
+						tick$$1(1, 0);
+						cleanup();
+						return running = false;
+					}
+
+					if (now >= start_time) {
+						const t = easing((now - start_time) / duration);
+						tick$$1(t, 1 - t);
+					}
+				}
+
+				return running;
+			});
+		}
+
+		let started = false;
+
+		return {
+			start() {
+				if (started) return;
+
+				delete_rule(node);
+
+				if (typeof config === 'function') {
+					config = config();
+					wait().then(go);
+				} else {
+					go();
+				}
+			},
+
+			invalidate() {
+				started = false;
+			},
+
+			end() {
+				if (running) {
+					cleanup();
+					running = false;
+				}
+			}
+		};
+	}
+
+	function create_out_transition(node, fn, params) {
+		let config = fn(node, params);
+		let running = true;
+		let animation_name;
+
+		const group = outros;
+
+		group.remaining += 1;
+
+		function go() {
+			const {
+				delay = 0,
+				duration = 300,
+				easing = identity,
+				tick: tick$$1 = noop,
+				css
+			} = config;
+
+			if (css) animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
+
+			const start_time = window.performance.now() + delay;
+			const end_time = start_time + duration;
+
+			loop(now => {
+				if (running) {
+					if (now >= end_time) {
+						tick$$1(0, 1);
+
+						if (!--group.remaining) {
+							// this will result in `end()` being called,
+							// so we don't need to clean up here
+							run_all(group.callbacks);
+						}
+
+						return false;
+					}
+
+					if (now >= start_time) {
+						const t = easing((now - start_time) / duration);
+						tick$$1(1 - t, t);
+					}
+				}
+
+				return running;
+			});
+		}
+
+		if (typeof config === 'function') {
+			wait().then(() => {
+				config = config();
+				go();
+			});
+		} else {
+			go();
+		}
+
+		return {
+			end(reset) {
+				if (reset && config.tick) {
+					config.tick(1, 0);
+				}
+
+				if (running) {
+					if (animation_name) delete_rule(node, animation_name);
+					running = false;
+				}
+			}
+		};
 	}
 
 	function mount_component(component, target, anchor) {
@@ -406,18 +678,66 @@ var app = (function () {
 		return { set, update, subscribe };
 	}
 
-	const hash = writable('');
+	const hash$1 = writable('');
 
 	hashSetter();
 
 	window.onhashchange = () => hashSetter();
 
 	function hashSetter() {
-	  hash.set(
+	  hash$1.set(
 	    location.hash.length >= 2 
 	    ? location.hash.substring(2) 
 	    : ''
 	  );
+	}
+
+	/*
+	Adapted from https://github.com/mattdesl
+	Distributed under MIT License https://github.com/mattdesl/eases/blob/master/LICENSE.md
+	*/
+
+	function cubicOut(t) {
+		var f = t - 1.0;
+		return f * f * f + 1.0;
+	}
+
+	function fade(node, {
+		delay = 0,
+		duration = 400
+	}) {
+		const o = +getComputedStyle(node).opacity;
+
+		return {
+			delay,
+			duration,
+			css: t => `opacity: ${t * o}`
+		};
+	}
+
+	function scale(node, {
+		delay = 0,
+		duration = 400,
+		easing = cubicOut,
+		start = 0,
+		opacity = 0
+	}) {
+		const style = getComputedStyle(node);
+		const target_opacity = +style.opacity;
+		const transform = style.transform === 'none' ? '' : style.transform;
+
+		const sd = 1 - start;
+		const od = target_opacity * (1 - opacity);
+
+		return {
+			delay,
+			duration,
+			easing,
+			css: (t, u) => `
+			transform: ${transform} scale(${1 - (sd * u)});
+			opacity: ${target_opacity - (od * u)}
+		`
+		};
 	}
 
 	/* src\app\component\FoodComponent.svelte generated by Svelte v3.1.0 */
@@ -425,7 +745,7 @@ var app = (function () {
 	const file = "src\\app\\component\\FoodComponent.svelte";
 
 	function create_fragment(ctx) {
-		var div1, img, img_src_value, img_alt_value, t0, div0, button0, t2, button1, t4, button2, dispose;
+		var div1, img, img_src_value, img_alt_value, t0, div0, button0, t2, button1, t4, button2, div1_intro, div1_outro, current, dispose;
 
 		return {
 			c: function create() {
@@ -444,23 +764,23 @@ var app = (function () {
 				img.src = img_src_value = "./images/" + ctx.food_nr + ".jpg";
 				img.className = "card-img-top svelte-129nl5t";
 				img.alt = img_alt_value = ctx.food.food_name;
-				add_location(img, file, 52, 4, 1093);
+				add_location(img, file, 55, 4, 1229);
 				button0.className = "btn btn-primary";
 				button0.id = "dislike";
-				add_location(button0, file, 55, 6, 1215);
+				add_location(button0, file, 58, 6, 1351);
 				button1.className = "btn btn-primary";
 				button1.id = "like";
-				add_location(button1, file, 56, 6, 1314);
+				add_location(button1, file, 59, 6, 1450);
 				button2.className = "btn btn-primary";
 				button2.id = "superlike";
-				add_location(button2, file, 57, 6, 1407);
+				add_location(button2, file, 60, 6, 1543);
 				div0.className = "card-body svelte-129nl5t";
-				add_location(div0, file, 53, 4, 1176);
+				add_location(div0, file, 56, 4, 1312);
 				div1.className = "card mx-auto mt-5 svelte-129nl5t";
 				div1.id = "card-element";
 				set_style(div1, "width", "18rem");
 				set_style(div1, "text-align", "center");
-				add_location(div1, file, 51, 0, 997);
+				add_location(div1, file, 54, 0, 1115);
 
 				dispose = [
 					listen(button0, "click", ctx.click_handler),
@@ -483,24 +803,44 @@ var app = (function () {
 				append(div0, button1);
 				append(div0, t4);
 				append(div0, button2);
+				current = true;
 			},
 
 			p: function update_1(changed, ctx) {
-				if ((changed.food_nr) && img_src_value !== (img_src_value = "./images/" + ctx.food_nr + ".jpg")) {
+				if ((!current || changed.food_nr) && img_src_value !== (img_src_value = "./images/" + ctx.food_nr + ".jpg")) {
 					img.src = img_src_value;
 				}
 
-				if ((changed.food) && img_alt_value !== (img_alt_value = ctx.food.food_name)) {
+				if ((!current || changed.food) && img_alt_value !== (img_alt_value = ctx.food.food_name)) {
 					img.alt = img_alt_value;
 				}
 			},
 
-			i: noop,
-			o: noop,
+			i: function intro(local) {
+				if (current) return;
+				add_render_callback(() => {
+					if (div1_outro) div1_outro.end(1);
+					if (!div1_intro) div1_intro = create_in_transition(div1, scale, {});
+					div1_intro.start();
+				});
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				if (div1_intro) div1_intro.invalidate();
+
+				if (local) {
+					div1_outro = create_out_transition(div1, fade, {});
+				}
+
+				current = false;
+			},
 
 			d: function destroy(detaching) {
 				if (detaching) {
 					detach(div1);
+					if (div1_outro) div1_outro.end();
 				}
 
 				run_all(dispose);
@@ -1376,11 +1716,264 @@ var app = (function () {
 		}
 	}
 
-	/* src\app\component\UserInfos.svelte generated by Svelte v3.1.0 */
+	function is_date(obj) {
+		return Object.prototype.toString.call(obj) === '[object Date]';
+	}
 
-	const file$5 = "src\\app\\component\\UserInfos.svelte";
+	function get_interpolator(a, b) {
+		if (a === b || a !== a) return () => a;
+
+		const type = typeof a;
+
+		if (type !== typeof b || Array.isArray(a) !== Array.isArray(b)) {
+			throw new Error('Cannot interpolate values of different type');
+		}
+
+		if (Array.isArray(a)) {
+			const arr = b.map((bi, i) => {
+				return get_interpolator(a[i], bi);
+			});
+
+			return t => arr.map(fn => fn(t));
+		}
+
+		if (type === 'object') {
+			if (!a || !b) throw new Error('Object cannot be null');
+
+			if (is_date(a) && is_date(b)) {
+				a = a.getTime();
+				b = b.getTime();
+				const delta = b - a;
+				return t => new Date(a + t * delta);
+			}
+
+			const keys = Object.keys(b);
+			const interpolators = {};
+
+			keys.forEach(key => {
+				interpolators[key] = get_interpolator(a[key], b[key]);
+			});
+
+			return t => {
+				const result = {};
+				keys.forEach(key => {
+					result[key] = interpolators[key](t);
+				});
+				return result;
+			};
+		}
+
+		if (type === 'number') {
+			const delta = b - a;
+			return t => a + t * delta;
+		}
+
+		throw new Error(`Cannot interpolate ${type} values`);
+	}
+
+	function tweened(value, defaults = {}) {
+		const store = writable(value);
+
+		let task;
+		let target_value = value;
+
+		function set(new_value, opts) {
+			target_value = new_value;
+
+			let previous_task = task;
+			let started = false;
+
+			let {
+				delay = 0,
+				duration = 400,
+				easing = identity,
+				interpolate = get_interpolator
+			} = assign(assign({}, defaults), opts);
+
+			const start = window.performance.now() + delay;
+			let fn;
+
+			task = loop(now => {
+				if (now < start) return true;
+
+				if (!started) {
+					fn = interpolate(value, new_value);
+					if (typeof duration === 'function') duration = duration(value, new_value);
+					started = true;
+				}
+
+				if (previous_task) {
+					previous_task.abort();
+					previous_task = null;
+				}
+
+				const elapsed = now - start;
+
+				if (elapsed > duration) {
+					store.set(value = new_value);
+					return false;
+				}
+
+				store.set(value = fn(easing(elapsed / duration)));
+				return true;
+			});
+
+			return task.promise;
+		}
+
+		return {
+			set,
+			update: (fn, opts) => set(fn(target_value, value), opts),
+			subscribe: store.subscribe
+		};
+	}
+
+	/* src\app\component\test.svelte generated by Svelte v3.1.0 */
+
+	const file$5 = "src\\app\\component\\test.svelte";
 
 	function create_fragment$5(ctx) {
+		var h1, t1, progress_1, t2, div, button0, t4, button1, t6, button2, t8, button3, t10, button4, dispose;
+
+		return {
+			c: function create() {
+				h1 = element("h1");
+				h1.textContent = "Click a button and watch the SvelteKit transition magic happen 🌟";
+				t1 = space();
+				progress_1 = element("progress");
+				t2 = space();
+				div = element("div");
+				button0 = element("button");
+				button0.textContent = "0%";
+				t4 = space();
+				button1 = element("button");
+				button1.textContent = "25%";
+				t6 = space();
+				button2 = element("button");
+				button2.textContent = "50%";
+				t8 = space();
+				button3 = element("button");
+				button3.textContent = "75%";
+				t10 = space();
+				button4 = element("button");
+				button4.textContent = "100%";
+				add_location(h1, file$5, 12, 1, 199);
+				progress_1.value = ctx.$progress;
+				add_location(progress_1, file$5, 14, 0, 277);
+				add_location(button0, file$5, 16, 1, 333);
+				add_location(button1, file$5, 17, 1, 390);
+				add_location(button2, file$5, 18, 1, 451);
+				add_location(button3, file$5, 19, 1, 511);
+				add_location(button4, file$5, 20, 1, 576);
+				div.className = "buttons";
+				add_location(div, file$5, 15, 0, 309);
+
+				dispose = [
+					listen(button0, "click", ctx.click_handler),
+					listen(button1, "click", ctx.click_handler_1),
+					listen(button2, "click", ctx.click_handler_2),
+					listen(button3, "click", ctx.click_handler_3),
+					listen(button4, "click", ctx.click_handler_4)
+				];
+			},
+
+			l: function claim(nodes) {
+				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h1, anchor);
+				insert(target, t1, anchor);
+				insert(target, progress_1, anchor);
+				insert(target, t2, anchor);
+				insert(target, div, anchor);
+				append(div, button0);
+				append(div, t4);
+				append(div, button1);
+				append(div, t6);
+				append(div, button2);
+				append(div, t8);
+				append(div, button3);
+				append(div, t10);
+				append(div, button4);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.$progress) {
+					progress_1.value = ctx.$progress;
+				}
+			},
+
+			i: noop,
+			o: noop,
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(h1);
+					detach(t1);
+					detach(progress_1);
+					detach(t2);
+					detach(div);
+				}
+
+				run_all(dispose);
+			}
+		};
+	}
+
+	function instance$5($$self, $$props, $$invalidate) {
+		let $progress;
+
+		
+
+	const progress = tweened(0, {
+	  duration: 4000,
+	  easing: cubicOut,
+	}); validate_store(progress, 'progress'); subscribe($$self, progress, $$value => { $progress = $$value; $$invalidate('$progress', $progress); });
+
+		function click_handler() {
+			return progress.set(0);
+		}
+
+		function click_handler_1() {
+			return progress.set(0.25);
+		}
+
+		function click_handler_2() {
+			return progress.set(0.5);
+		}
+
+		function click_handler_3() {
+			return progress.set(0.75);
+		}
+
+		function click_handler_4() {
+			return progress.set(1);
+		}
+
+		return {
+			progress,
+			$progress,
+			click_handler,
+			click_handler_1,
+			click_handler_2,
+			click_handler_3,
+			click_handler_4
+		};
+	}
+
+	class Test extends SvelteComponentDev {
+		constructor(options) {
+			super(options);
+			init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
+		}
+	}
+
+	/* src\app\component\UserInfos.svelte generated by Svelte v3.1.0 */
+
+	const file$6 = "src\\app\\component\\UserInfos.svelte";
+
+	function create_fragment$6(ctx) {
 		var div7, div0, t1, div6, p0, t2, u, t4, t5, div1, input0, t6, label0, t8, div2, input1, t9, label1, t11, div3, input2, t12, label2, t14, div4, input3, t15, label3, t17, div5, input4, t18, label4, t20, p1, t21, b, t23, t24, button, dispose;
 
 		return {
@@ -1435,68 +2028,68 @@ var app = (function () {
 				button = element("button");
 				button.textContent = "Sichern";
 				div0.className = "card-header";
-				add_location(div0, file$5, 18, 2, 190);
-				add_location(u, file$5, 23, 6, 328);
-				add_location(p0, file$5, 22, 4, 276);
+				add_location(div0, file$6, 18, 2, 190);
+				add_location(u, file$6, 23, 6, 328);
+				add_location(p0, file$6, 22, 4, 276);
 				input0.className = "form-check-input";
 				attr(input0, "type", "checkbox");
 				attr(input0, "role", "switch");
 				input0.id = "allergie1";
-				add_location(input0, file$5, 25, 8, 527);
+				add_location(input0, file$6, 25, 8, 527);
 				label0.className = "form-check-label";
 				label0.htmlFor = "allergie1";
-				add_location(label0, file$5, 26, 8, 637);
+				add_location(label0, file$6, 26, 8, 637);
 				div1.className = "form-check form-switch";
-				add_location(div1, file$5, 24, 4, 481);
+				add_location(div1, file$6, 24, 4, 481);
 				input1.className = "form-check-input";
 				attr(input1, "type", "checkbox");
 				attr(input1, "role", "switch");
 				input1.id = "allergie2";
-				add_location(input1, file$5, 30, 8, 774);
+				add_location(input1, file$6, 30, 8, 774);
 				label1.className = "form-check-label";
 				label1.htmlFor = "allergie2";
-				add_location(label1, file$5, 31, 8, 884);
+				add_location(label1, file$6, 31, 8, 884);
 				div2.className = "form-check form-switch";
-				add_location(div2, file$5, 29, 6, 728);
+				add_location(div2, file$6, 29, 6, 728);
 				input2.className = "form-check-input";
 				attr(input2, "type", "checkbox");
 				attr(input2, "role", "switch");
 				input2.id = "allergie3";
-				add_location(input2, file$5, 35, 8, 1020);
+				add_location(input2, file$6, 35, 8, 1020);
 				label2.className = "form-check-label";
 				label2.htmlFor = "allergie3";
-				add_location(label2, file$5, 36, 8, 1130);
+				add_location(label2, file$6, 36, 8, 1130);
 				div3.className = "form-check form-switch";
-				add_location(div3, file$5, 34, 6, 974);
+				add_location(div3, file$6, 34, 6, 974);
 				input3.className = "form-check-input";
 				attr(input3, "type", "checkbox");
 				attr(input3, "role", "switch");
 				input3.id = "allergie4";
-				add_location(input3, file$5, 40, 8, 1272);
+				add_location(input3, file$6, 40, 8, 1272);
 				label3.className = "form-check-label";
 				label3.htmlFor = "allergie4";
-				add_location(label3, file$5, 41, 8, 1382);
+				add_location(label3, file$6, 41, 8, 1382);
 				div4.className = "form-check form-switch";
-				add_location(div4, file$5, 39, 6, 1226);
+				add_location(div4, file$6, 39, 6, 1226);
 				input4.className = "form-check-input";
 				attr(input4, "type", "checkbox");
 				attr(input4, "role", "switch");
 				input4.id = "allergie5";
-				add_location(input4, file$5, 45, 8, 1518);
+				add_location(input4, file$6, 45, 8, 1518);
 				label4.className = "form-check-label";
 				label4.htmlFor = "allergie5";
-				add_location(label4, file$5, 46, 8, 1628);
+				add_location(label4, file$6, 46, 8, 1628);
 				div5.className = "form-check form-switch";
-				add_location(div5, file$5, 44, 6, 1472);
-				add_location(b, file$5, 48, 82, 1792);
+				add_location(div5, file$6, 44, 6, 1472);
+				add_location(b, file$6, 48, 82, 1792);
 				p1.className = "card-text";
-				add_location(p1, file$5, 48, 6, 1716);
+				add_location(p1, file$6, 48, 6, 1716);
 				button.className = "btn btn-primary";
-				add_location(button, file$5, 49, 6, 1870);
+				add_location(button, file$6, 49, 6, 1870);
 				div6.className = "card-body";
-				add_location(div6, file$5, 21, 2, 247);
+				add_location(div6, file$6, 21, 2, 247);
 				div7.className = "card mb-3";
-				add_location(div7, file$5, 17, 0, 163);
+				add_location(div7, file$6, 17, 0, 163);
 
 				dispose = [
 					listen(input0, "change", ctx.input0_change_handler),
@@ -1596,7 +2189,7 @@ var app = (function () {
 	axios.post("");
 	}
 
-	function instance$5($$self, $$props, $$invalidate) {
+	function instance$6($$self, $$props, $$invalidate) {
 		let allergie1;
 	let allergie2;
 	let allergie3;
@@ -1645,7 +2238,7 @@ var app = (function () {
 	class UserInfos extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
+			init(this, options, instance$6, create_fragment$6, safe_not_equal, []);
 		}
 	}
 
@@ -1680,9 +2273,9 @@ var app = (function () {
 
 	/* src\app\pages\Homepage.svelte generated by Svelte v3.1.0 */
 
-	const file$6 = "src\\app\\pages\\Homepage.svelte";
+	const file$7 = "src\\app\\pages\\Homepage.svelte";
 
-	// (86:0) {:else}
+	// (87:0) {:else}
 	function create_else_block_1(ctx) {
 		var button, t1, t2, current, dispose;
 
@@ -1703,7 +2296,7 @@ var app = (function () {
 				startcomponent.$$.fragment.c();
 				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1fla2g2";
 				button.type = "button";
-				add_location(button, file$6, 87, 2, 1769);
+				add_location(button, file$7, 88, 2, 1829);
 				dispose = listen(button, "click", ausloggen);
 			},
 
@@ -1756,7 +2349,7 @@ var app = (function () {
 		};
 	}
 
-	// (74:0) {#if !loggedIn}
+	// (75:0) {#if !loggedIn}
 	function create_if_block(ctx) {
 		var current_block_type_index, if_block, t0, button, t1, current, dispose;
 
@@ -1784,7 +2377,7 @@ var app = (function () {
 				set_style(button, "margin-top", "1.0em ");
 				button.type = "button";
 				button.className = "btn btn-secondary mb-3 svelte-1fla2g2";
-				add_location(button, file$6, 83, 2, 1636);
+				add_location(button, file$7, 84, 2, 1696);
 				dispose = listen(button, "click", ctx.btnHandler);
 			},
 
@@ -1848,7 +2441,7 @@ var app = (function () {
 		};
 	}
 
-	// (78:2) {:else}
+	// (79:2) {:else}
 	function create_else_block(ctx) {
 		var current;
 
@@ -1885,7 +2478,7 @@ var app = (function () {
 		};
 	}
 
-	// (75:2) {#if neu}
+	// (76:2) {#if neu}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -1922,8 +2515,10 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$6(ctx) {
-		var h1, t_1, current_block_type_index, if_block, if_block_anchor, current;
+	function create_fragment$7(ctx) {
+		var t0, h1, t2, current_block_type_index, if_block, if_block_anchor, current;
+
+		var test = new Test({ $$inline: true });
 
 		var if_block_creators = [
 			create_if_block,
@@ -1942,12 +2537,14 @@ var app = (function () {
 
 		return {
 			c: function create() {
+				test.$$.fragment.c();
+				t0 = space();
 				h1 = element("h1");
 				h1.textContent = "FoodLike";
-				t_1 = space();
+				t2 = space();
 				if_block.c();
 				if_block_anchor = empty();
-				add_location(h1, file$6, 71, 0, 1483);
+				add_location(h1, file$7, 72, 0, 1543);
 			},
 
 			l: function claim(nodes) {
@@ -1955,8 +2552,10 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
+				mount_component(test, target, anchor);
+				insert(target, t0, anchor);
 				insert(target, h1, anchor);
-				insert(target, t_1, anchor);
+				insert(target, t2, anchor);
 				if_blocks[current_block_type_index].m(target, anchor);
 				insert(target, if_block_anchor, anchor);
 				current = true;
@@ -1988,19 +2587,25 @@ var app = (function () {
 
 			i: function intro(local) {
 				if (current) return;
+				test.$$.fragment.i(local);
+
 				if (if_block) if_block.i();
 				current = true;
 			},
 
 			o: function outro(local) {
+				test.$$.fragment.o(local);
 				if (if_block) if_block.o();
 				current = false;
 			},
 
 			d: function destroy(detaching) {
+				test.$destroy(detaching);
+
 				if (detaching) {
+					detach(t0);
 					detach(h1);
-					detach(t_1);
+					detach(t2);
 				}
 
 				if_blocks[current_block_type_index].d(detaching);
@@ -2018,7 +2623,7 @@ var app = (function () {
 
 	}
 
-	function instance$6($$self, $$props, $$invalidate) {
+	function instance$7($$self, $$props, $$invalidate) {
 		
 	  let neu = true;
 	  let text = "Bereits ein Konto?";
@@ -2075,15 +2680,15 @@ var app = (function () {
 	class Homepage extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$6, create_fragment$6, safe_not_equal, []);
+			init(this, options, instance$7, create_fragment$7, safe_not_equal, []);
 		}
 	}
 
 	/* src\app\pages\Notfound.svelte generated by Svelte v3.1.0 */
 
-	const file$7 = "src\\app\\pages\\Notfound.svelte";
+	const file$8 = "src\\app\\pages\\Notfound.svelte";
 
-	function create_fragment$7(ctx) {
+	function create_fragment$8(ctx) {
 		var h1, t_1, h2;
 
 		return {
@@ -2093,8 +2698,8 @@ var app = (function () {
 				t_1 = space();
 				h2 = element("h2");
 				h2.textContent = "Seite nicht gefunden.";
-				add_location(h1, file$7, 4, 0, 21);
-				add_location(h2, file$7, 5, 0, 60);
+				add_location(h1, file$8, 4, 0, 21);
+				add_location(h2, file$8, 5, 0, 60);
 			},
 
 			l: function claim(nodes) {
@@ -2124,15 +2729,15 @@ var app = (function () {
 	class Notfound extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, null, create_fragment$7, safe_not_equal, []);
+			init(this, options, null, create_fragment$8, safe_not_equal, []);
 		}
 	}
 
 	/* src\app\component\EndComponent.svelte generated by Svelte v3.1.0 */
 
-	const file$8 = "src\\app\\component\\EndComponent.svelte";
+	const file$9 = "src\\app\\component\\EndComponent.svelte";
 
-	function create_fragment$8(ctx) {
+	function create_fragment$9(ctx) {
 		var div1, h50, t1, div0, h51, t3, p, t5, a;
 
 		return {
@@ -2151,18 +2756,18 @@ var app = (function () {
 				a = element("a");
 				a.textContent = "Zur Evaluation";
 				h50.className = "card-header";
-				add_location(h50, file$8, 8, 4, 59);
+				add_location(h50, file$9, 8, 4, 59);
 				h51.className = "card-title";
-				add_location(h51, file$8, 10, 6, 137);
+				add_location(h51, file$9, 10, 6, 137);
 				p.className = "card-text";
-				add_location(p, file$8, 15, 6, 238);
+				add_location(p, file$9, 15, 6, 238);
 				a.href = "#/evaluation";
 				a.className = "btn btn-primary";
-				add_location(a, file$8, 20, 6, 326);
+				add_location(a, file$9, 20, 6, 326);
 				div0.className = "card-body";
-				add_location(div0, file$8, 9, 4, 107);
+				add_location(div0, file$9, 9, 4, 107);
 				div1.className = "card";
-				add_location(div1, file$8, 7, 0, 36);
+				add_location(div1, file$9, 7, 0, 36);
 			},
 
 			l: function claim(nodes) {
@@ -2196,13 +2801,13 @@ var app = (function () {
 	class EndComponent extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, null, create_fragment$8, safe_not_equal, []);
+			init(this, options, null, create_fragment$9, safe_not_equal, []);
 		}
 	}
 
 	/* src\app\pages\Questionspage.svelte generated by Svelte v3.1.0 */
 
-	const file$9 = "src\\app\\pages\\Questionspage.svelte";
+	const file$a = "src\\app\\pages\\Questionspage.svelte";
 
 	// (88:2) {:else}
 	function create_else_block$1(ctx) {
@@ -2287,7 +2892,7 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$9(ctx) {
+	function create_fragment$a(ctx) {
 		var button, t1, h1, t3, current_block_type_index, if_block, if_block_anchor, current, dispose;
 
 		var if_block_creators = [
@@ -2317,9 +2922,9 @@ var app = (function () {
 				if_block_anchor = empty();
 				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-e0yqjo";
 				button.type = "button";
-				add_location(button, file$9, 78, 0, 1846);
+				add_location(button, file$a, 78, 0, 1846);
 				h1.className = "svelte-e0yqjo";
-				add_location(h1, file$9, 83, 0, 1970);
+				add_location(h1, file$a, 83, 0, 1970);
 				dispose = listen(button, "click", ausloggen);
 			},
 
@@ -2393,7 +2998,7 @@ var app = (function () {
 
 	let fragebogen_nr = 1;
 
-	function instance$7($$self, $$props, $$invalidate) {
+	function instance$8($$self, $$props, $$invalidate) {
 		
 	  let endOfList = false;
 
@@ -2478,7 +3083,7 @@ var app = (function () {
 	class Questionspage extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$7, create_fragment$9, safe_not_equal, []);
+			init(this, options, instance$8, create_fragment$a, safe_not_equal, []);
 		}
 	}
 
@@ -2486,9 +3091,9 @@ var app = (function () {
 
 	/* src\app\evaluation\EvaluationComponent.svelte generated by Svelte v3.1.0 */
 
-	const file$a = "src\\app\\evaluation\\EvaluationComponent.svelte";
+	const file$b = "src\\app\\evaluation\\EvaluationComponent.svelte";
 
-	function create_fragment$a(ctx) {
+	function create_fragment$b(ctx) {
 		var div2, h2, button, t0, t1, t2_value = ctx.evaluation[0], t2, button_data_bs_target_value, h2_id_value, t3, div1, div0, strong, p0, t4, t5_value = ctx.evaluation[2], t5, t6, p1, t7, t8_value = ctx.evaluation[1], t8, t9, p2, t10, t11_value = ctx.evaluation[3], t11, t12, p3, t13, t14_value = ctx.evaluation[4], t14, t15, p4, t16, t17_value = ctx.evaluation[5], t17, t18, p5, t19, t20_value = ctx.evaluation[6], t20, div1_id_value, div1_aria_labelledby_value;
 
 		return {
@@ -2532,26 +3137,26 @@ var app = (function () {
 				button.dataset.bsTarget = button_data_bs_target_value = "#collapse" + ctx.index;
 				attr(button, "aria-expanded", "true");
 				attr(button, "aria-controls", "collapseOne");
-				add_location(button, file$a, 11, 4, 150);
+				add_location(button, file$b, 11, 4, 150);
 				h2.className = "accordion-header";
 				h2.id = h2_id_value = "heading" + ctx.index;
-				add_location(h2, file$a, 10, 2, 96);
-				add_location(p0, file$a, 18, 6, 557);
-				add_location(strong, file$a, 17, 6, 542);
-				add_location(p1, file$a, 20, 6, 639);
-				add_location(p2, file$a, 21, 6, 709);
-				add_location(p3, file$a, 22, 6, 785);
-				add_location(p4, file$a, 23, 6, 831);
-				add_location(p5, file$a, 24, 6, 874);
+				add_location(h2, file$b, 10, 2, 96);
+				add_location(p0, file$b, 18, 6, 557);
+				add_location(strong, file$b, 17, 6, 542);
+				add_location(p1, file$b, 20, 6, 639);
+				add_location(p2, file$b, 21, 6, 709);
+				add_location(p3, file$b, 22, 6, 785);
+				add_location(p4, file$b, 23, 6, 831);
+				add_location(p5, file$b, 24, 6, 874);
 				div0.className = "accordion-body";
-				add_location(div0, file$a, 16, 4, 507);
+				add_location(div0, file$b, 16, 4, 507);
 				div1.id = div1_id_value = "collapse" + ctx.index;
 				div1.className = "accordion-collapse collapse";
 				attr(div1, "aria-labelledby", div1_aria_labelledby_value = "heading" + ctx.index);
 				div1.dataset.bsParent = "#accordionExample";
-				add_location(div1, file$a, 15, 2, 372);
+				add_location(div1, file$b, 15, 2, 372);
 				div2.className = "accordion-item";
-				add_location(div2, file$a, 9, 0, 65);
+				add_location(div2, file$b, 9, 0, 65);
 			},
 
 			l: function claim(nodes) {
@@ -2655,7 +3260,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$8($$self, $$props, $$invalidate) {
+	function instance$9($$self, $$props, $$invalidate) {
 		let { evaluation, index } = $$props;
 
 		$$self.$set = $$props => {
@@ -2669,7 +3274,7 @@ var app = (function () {
 	class EvaluationComponent extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$8, create_fragment$a, safe_not_equal, ["evaluation", "index"]);
+			init(this, options, instance$9, create_fragment$b, safe_not_equal, ["evaluation", "index"]);
 
 			const { ctx } = this.$$;
 			const props = options.props || {};
@@ -2700,7 +3305,7 @@ var app = (function () {
 
 	/* src\app\pages\Evaluationpage.svelte generated by Svelte v3.1.0 */
 
-	const file$b = "src\\app\\pages\\Evaluationpage.svelte";
+	const file$c = "src\\app\\pages\\Evaluationpage.svelte";
 
 	function get_each_context(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -2769,40 +3374,40 @@ var app = (function () {
 				button0.dataset.bsTarget = "#panelsStayOpen-collapseSearch";
 				attr(button0, "aria-expanded", "false");
 				attr(button0, "aria-controls", "panelsStayOpen-collapseTwo");
-				add_location(button0, file$b, 140, 8, 3057);
+				add_location(button0, file$c, 140, 8, 3057);
 				h2.className = "accordion-header";
 				h2.id = "panelsStayOpen-headingSearch";
-				add_location(h2, file$b, 139, 6, 2985);
+				add_location(h2, file$c, 139, 6, 2985);
 				label.htmlFor = "Username";
-				add_location(label, file$b, 149, 16, 3552);
+				add_location(label, file$c, 149, 16, 3552);
 				input.placeholder = "gesuchter Benutzername";
 				attr(input, "type", "String");
 				input.className = "form-control";
 				input.id = "Username";
-				add_location(input, file$b, 150, 16, 3611);
+				add_location(input, file$c, 150, 16, 3611);
 				select.className = "form-select form-select-lg mb-3";
 				attr(select, "aria-label", ".form-select-lg example");
-				add_location(select, file$b, 157, 16, 3857);
+				add_location(select, file$c, 157, 16, 3857);
 				div0.className = "form-group ";
-				add_location(div0, file$b, 148, 14, 3510);
+				add_location(div0, file$c, 148, 14, 3510);
 				button1.type = "button";
 				button1.className = "btn btn-dark mt-2 svelte-1lkipq6";
-				add_location(button1, file$b, 168, 16, 4195);
+				add_location(button1, file$c, 168, 16, 4195);
 				button2.type = "button";
 				button2.className = "btn btn-dark mt-2 svelte-1lkipq6";
-				add_location(button2, file$b, 169, 16, 4297);
-				add_location(form, file$b, 147, 10, 3489);
+				add_location(button2, file$c, 169, 16, 4297);
+				add_location(form, file$c, 147, 10, 3489);
 				div1.className = "accordion-body";
-				add_location(div1, file$b, 145, 8, 3449);
+				add_location(div1, file$c, 145, 8, 3449);
 				div2.id = "panelsStayOpen-collapseSearch";
 				div2.className = "accordion-collapse collapse";
 				attr(div2, "aria-labelledby", "panelsStayOpen-headingSearch");
-				add_location(div2, file$b, 144, 6, 3317);
+				add_location(div2, file$c, 144, 6, 3317);
 				div3.className = "accordion-item";
-				add_location(div3, file$b, 138, 2, 2950);
+				add_location(div3, file$c, 138, 2, 2950);
 				div4.className = "accordion mb-3";
 				div4.id = "accordionPanelsStayOpenExample";
-				add_location(div4, file$b, 137, 0, 2883);
+				add_location(div4, file$c, 137, 0, 2883);
 
 				dispose = [
 					listen(input, "input", ctx.input_input_handler),
@@ -2888,7 +3493,7 @@ var app = (function () {
 				t = text(t_value);
 				option.__value = option_value_value = ctx.name;
 				option.value = option.__value;
-				add_location(option, file$b, 160, 18, 4030);
+				add_location(option, file$c, 160, 18, 4030);
 			},
 
 			m: function mount(target, anchor) {
@@ -2982,11 +3587,11 @@ var app = (function () {
 				t6 = text(t6_value);
 				t7 = space();
 				th.scope = "row";
-				add_location(th, file$b, 212, 20, 5503);
-				add_location(td0, file$b, 213, 20, 5560);
-				add_location(td1, file$b, 214, 20, 5618);
-				add_location(td2, file$b, 215, 20, 5675);
-				add_location(tr, file$b, 211, 16, 5478);
+				add_location(th, file$c, 212, 20, 5503);
+				add_location(td0, file$c, 213, 20, 5560);
+				add_location(td1, file$c, 214, 20, 5618);
+				add_location(td2, file$c, 215, 20, 5675);
+				add_location(tr, file$c, 211, 16, 5478);
 			},
 
 			m: function mount(target, anchor) {
@@ -3031,7 +3636,7 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$b(ctx) {
+	function create_fragment$c(ctx) {
 		var button0, t1, h10, t2, t3_value = ctx.thisUser.user_name, t3, t4, t5, div3, t6, div2, h2, button1, h11, t8, div1, div0, table, thead, tr, th0, t10, th1, t12, th2, t14, th3, t16, tbody, current, dispose;
 
 		var if_block = (ctx.adminBool) && create_if_block$2(ctx);
@@ -3113,44 +3718,44 @@ var app = (function () {
 				}
 				button0.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1lkipq6";
 				button0.type = "button";
-				add_location(button0, file$b, 129, 0, 2700);
-				add_location(h10, file$b, 133, 0, 2824);
-				add_location(h11, file$b, 195, 8, 4904);
+				add_location(button0, file$c, 129, 0, 2700);
+				add_location(h10, file$c, 133, 0, 2824);
+				add_location(h11, file$c, 195, 8, 4904);
 				button1.className = "accordion-button";
 				button1.type = "button";
 				button1.dataset.bsToggle = "collapse";
 				button1.dataset.bsTarget = "#collapseRating";
 				attr(button1, "aria-expanded", "true");
 				attr(button1, "aria-controls", "collapseOne");
-				add_location(button1, file$b, 194, 6, 4740);
+				add_location(button1, file$c, 194, 6, 4740);
 				h2.className = "accordion-header";
 				h2.id = "headingRating";
-				add_location(h2, file$b, 193, 4, 4685);
+				add_location(h2, file$c, 193, 4, 4685);
 				th0.scope = "col";
-				add_location(th0, file$b, 203, 16, 5202);
+				add_location(th0, file$c, 203, 16, 5202);
 				th1.scope = "col";
-				add_location(th1, file$b, 204, 16, 5241);
+				add_location(th1, file$c, 204, 16, 5241);
 				th2.scope = "col";
-				add_location(th2, file$b, 205, 16, 5283);
+				add_location(th2, file$c, 205, 16, 5283);
 				th3.scope = "col";
-				add_location(th3, file$b, 206, 16, 5329);
-				add_location(tr, file$b, 202, 14, 5181);
-				add_location(thead, file$b, 201, 12, 5159);
-				add_location(tbody, file$b, 209, 12, 5410);
+				add_location(th3, file$c, 206, 16, 5329);
+				add_location(tr, file$c, 202, 14, 5181);
+				add_location(thead, file$c, 201, 12, 5159);
+				add_location(tbody, file$c, 209, 12, 5410);
 				table.className = "table";
-				add_location(table, file$b, 200, 10, 5125);
+				add_location(table, file$c, 200, 10, 5125);
 				div0.className = "accordion-body";
-				add_location(div0, file$b, 199, 6, 5086);
+				add_location(div0, file$c, 199, 6, 5086);
 				div1.id = "collapseRating";
 				div1.className = "accordion-collapse collapse";
 				attr(div1, "aria-labelledby", "headingRating");
 				div1.dataset.bsParent = "#accordionExample";
-				add_location(div1, file$b, 198, 4, 4951);
+				add_location(div1, file$c, 198, 4, 4951);
 				div2.className = "accordion-item";
-				add_location(div2, file$b, 192, 2, 4652);
+				add_location(div2, file$c, 192, 2, 4652);
 				div3.className = "accordion";
 				div3.id = "accordionExample";
-				add_location(div3, file$b, 181, 0, 4471);
+				add_location(div3, file$c, 181, 0, 4471);
 				dispose = listen(button0, "click", ausloggen);
 			},
 
@@ -3301,7 +3906,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$9($$self, $$props, $$invalidate) {
+	function instance$a($$self, $$props, $$invalidate) {
 		
 
 	    let user = JSON.parse(localStorage.current_user);
@@ -3438,15 +4043,15 @@ var app = (function () {
 	class Evaluationpage extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$9, create_fragment$b, safe_not_equal, []);
+			init(this, options, instance$a, create_fragment$c, safe_not_equal, []);
 		}
 	}
 
 	/* src\app\routing\Router.svelte generated by Svelte v3.1.0 */
 
-	const file$c = "src\\app\\routing\\Router.svelte";
+	const file$d = "src\\app\\routing\\Router.svelte";
 
-	function create_fragment$c(ctx) {
+	function create_fragment$d(ctx) {
 		var main, current;
 
 		var switch_value = ctx.value;
@@ -3464,7 +4069,7 @@ var app = (function () {
 				main = element("main");
 				if (switch_instance) switch_instance.$$.fragment.c();
 				main.className = "svelte-agre66";
-				add_location(main, file$c, 38, 0, 745);
+				add_location(main, file$d, 40, 0, 747);
 			},
 
 			l: function claim(nodes) {
@@ -3527,12 +4132,12 @@ var app = (function () {
 		};
 	}
 
-	function instance$a($$self, $$props, $$invalidate) {
+	function instance$b($$self, $$props, $$invalidate) {
 		
 	 
 	  let value = Notfound;
 
-	  hash.subscribe( valu => {
+	  hash$1.subscribe( valu => {
 	    switch(valu) {
 	      case '':
 	        $$invalidate('value', value = Homepage);
@@ -3554,13 +4159,13 @@ var app = (function () {
 	class Router extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$a, create_fragment$c, safe_not_equal, []);
+			init(this, options, instance$b, create_fragment$d, safe_not_equal, []);
 		}
 	}
 
 	/* src\app\component\Sidenav.svelte generated by Svelte v3.1.0 */
 
-	const file$d = "src\\app\\component\\Sidenav.svelte";
+	const file$e = "src\\app\\component\\Sidenav.svelte";
 
 	// (27:6) <RouterLink url=''>
 	function create_default_slot_2(ctx) {
@@ -3625,7 +4230,7 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$d(ctx) {
+	function create_fragment$e(ctx) {
 		var nav, h1, t1, ul, li0, t2, li1, t3, li2, current;
 
 		var routerlink0 = new RouterLink({
@@ -3670,17 +4275,17 @@ var app = (function () {
 				t3 = space();
 				li2 = element("li");
 				routerlink2.$$.fragment.c();
-				add_location(h1, file$d, 22, 2, 278);
+				add_location(h1, file$e, 22, 2, 278);
 				li0.className = "svelte-9jqyde";
-				add_location(li0, file$d, 25, 4, 310);
+				add_location(li0, file$e, 25, 4, 310);
 				li1.className = "svelte-9jqyde";
-				add_location(li1, file$d, 29, 4, 377);
+				add_location(li1, file$e, 29, 4, 377);
 				li2.className = "svelte-9jqyde";
-				add_location(li2, file$d, 33, 4, 452);
+				add_location(li2, file$e, 33, 4, 452);
 				ul.className = "svelte-9jqyde";
-				add_location(ul, file$d, 23, 2, 300);
+				add_location(ul, file$e, 23, 2, 300);
 				nav.className = "svelte-9jqyde";
-				add_location(nav, file$d, 21, 0, 270);
+				add_location(nav, file$e, 21, 0, 270);
 			},
 
 			l: function claim(nodes) {
@@ -3752,15 +4357,15 @@ var app = (function () {
 	class Sidenav extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, null, create_fragment$d, safe_not_equal, []);
+			init(this, options, null, create_fragment$e, safe_not_equal, []);
 		}
 	}
 
 	/* src\App.svelte generated by Svelte v3.1.0 */
 
-	const file$e = "src\\App.svelte";
+	const file$f = "src\\App.svelte";
 
-	// (31:2) {#if adminRigths}
+	// (30:2) {#if adminRigths}
 	function create_if_block$3(ctx) {
 		var current;
 
@@ -3797,7 +4402,7 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$e(ctx) {
+	function create_fragment$f(ctx) {
 		var div, t, current;
 
 		var if_block = (ctx.adminRigths) && create_if_block$3(ctx);
@@ -3811,7 +4416,7 @@ var app = (function () {
 				t = space();
 				router.$$.fragment.c();
 				div.className = "app-shell svelte-h5712t";
-				add_location(div, file$e, 27, 0, 392);
+				add_location(div, file$f, 27, 0, 392);
 			},
 
 			l: function claim(nodes) {
@@ -3875,7 +4480,7 @@ var app = (function () {
 		};
 	}
 
-	function instance$b($$self, $$props, $$invalidate) {
+	function instance$c($$self, $$props, $$invalidate) {
 		
 
 	  let adminRigths;
@@ -3890,7 +4495,7 @@ var app = (function () {
 	class App extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$b, create_fragment$e, safe_not_equal, []);
+			init(this, options, instance$c, create_fragment$f, safe_not_equal, []);
 		}
 	}
 

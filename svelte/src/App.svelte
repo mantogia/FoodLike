@@ -26,7 +26,6 @@
 
 
 <div class="app-shell">
-
   
   {#if adminRigths}
     <Sidenav class="sidenav" />

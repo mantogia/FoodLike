@@ -5,6 +5,7 @@
   import LoginComponent from '../component/LoginComponent.svelte';
   import RouterLink from '../component/RouterLink.svelte';
   import StartComponent from '../component/StartComponent.svelte';
+  import Test from '../component/test.svelte';
   import UserInfos from '../component/UserInfos.svelte';
   import { admin } from '../stores/stores.js';
   import {resetPage} from '../stores/stores.js';
@@ -68,7 +69,7 @@ function ausloggenBtn(){
 }
 
 </script>
-
+<Test></Test>
 <h1>FoodLike</h1>
 
 {#if !loggedIn}

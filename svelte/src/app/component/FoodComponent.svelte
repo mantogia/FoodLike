@@ -2,6 +2,9 @@
 
     import {onMount} from "svelte";
     import { createEventDispatcher} from "svelte";
+    import { quintOut } from "svelte/easing";
+
+    import { fade, blur, fly, slide, scale } from "svelte/transition";
   
     const dispatch = createEventDispatcher();
 
@@ -49,7 +52,7 @@
 
 
 
-<div class="card mx-auto mt-5" id="card-element" style="width: 18rem; text-align: center;">
+<div in:scale out:fade class="card mx-auto mt-5" id="card-element" style="width: 18rem; text-align: center;">
     <img src="./images/{food_nr}.jpg" class="card-img-top" alt="{food.food_name}">
     <div class="card-body">
         

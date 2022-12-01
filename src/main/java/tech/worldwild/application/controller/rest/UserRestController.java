@@ -25,6 +25,9 @@ import tech.worldwild.application.repositories.UserRepository;
 @Controller
 public class UserRestController {
 
+    
+
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -107,7 +110,10 @@ public class UserRestController {
         Optional<List<String>> listCategories = foodRepository.getCategories();
         if(!listCategories.isEmpty()){
 
-            for (String c : listCategories.get()) 
+
+            List<String> newListCategories = deleteCategories(listCategories.get());
+
+            for (String c : newListCategories) 
             {
                 Optional<List<Food>> f = foodRepository.getTenFragen(c);
                 if(!f.isEmpty()){
@@ -141,6 +147,27 @@ public class UserRestController {
             return new ResponseEntity<List<Food_Rating>>(HttpStatus.NOT_FOUND);
         } 
         
+    }
+
+    static List<String> deleteCategories(List<String> cList) {
+         
+        
+        List<String> x = new ArrayList<String>();
+        x.add("Alkoholfreie Getränke");
+        x.add("Alkoholhaltige Getränke");
+        x.add("Verschiedenes");
+        x.add("Gerichte");
+        x.add("Speziallebensmittel");
+        x.add("Fleischersatzprodukte");
+
+        for (String i : x) {
+            
+            if(cList.contains(i)){
+                cList.remove(i);
+            }
+          }
+          
+        return cList;
     }
     
 

@@ -17,9 +17,8 @@ public interface FoodRepository  extends JpaRepository <Food, Long> {
     value = 
     "SELECT " + 
     "f.*  " +
-    
     "FROM Food f " +
-    "WHERE f.category = :kategorie limit 10",
+    "WHERE f.category = :kategorie limit 20" ,
 
     nativeQuery = true)
     Optional<List<Food>> getTenFragen(@Param("kategorie") String kategorie);
@@ -30,8 +29,15 @@ public interface FoodRepository  extends JpaRepository <Food, Long> {
     "SELECT " + 
     "f.category  " +
     "FROM Food f " +
-    "GROUP BY f.category",
-
+    /*"WHERE f.category <> 'Alkoholfreie Getränke' " + 
+    "AND f.category <> 'Alkoholhaltige Getränke' " + 
+    "AND f.category <> 'Verschiedenes' " + 
+    "AND f.category <> 'Gerichte' " + 
+    "AND f.category <> 'Speziallebensmittel' " + 
+    "AND f.category <> 'Fleischersatzprodukte' " +*/
+    "GROUP BY f.category" 
+     
+    ,
     nativeQuery = true)
     Optional<List<String>> getCategories();
     
