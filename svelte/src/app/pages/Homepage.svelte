@@ -5,7 +5,6 @@
   import LoginComponent from '../component/LoginComponent.svelte';
   import RouterLink from '../component/RouterLink.svelte';
   import StartComponent from '../component/StartComponent.svelte';
-  import Test from '../component/test.svelte';
   import UserInfos from '../component/UserInfos.svelte';
   import { admin } from '../stores/stores.js';
   import {resetPage} from '../stores/stores.js';
@@ -62,14 +61,14 @@ function setAdmin() {
 
 }
 
+let infosDone = false;
 
-function ausloggenBtn(){
-
-  loggedIn = ausloggen()
+function setInfos(){
+  infosDone = true;
 }
 
 </script>
-<Test></Test>
+
 <h1>FoodLike</h1>
 
 {#if !loggedIn}
@@ -90,10 +89,11 @@ function ausloggenBtn(){
     Ausloggen
   </button>
 
-  <UserInfos></UserInfos>
-
-  <StartComponent user ={user}/>
-
+  {#if !infosDone}
+    <UserInfos on:save-Infos={setInfos} ></UserInfos>
+  {:else}
+    <StartComponent user ={user}/>
+  {/if}
 
 
 {/if}

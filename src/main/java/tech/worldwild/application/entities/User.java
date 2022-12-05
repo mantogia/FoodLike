@@ -6,6 +6,7 @@ package tech.worldwild.application.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 //import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,21 +30,22 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    List<Food_Rating> food_ratings;
+    List<Food_Rating> food_ratings = new ArrayList<Food_Rating>();
 
+    @ElementCollection
+    private List<String> allergien = new ArrayList<String>();
+
+    private Boolean vegetarisch = false;
     
     public User(String user_name, String user_email, String user_password) {
         this.user_name = user_name;
         this.user_email = user_email;
         this.user_password = user_password;
-        this.food_ratings = new ArrayList<Food_Rating>();
-
     }
 
     public User() {
 
     }
-
 
     public long getUser_id() {
         return user_id;
@@ -89,7 +91,25 @@ public class User {
         this.food_ratings = food_ratings;
     }
 
-   
+    public List<String> getAllergien() {
+        return allergien;
+    }
+
+    public void setAllergien(List<String> allergien) {
+        this.allergien = allergien;
+    }
+
+   public void addAllergie(String allergie) {
+        allergien.add(allergie);
+    }
+
+public Boolean getVegetarisch() {
+    return vegetarisch;
+}
+
+public void setVegetarisch(Boolean vegetarisch) {
+    this.vegetarisch = vegetarisch;
+}
 
     
 }

@@ -1,10 +1,10 @@
 .app-shell.svelte-h5712t{position:absolute;top:0;bottom:0;left:0;right:0;display:flex}
-nav.svelte-9jqyde{flex-basis:10rem;background-color:#00DD95;color:#212529;padding:1rem}nav.svelte-9jqyde ul.svelte-9jqyde{list-style:none}nav.svelte-9jqyde ul li.svelte-9jqyde{padding:.5rem 0}
 main.svelte-agre66{flex-grow:1;background-color:#212529;color:#00DD95;padding:1rem}
+nav.svelte-9jqyde{flex-basis:10rem;background-color:#00DD95;color:#212529;padding:1rem}nav.svelte-9jqyde ul.svelte-9jqyde{list-style:none}nav.svelte-9jqyde ul li.svelte-9jqyde{padding:.5rem 0}
 a.svelte-1b10eml{color:var(--second-color-4)}
+.btn.svelte-1fla2g2{margin-right:1.0rem !important;margin-top:1.0rem !important}
 h1.svelte-e0yqjo{display:flex;justify-content:center;align-items:center}.btn.svelte-e0yqjo{margin-top:1.0rem !important;margin-right:1.0rem !important}
 .btn.svelte-1lkipq6{margin-top:1.0rem !important;margin-right:1.0rem !important}
 .card.svelte-129nl5t{color:black}#card-element.svelte-129nl5t{animation:svelte-129nl5t-fade-in 1000ms forwards}@keyframes svelte-129nl5t-slide-up{0%{transform:translateY(100%)}100%{transform:translateY(0%)}}@keyframes svelte-129nl5t-fade-in{0%{opacity:0}100%{opacity:1}}
-.btn.svelte-1fla2g2{margin-right:1.0rem !important;margin-top:1.0rem !important}
 
 /*# sourceMappingURL=bundle.css.map */
