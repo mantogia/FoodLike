@@ -35,7 +35,7 @@ function saveAngaben(){
   if(allergie12){list = [... list, "Weizen (Gluten)"]};
   if(vegetarisch){
     
-    axios.put("/user/" + user.user_id + "/vegetrisch")
+    axios.post("/users/" + user.user_id + "/vegetrisch")
           .then((response) => {
             console.log(response.data);
           })
@@ -45,7 +45,7 @@ function saveAngaben(){
   };
 
   if (list.length > 0){
-    axios.post("/user/" + user.user_id + "/allergien", list)
+    axios.post("/users/" + user.user_id + "/allergien", list)
           .then((response) => {
             console.log(response.data);
           })
@@ -53,6 +53,14 @@ function saveAngaben(){
               console.log(error);
           })
   }
+
+  axios.post("/users/" + user.user_id + "/angaben")
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+              console.log(error);
+          })
 
  
   dispatch("save-Infos")

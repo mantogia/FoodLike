@@ -36,6 +36,8 @@ public class User {
     private List<String> allergien = new ArrayList<String>();
 
     private Boolean vegetarisch = false;
+    private Boolean angaben = false;
+    
     
     public User(String user_name, String user_email, String user_password) {
         this.user_name = user_name;
@@ -43,6 +45,8 @@ public class User {
         this.user_password = user_password;
     }
 
+
+    
     public User() {
 
     }
@@ -109,6 +113,18 @@ public Boolean getVegetarisch() {
 
 public void setVegetarisch(Boolean vegetarisch) {
     this.vegetarisch = vegetarisch;
+}
+
+
+
+public Boolean getAngaben() {
+    return angaben;
+}
+
+
+
+public void setAngaben(Boolean angaben) {
+    this.angaben = angaben;
 }
 
     

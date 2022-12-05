@@ -1483,148 +1483,148 @@ var app = (function () {
 				button = element("button");
 				button.textContent = "Sichern";
 				div0.className = "card-header";
-				add_location(div0, file$5, 65, 2, 1643);
-				add_location(u, file$5, 70, 6, 1781);
-				add_location(p0, file$5, 69, 4, 1729);
+				add_location(div0, file$5, 73, 2, 1869);
+				add_location(u, file$5, 78, 6, 2007);
+				add_location(p0, file$5, 77, 4, 1955);
 				input0.className = "form-check-input";
 				attr(input0, "type", "checkbox");
 				attr(input0, "role", "switch");
 				input0.id = "allergie1";
-				add_location(input0, file$5, 73, 8, 1988);
+				add_location(input0, file$5, 81, 8, 2214);
 				label0.className = "form-check-label";
 				label0.htmlFor = "allergie1";
-				add_location(label0, file$5, 74, 8, 2100);
+				add_location(label0, file$5, 82, 8, 2326);
 				div1.className = "form-check form-switch";
-				add_location(div1, file$5, 72, 6, 1942);
+				add_location(div1, file$5, 80, 6, 2168);
 				input1.className = "form-check-input";
 				attr(input1, "type", "checkbox");
 				attr(input1, "role", "switch");
 				input1.id = "allergie2";
-				add_location(input1, file$5, 78, 8, 2229);
+				add_location(input1, file$5, 86, 8, 2455);
 				label1.className = "form-check-label";
 				label1.htmlFor = "allergie2";
-				add_location(label1, file$5, 79, 8, 2341);
+				add_location(label1, file$5, 87, 8, 2567);
 				div2.className = "form-check form-switch";
-				add_location(div2, file$5, 77, 6, 2183);
+				add_location(div2, file$5, 85, 6, 2409);
 				input2.className = "form-check-input";
 				attr(input2, "type", "checkbox");
 				attr(input2, "role", "switch");
 				input2.id = "allergie3";
-				add_location(input2, file$5, 83, 8, 2474);
+				add_location(input2, file$5, 91, 8, 2700);
 				label2.className = "form-check-label";
 				label2.htmlFor = "allergie3";
-				add_location(label2, file$5, 84, 8, 2586);
+				add_location(label2, file$5, 92, 8, 2812);
 				div3.className = "form-check form-switch";
-				add_location(div3, file$5, 82, 6, 2428);
+				add_location(div3, file$5, 90, 6, 2654);
 				input3.className = "form-check-input";
 				attr(input3, "type", "checkbox");
 				attr(input3, "role", "switch");
 				input3.id = "allergie4";
-				add_location(input3, file$5, 88, 8, 2723);
+				add_location(input3, file$5, 96, 8, 2949);
 				label3.className = "form-check-label";
 				label3.htmlFor = "allergie4";
-				add_location(label3, file$5, 89, 8, 2835);
+				add_location(label3, file$5, 97, 8, 3061);
 				div4.className = "form-check form-switch";
-				add_location(div4, file$5, 87, 6, 2677);
+				add_location(div4, file$5, 95, 6, 2903);
 				input4.className = "form-check-input";
 				attr(input4, "type", "checkbox");
 				attr(input4, "role", "switch");
 				input4.id = "allergie5";
-				add_location(input4, file$5, 93, 8, 2973);
+				add_location(input4, file$5, 101, 8, 3199);
 				label4.className = "form-check-label";
 				label4.htmlFor = "allergie5";
-				add_location(label4, file$5, 94, 8, 3085);
+				add_location(label4, file$5, 102, 8, 3311);
 				div5.className = "form-check form-switch";
-				add_location(div5, file$5, 92, 6, 2927);
+				add_location(div5, file$5, 100, 6, 3153);
 				input5.className = "form-check-input";
 				attr(input5, "type", "checkbox");
 				attr(input5, "role", "switch");
 				input5.id = "allergie6";
-				add_location(input5, file$5, 97, 8, 3217);
+				add_location(input5, file$5, 105, 8, 3443);
 				label5.className = "form-check-label";
 				label5.htmlFor = "allergie6";
-				add_location(label5, file$5, 98, 8, 3329);
+				add_location(label5, file$5, 106, 8, 3555);
 				div6.className = "form-check form-switch";
-				add_location(div6, file$5, 96, 6, 3171);
+				add_location(div6, file$5, 104, 6, 3397);
 				input6.className = "form-check-input";
 				attr(input6, "type", "checkbox");
 				attr(input6, "role", "switch");
 				input6.id = "allergie7";
-				add_location(input6, file$5, 101, 8, 3467);
+				add_location(input6, file$5, 109, 8, 3693);
 				label6.className = "form-check-label";
 				label6.htmlFor = "allergie7";
-				add_location(label6, file$5, 102, 8, 3579);
+				add_location(label6, file$5, 110, 8, 3805);
 				div7.className = "form-check form-switch";
-				add_location(div7, file$5, 100, 6, 3421);
+				add_location(div7, file$5, 108, 6, 3647);
 				input7.className = "form-check-input";
 				attr(input7, "type", "checkbox");
 				attr(input7, "role", "switch");
 				input7.id = "allergie8";
-				add_location(input7, file$5, 105, 8, 3711);
+				add_location(input7, file$5, 113, 8, 3937);
 				label7.className = "form-check-label";
 				label7.htmlFor = "allergie8";
-				add_location(label7, file$5, 106, 8, 3823);
+				add_location(label7, file$5, 114, 8, 4049);
 				div8.className = "form-check form-switch";
-				add_location(div8, file$5, 104, 6, 3665);
+				add_location(div8, file$5, 112, 6, 3891);
 				input8.className = "form-check-input";
 				attr(input8, "type", "checkbox");
 				attr(input8, "role", "switch");
 				input8.id = "allergie9";
-				add_location(input8, file$5, 109, 8, 3951);
+				add_location(input8, file$5, 117, 8, 4177);
 				label8.className = "form-check-label";
 				label8.htmlFor = "allergie9";
-				add_location(label8, file$5, 110, 8, 4063);
+				add_location(label8, file$5, 118, 8, 4289);
 				div9.className = "form-check form-switch";
-				add_location(div9, file$5, 108, 6, 3905);
+				add_location(div9, file$5, 116, 6, 4131);
 				input9.className = "form-check-input";
 				attr(input9, "type", "checkbox");
 				attr(input9, "role", "switch");
 				input9.id = "allergie10";
-				add_location(input9, file$5, 113, 8, 4197);
+				add_location(input9, file$5, 121, 8, 4423);
 				label9.className = "form-check-label";
 				label9.htmlFor = "allergie10";
-				add_location(label9, file$5, 114, 8, 4311);
+				add_location(label9, file$5, 122, 8, 4537);
 				div10.className = "form-check form-switch";
-				add_location(div10, file$5, 112, 6, 4151);
+				add_location(div10, file$5, 120, 6, 4377);
 				input10.className = "form-check-input";
 				attr(input10, "type", "checkbox");
 				attr(input10, "role", "switch");
 				input10.id = "allergie11";
-				add_location(input10, file$5, 117, 8, 4446);
+				add_location(input10, file$5, 125, 8, 4672);
 				label10.className = "form-check-label";
 				label10.htmlFor = "allergie11";
-				add_location(label10, file$5, 118, 8, 4560);
+				add_location(label10, file$5, 126, 8, 4786);
 				div11.className = "form-check form-switch";
-				add_location(div11, file$5, 116, 6, 4400);
+				add_location(div11, file$5, 124, 6, 4626);
 				input11.className = "form-check-input";
 				attr(input11, "type", "checkbox");
 				attr(input11, "role", "switch");
 				input11.id = "allergie12";
-				add_location(input11, file$5, 121, 8, 4695);
+				add_location(input11, file$5, 129, 8, 4921);
 				label11.className = "form-check-label";
 				label11.htmlFor = "allergie12";
-				add_location(label11, file$5, 122, 8, 4809);
+				add_location(label11, file$5, 130, 8, 5035);
 				div12.className = "form-check form-switch";
-				add_location(div12, file$5, 120, 6, 4649);
+				add_location(div12, file$5, 128, 6, 4875);
 				input12.className = "form-check-input";
 				attr(input12, "type", "checkbox");
 				attr(input12, "role", "switch");
 				input12.id = "vegetarisch";
-				add_location(input12, file$5, 125, 8, 4949);
+				add_location(input12, file$5, 133, 8, 5175);
 				label12.className = "form-check-label";
 				label12.htmlFor = "vegetarisch";
-				add_location(label12, file$5, 126, 8, 5065);
+				add_location(label12, file$5, 134, 8, 5291);
 				div13.className = "form-check form-switch";
-				add_location(div13, file$5, 124, 6, 4903);
-				add_location(b, file$5, 130, 82, 5236);
+				add_location(div13, file$5, 132, 6, 5129);
+				add_location(b, file$5, 138, 82, 5462);
 				p1.className = "card-text";
-				add_location(p1, file$5, 130, 6, 5160);
+				add_location(p1, file$5, 138, 6, 5386);
 				button.className = "btn btn-primary";
-				add_location(button, file$5, 131, 6, 5314);
+				add_location(button, file$5, 139, 6, 5540);
 				div14.className = "card-body";
-				add_location(div14, file$5, 68, 2, 1700);
+				add_location(div14, file$5, 76, 2, 1926);
 				div15.className = "card mb-3";
-				add_location(div15, file$5, 64, 0, 1616);
+				add_location(div15, file$5, 72, 0, 1842);
 
 				dispose = [
 					listen(input0, "change", ctx.input0_change_handler),
@@ -1822,7 +1822,7 @@ var app = (function () {
 
 	  if(allergie1){$$invalidate('list', list = [... list, "Ei"]);}  if(allergie2){$$invalidate('list', list = [... list, "Erdnuss"]);}  if(allergie3){$$invalidate('list', list = [... list, "Krustentiere"]);}  if(allergie4){$$invalidate('list', list = [... list, "Kuhmilch"]);}  if(allergie5){$$invalidate('list', list = [... list, "Schalenfrüchte"]);}  if(allergie6){$$invalidate('list', list = [... list, "Schalenfrüchte"]);}  if(allergie7){$$invalidate('list', list = [... list, "Sellerie"]);}  if(allergie8){$$invalidate('list', list = [... list, "Senf"]);}  if(allergie9){$$invalidate('list', list = [... list, "Sesamsamen"]);}  if(allergie10){$$invalidate('list', list = [... list, "Sojabohnen"]);}  if(allergie11){$$invalidate('list', list = [... list, "Weichtiere"]);}  if(allergie12){$$invalidate('list', list = [... list, "Weizen (Gluten)"]);}  if(vegetarisch){
 	    
-	    axios.put("/user/" + user.user_id + "/vegetrisch")
+	    axios.post("/users/" + user.user_id + "/vegetrisch")
 	          .then((response) => {
 	            console.log(response.data);
 	          })
@@ -1831,7 +1831,7 @@ var app = (function () {
 	          });
 	  }
 	  if (list.length > 0){
-	    axios.post("/user/" + user.user_id + "/allergien", list)
+	    axios.post("/users/" + user.user_id + "/allergien", list)
 	          .then((response) => {
 	            console.log(response.data);
 	          })
@@ -1839,6 +1839,14 @@ var app = (function () {
 	              console.log(error);
 	          });
 	  }
+
+	  axios.post("/users/" + user.user_id + "/angaben")
+	          .then((response) => {
+	            console.log(response.data);
+	          })
+	          .catch((error) => {
+	              console.log(error);
+	          });
 
 	 
 	  dispatch("save-Infos");
@@ -1981,7 +1989,7 @@ var app = (function () {
 
 	const file$6 = "src\\app\\pages\\Homepage.svelte";
 
-	// (86:0) {:else}
+	// (108:0) {:else}
 	function create_else_block_1(ctx) {
 		var button, t_1, current_block_type_index, if_block, if_block_anchor, current, dispose;
 
@@ -2009,7 +2017,7 @@ var app = (function () {
 				if_block_anchor = empty();
 				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1fla2g2";
 				button.type = "button";
-				add_location(button, file$6, 87, 2, 1782);
+				add_location(button, file$6, 109, 2, 2239);
 				dispose = listen(button, "click", ausloggen);
 			},
 
@@ -2073,7 +2081,7 @@ var app = (function () {
 		};
 	}
 
-	// (74:0) {#if !loggedIn}
+	// (96:0) {#if !loggedIn}
 	function create_if_block(ctx) {
 		var current_block_type_index, if_block, t0, button, t1, current, dispose;
 
@@ -2101,7 +2109,7 @@ var app = (function () {
 				set_style(button, "margin-top", "1.0em ");
 				button.type = "button";
 				button.className = "btn btn-secondary mb-3 svelte-1fla2g2";
-				add_location(button, file$6, 83, 2, 1649);
+				add_location(button, file$6, 105, 2, 2106);
 				dispose = listen(button, "click", ctx.btnHandler);
 			},
 
@@ -2165,7 +2173,7 @@ var app = (function () {
 		};
 	}
 
-	// (94:2) {:else}
+	// (116:2) {:else}
 	function create_else_block_2(ctx) {
 		var current;
 
@@ -2208,7 +2216,7 @@ var app = (function () {
 		};
 	}
 
-	// (92:2) {#if !infosDone}
+	// (114:2) {#if !infosDone}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -2245,7 +2253,7 @@ var app = (function () {
 		};
 	}
 
-	// (78:2) {:else}
+	// (100:2) {:else}
 	function create_else_block(ctx) {
 		var current;
 
@@ -2282,7 +2290,7 @@ var app = (function () {
 		};
 	}
 
-	// (75:2) {#if neu}
+	// (97:2) {#if neu}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -2344,7 +2352,7 @@ var app = (function () {
 				t_1 = space();
 				if_block.c();
 				if_block_anchor = empty();
-				add_location(h1, file$6, 71, 0, 1496);
+				add_location(h1, file$6, 93, 0, 1953);
 			},
 
 			l: function claim(nodes) {
@@ -2453,7 +2461,29 @@ var app = (function () {
 	  $$invalidate('user', user = JSON.parse(localStorage.current_user));
 	}
 
+
+
 	let infosDone = false;
+
+
+	$$invalidate('infosDone', infosDone = getInfos());
+	let tempUser = {};
+	function getInfos(){
+	  $$invalidate('user', user = JSON.parse(localStorage.current_user));
+	  axios.get("/users/" + user.user_id)
+	          .then((response) => {
+	            
+	            console.log(response.data);
+	            $$invalidate('tempUser', tempUser = response.data);
+	            if(tempUser.angaben == true){
+	              $$invalidate('infosDone', infosDone = true);
+	            }
+	          })
+	          .catch((error) => {
+	              console.log(error);
+	          });
+
+	}
 
 	function setInfos(){
 	  $$invalidate('infosDone', infosDone = true);

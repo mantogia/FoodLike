@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,8 +55,46 @@ public class UserRestController {
 
     @PostMapping("/users")
     @ResponseBody
-    User newUser(@RequestBody User newUser){
+    public User newUser(@RequestBody User newUser){
         return userRepository.save(newUser);
+    }
+
+    @PostMapping("/users/{id}/vegetrisch")
+    @ResponseBody
+    public ResponseEntity<User> setVegetarisch(@PathVariable("id") Long id){
+        Optional<User> u  = userRepository.findById(id);
+       
+
+        if(!u.isEmpty()){
+            u.get().setVegetarisch(true);
+            return new ResponseEntity<User>(userRepository.save(u.get()), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        } 
+    }
+
+    @PostMapping("/users/{id}/angaben")
+    @ResponseBody
+    public ResponseEntity<User> setAngaben(@PathVariable("id") Long id){
+        Optional<User> u  = userRepository.findById(id);
+        if(!u.isEmpty()){
+            u.get().setAngaben(true);
+            return new ResponseEntity<User>(userRepository.save(u.get()), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        } 
+    }
+
+    @PostMapping("/users/{id}/allergien")
+    @ResponseBody
+    public ResponseEntity<User> setAllergien(@RequestBody List<String> allergien, @PathVariable("id") Long id){
+        Optional<User>  u = userRepository.findById(id);
+        if(!u.isEmpty()){
+            u.get().setAllergien(allergien);
+            return new ResponseEntity<User>(userRepository.save(u.get()), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        } 
     }
 
 
@@ -84,7 +123,7 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{id}/food_ratings")
-    public ResponseEntity<List<Food_Rating>> getFoodRatingsByUserId(@PathVariable("id") long id) {
+    public ResponseEntity<List<Food_Rating>> getFoodRatingsByUserId(@PathVariable("id") Long id) {
         Optional<User> u = userRepository.findById(id);
 
         if(!u.isEmpty()){

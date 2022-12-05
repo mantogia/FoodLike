@@ -61,7 +61,29 @@ function setAdmin() {
 
 }
 
+
+
 let infosDone = false;
+
+
+infosDone = getInfos();
+let tempUser = {};
+function getInfos(){
+  user = JSON.parse(localStorage.current_user)
+  axios.get("/users/" + user.user_id)
+          .then((response) => {
+            
+            console.log(response.data);
+            tempUser = response.data;
+            if(tempUser.angaben == true){
+              infosDone = true;
+            }
+          })
+          .catch((error) => {
+              console.log(error);
+          })
+
+}
 
 function setInfos(){
   infosDone = true;
