@@ -18,6 +18,7 @@ public class Food {
     private String  sub_category_3;
     private String  sub_category_4;
     private String  sub_category_5;
+    private String allergy;
 
     
     public Food(long food_id, String food_name, String category) {
@@ -27,6 +28,7 @@ public class Food {
 
     }
 
+    
     public Food() {
 
     }
@@ -78,6 +80,18 @@ public class Food {
     }
     public void setCategory(String category) {
         this.category = category;
+    }
+
+
+
+    public String getAllergy() {
+        return allergy;
+    }
+
+
+
+    public void setAllergy(String allergy) {
+        this.allergy = allergy;
     }
     
 

@@ -173,7 +173,7 @@ function isBigEnough(value) {
   <div class="accordion-item">
     <h1 class="accordion-header" id="headingCategories">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategories" aria-expanded="true" aria-controls="collapseOne">
-        Kategorien
+        Nach Kategorien
       </button>
     </h1>
     <div id="collapseCategories" class="accordion-collapse collapse" aria-labelledby="headingCategories" data-bs-parent="#accordionExample1">
@@ -195,7 +195,7 @@ function isBigEnough(value) {
     <h1 class="accordion-header" id="headingRating">
 
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRating" aria-expanded="true" aria-controls="collapseOne">
-        Voting
+        Nach einzelnen Lebensmittel
       </button>
 
     </h1>

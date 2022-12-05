@@ -18,15 +18,17 @@ public interface FoodRepository  extends JpaRepository <Food, Long> {
     "SELECT " + 
     "f.*  " +
     "FROM Food f " +
-    "WHERE f.category = :kategorie limit 20" ,
+    "WHERE f.category = :kategorie " +
+    "AND f.allergy not in :allergien" +
+    " limit 20 ",
 
     nativeQuery = true)
-    Optional<List<Food>> getTenFragen(@Param("kategorie") String kategorie);
+    Optional<List<Food>> getTenFragen(@Param("kategorie") String kategorie, @Param("allergien") List<String> allergien);
 
 
     @Query(
     value = 
-    "SELECT " + 
+    "SELECT " +
     "f.category  " +
     "FROM Food f " +
     /*"WHERE f.category <> 'Alkoholfreie Getränke' " + 

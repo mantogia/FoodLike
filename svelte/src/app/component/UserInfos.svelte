@@ -23,9 +23,9 @@ function saveAngaben(){
 
   if(allergie1){list = [... list, "Ei"]};
   if(allergie2){list = [... list, "Erdnuss"]};
-  if(allergie3){list = [... list, "Krustentiere"]};
-  if(allergie4){list = [... list, "Kuhmilch"]};
-  if(allergie5){list = [... list, "Schalenfrüchte"]};
+  if(allergie3){list = [... list, "Fisch"]};
+  if(allergie4){list = [... list, "Krustentiere"]};
+  if(allergie5){list = [... list, "Kuhmilch"]};
   if(allergie6){list = [... list, "Schalenfrüchte"]};
   if(allergie7){list = [... list, "Sellerie"]};
   if(allergie8){list = [... list, "Senf"]};

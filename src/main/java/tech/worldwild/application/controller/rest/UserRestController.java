@@ -151,9 +151,19 @@ public class UserRestController {
 
             List<String> newListCategories = deleteCategories(listCategories.get());
 
+            
+
+            List<String> allergien = u.get().getAllergien();
+
+            
+            if(u.get().getVegetarisch()){
+                newListCategories.remove("Fleisch und Innereien");
+            }
+            
+
             for (String c : newListCategories) 
             {
-                Optional<List<Food>> f = foodRepository.getTenFragen(c);
+                Optional<List<Food>> f = foodRepository.getTenFragen(c, allergien);
                 if(!f.isEmpty()){
                     listFood.addAll(f.get());
                 }

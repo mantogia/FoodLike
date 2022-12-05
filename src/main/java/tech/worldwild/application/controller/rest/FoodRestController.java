@@ -33,7 +33,7 @@ public class FoodRestController {
         } 
     }
 
-    @GetMapping("/foods/fragebogen")
+    /*@GetMapping("/foods/fragebogen")
     @ResponseBody
     public List<Food> getFoodListe(){
         Optional<List<String>> listCategories = foodRepository.getCategories();
@@ -52,6 +52,6 @@ public class FoodRestController {
 
         return listFood;
         
-    }
+    }*/
     
 }
