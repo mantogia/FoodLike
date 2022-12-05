@@ -1989,7 +1989,7 @@ var app = (function () {
 
 	const file$6 = "src\\app\\pages\\Homepage.svelte";
 
-	// (108:0) {:else}
+	// (112:0) {:else}
 	function create_else_block_1(ctx) {
 		var button, t_1, current_block_type_index, if_block, if_block_anchor, current, dispose;
 
@@ -2017,7 +2017,7 @@ var app = (function () {
 				if_block_anchor = empty();
 				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1fla2g2";
 				button.type = "button";
-				add_location(button, file$6, 109, 2, 2239);
+				add_location(button, file$6, 113, 2, 2260);
 				dispose = listen(button, "click", ausloggen);
 			},
 
@@ -2081,7 +2081,7 @@ var app = (function () {
 		};
 	}
 
-	// (96:0) {#if !loggedIn}
+	// (100:0) {#if !loggedIn}
 	function create_if_block(ctx) {
 		var current_block_type_index, if_block, t0, button, t1, current, dispose;
 
@@ -2109,7 +2109,7 @@ var app = (function () {
 				set_style(button, "margin-top", "1.0em ");
 				button.type = "button";
 				button.className = "btn btn-secondary mb-3 svelte-1fla2g2";
-				add_location(button, file$6, 105, 2, 2106);
+				add_location(button, file$6, 109, 2, 2127);
 				dispose = listen(button, "click", ctx.btnHandler);
 			},
 
@@ -2173,7 +2173,7 @@ var app = (function () {
 		};
 	}
 
-	// (116:2) {:else}
+	// (120:2) {:else}
 	function create_else_block_2(ctx) {
 		var current;
 
@@ -2216,7 +2216,7 @@ var app = (function () {
 		};
 	}
 
-	// (114:2) {#if !infosDone}
+	// (118:2) {#if !infosDone}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -2253,7 +2253,7 @@ var app = (function () {
 		};
 	}
 
-	// (100:2) {:else}
+	// (104:2) {:else}
 	function create_else_block(ctx) {
 		var current;
 
@@ -2290,7 +2290,7 @@ var app = (function () {
 		};
 	}
 
-	// (97:2) {#if neu}
+	// (101:2) {#if neu}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -2352,7 +2352,7 @@ var app = (function () {
 				t_1 = space();
 				if_block.c();
 				if_block_anchor = empty();
-				add_location(h1, file$6, 93, 0, 1953);
+				add_location(h1, file$6, 97, 0, 1974);
 			},
 
 			l: function claim(nodes) {
@@ -2465,8 +2465,12 @@ var app = (function () {
 
 	let infosDone = false;
 
+	if (loggedIn){
 
-	$$invalidate('infosDone', infosDone = getInfos());
+	  $$invalidate('infosDone', infosDone = getInfos());
+	}
+
+
 	let tempUser = {};
 	function getInfos(){
 	  $$invalidate('user', user = JSON.parse(localStorage.current_user));

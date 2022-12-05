@@ -65,8 +65,12 @@ function setAdmin() {
 
 let infosDone = false;
 
+if (loggedIn){
 
-infosDone = getInfos();
+  infosDone = getInfos();
+}
+
+
 let tempUser = {};
 function getInfos(){
   user = JSON.parse(localStorage.current_user)
