@@ -120,10 +120,6 @@ function isBigEnough(value) {
      
       }*/
 
-    
-
-
-
 
 </script>
 
@@ -134,7 +130,6 @@ function isBigEnough(value) {
 <h1>Evaluation {thisUser.user_name}</h1>
 
 {#if adminBool}
-
 <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
   <div class="accordion-item">
       <h2 class="accordion-header" id="panelsStayOpen-headingSearch">
@@ -149,12 +144,7 @@ function isBigEnough(value) {
               <div class="form-group ">
                 <label for="Username">Benutzername</label>
                 <input on:change={listeAnpassen} placeholder="gesuchter Benutzername" bind:value={user_name} type="String" class="form-control" id="Username" >
-                
 
-                
-                
-                
-                
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                   
                   {#each listAnzeigen as name, i}
@@ -174,30 +164,46 @@ function isBigEnough(value) {
       </div>
     </div>
 </div>
-
-
 {/if}
 
 
-<div class="accordion" id="accordionExample">
-{#each listEvaluation as evaluation, i}
-
-<EvaluationComponent index={i} evaluation={evaluation}></EvaluationComponent>
-
-{/each}
 
 
+<div class="accordion" id="accordionExample1">
+  <div class="accordion-item">
+    <h1 class="accordion-header" id="headingCategories">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategories" aria-expanded="true" aria-controls="collapseOne">
+        Kategorien
+      </button>
+    </h1>
+    <div id="collapseCategories" class="accordion-collapse collapse" aria-labelledby="headingCategories" data-bs-parent="#accordionExample1">
+      <div class="accordion-body">
+        <div class="accordion" id="accordionExample2">
 
+          {#each listEvaluation as evaluation, i}
 
+          <EvaluationComponent index={i} evaluation={evaluation}></EvaluationComponent>
+
+          {/each}
+
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="accordion-item">
-    <h2 class="accordion-header" id="headingRating">
+    <h1 class="accordion-header" id="headingRating">
+
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRating" aria-expanded="true" aria-controls="collapseOne">
-        <h1>Ratings</h1>
+        Voting
       </button>
-    </h2>
-    <div id="collapseRating" class="accordion-collapse collapse" aria-labelledby="headingRating" data-bs-parent="#accordionExample">
+
+    </h1>
+    <div id="collapseRating" class="accordion-collapse collapse" aria-labelledby="headingRating" data-bs-parent="#accordionExample1">
       <div class="accordion-body">
+     
+
+
           <table class="table">
             <thead>
               <tr>
@@ -218,12 +224,14 @@ function isBigEnough(value) {
              {/each}
             </tbody>
           </table>
+
+
+
+
       </div>
     </div>
   </div>
-
 </div>
-
 
 
 <style>

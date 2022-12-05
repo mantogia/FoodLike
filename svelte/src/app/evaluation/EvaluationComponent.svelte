@@ -13,7 +13,7 @@ export let index;
       {index} Kategorie: {evaluation[0]}
     </button>
   </h2>
-  <div id="collapse{index}" class="accordion-collapse collapse" aria-labelledby="heading{index}" data-bs-parent="#accordionExample">
+  <div id="collapse{index}" class="accordion-collapse collapse" aria-labelledby="heading{index}" data-bs-parent="#accordionExample2">
     <div class="accordion-body">
       <strong>
       <p>Anzahl Ratings in dieser Kategorie: {evaluation[2]}</p>

@@ -2975,19 +2975,19 @@ var app = (function () {
 				h2.className = "accordion-header";
 				h2.id = h2_id_value = "heading" + ctx.index;
 				add_location(h2, file$a, 10, 2, 96);
-				add_location(p0, file$a, 18, 6, 557);
-				add_location(strong, file$a, 17, 6, 542);
-				add_location(p1, file$a, 20, 6, 639);
-				add_location(p2, file$a, 21, 6, 709);
-				add_location(p3, file$a, 22, 6, 785);
-				add_location(p4, file$a, 23, 6, 831);
-				add_location(p5, file$a, 24, 6, 874);
+				add_location(p0, file$a, 18, 6, 558);
+				add_location(strong, file$a, 17, 6, 543);
+				add_location(p1, file$a, 20, 6, 640);
+				add_location(p2, file$a, 21, 6, 710);
+				add_location(p3, file$a, 22, 6, 786);
+				add_location(p4, file$a, 23, 6, 832);
+				add_location(p5, file$a, 24, 6, 875);
 				div0.className = "accordion-body";
-				add_location(div0, file$a, 16, 4, 507);
+				add_location(div0, file$a, 16, 4, 508);
 				div1.id = div1_id_value = "collapse" + ctx.index;
 				div1.className = "accordion-collapse collapse";
 				attr(div1, "aria-labelledby", div1_aria_labelledby_value = "heading" + ctx.index);
-				div1.dataset.bsParent = "#accordionExample";
+				div1.dataset.bsParent = "#accordionExample2";
 				add_location(div1, file$a, 15, 2, 372);
 				div2.className = "accordion-item";
 				add_location(div2, file$a, 9, 0, 65);
@@ -3161,7 +3161,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (136:0) {#if adminBool}
+	// (132:0) {#if adminBool}
 	function create_if_block$2(ctx) {
 		var div4, div3, h2, button0, t1, div2, div1, form, div0, label, t3, input, t4, select, t5, button1, t7, button2, dispose;
 
@@ -3208,40 +3208,40 @@ var app = (function () {
 				button0.dataset.bsTarget = "#panelsStayOpen-collapseSearch";
 				attr(button0, "aria-expanded", "false");
 				attr(button0, "aria-controls", "panelsStayOpen-collapseTwo");
-				add_location(button0, file$b, 140, 8, 3057);
+				add_location(button0, file$b, 135, 8, 3048);
 				h2.className = "accordion-header";
 				h2.id = "panelsStayOpen-headingSearch";
-				add_location(h2, file$b, 139, 6, 2985);
+				add_location(h2, file$b, 134, 6, 2976);
 				label.htmlFor = "Username";
-				add_location(label, file$b, 149, 16, 3552);
+				add_location(label, file$b, 144, 16, 3543);
 				input.placeholder = "gesuchter Benutzername";
 				attr(input, "type", "String");
 				input.className = "form-control";
 				input.id = "Username";
-				add_location(input, file$b, 150, 16, 3611);
+				add_location(input, file$b, 145, 16, 3602);
 				select.className = "form-select form-select-lg mb-3";
 				attr(select, "aria-label", ".form-select-lg example");
-				add_location(select, file$b, 157, 16, 3857);
+				add_location(select, file$b, 147, 16, 3763);
 				div0.className = "form-group ";
-				add_location(div0, file$b, 148, 14, 3510);
+				add_location(div0, file$b, 143, 14, 3501);
 				button1.type = "button";
 				button1.className = "btn btn-dark mt-2 svelte-1lkipq6";
-				add_location(button1, file$b, 168, 16, 4195);
+				add_location(button1, file$b, 158, 16, 4101);
 				button2.type = "button";
 				button2.className = "btn btn-dark mt-2 svelte-1lkipq6";
-				add_location(button2, file$b, 169, 16, 4297);
-				add_location(form, file$b, 147, 10, 3489);
+				add_location(button2, file$b, 159, 16, 4203);
+				add_location(form, file$b, 142, 10, 3480);
 				div1.className = "accordion-body";
-				add_location(div1, file$b, 145, 8, 3449);
+				add_location(div1, file$b, 140, 8, 3440);
 				div2.id = "panelsStayOpen-collapseSearch";
 				div2.className = "accordion-collapse collapse";
 				attr(div2, "aria-labelledby", "panelsStayOpen-headingSearch");
-				add_location(div2, file$b, 144, 6, 3317);
+				add_location(div2, file$b, 139, 6, 3308);
 				div3.className = "accordion-item";
-				add_location(div3, file$b, 138, 2, 2950);
+				add_location(div3, file$b, 133, 2, 2941);
 				div4.className = "accordion mb-3";
 				div4.id = "accordionPanelsStayOpenExample";
-				add_location(div4, file$b, 137, 0, 2883);
+				add_location(div4, file$b, 132, 0, 2874);
 
 				dispose = [
 					listen(input, "input", ctx.input_input_handler),
@@ -3317,7 +3317,7 @@ var app = (function () {
 		};
 	}
 
-	// (160:18) {#each listAnzeigen as name, i}
+	// (150:18) {#each listAnzeigen as name, i}
 	function create_each_block_2(ctx) {
 		var option, t_value = ctx.name, t, option_value_value;
 
@@ -3327,7 +3327,7 @@ var app = (function () {
 				t = text(t_value);
 				option.__value = option_value_value = ctx.name;
 				option.value = option.__value;
-				add_location(option, file$b, 160, 18, 4030);
+				add_location(option, file$b, 150, 18, 3936);
 			},
 
 			m: function mount(target, anchor) {
@@ -3355,7 +3355,7 @@ var app = (function () {
 		};
 	}
 
-	// (183:0) {#each listEvaluation as evaluation, i}
+	// (183:10) {#each listEvaluation as evaluation, i}
 	function create_each_block_1(ctx) {
 		var current;
 
@@ -3401,7 +3401,7 @@ var app = (function () {
 		};
 	}
 
-	// (211:14) {#each newList as foodRating}
+	// (217:14) {#each newList as foodRating}
 	function create_each_block(ctx) {
 		var tr, th, t0_value = ctx.foodRating.id, t0, t1, td0, t2_value = ctx.foodRating.food.food_name, t2, t3, td1, t4_value = ctx.foodRating.food.category, t4, t5, td2, t6_value = ctx.foodRating.rating, t6, t7;
 
@@ -3421,11 +3421,11 @@ var app = (function () {
 				t6 = text(t6_value);
 				t7 = space();
 				th.scope = "row";
-				add_location(th, file$b, 212, 20, 5503);
-				add_location(td0, file$b, 213, 20, 5560);
-				add_location(td1, file$b, 214, 20, 5618);
-				add_location(td2, file$b, 215, 20, 5675);
-				add_location(tr, file$b, 211, 16, 5478);
+				add_location(th, file$b, 218, 20, 6018);
+				add_location(td0, file$b, 219, 20, 6075);
+				add_location(td1, file$b, 220, 20, 6133);
+				add_location(td2, file$b, 221, 20, 6190);
+				add_location(tr, file$b, 217, 16, 5993);
 			},
 
 			m: function mount(target, anchor) {
@@ -3471,7 +3471,7 @@ var app = (function () {
 	}
 
 	function create_fragment$b(ctx) {
-		var button0, t1, h10, t2, t3_value = ctx.thisUser.user_name, t3, t4, t5, div3, t6, div2, h2, button1, h11, t8, div1, div0, table, thead, tr, th0, t10, th1, t12, th2, t14, th3, t16, tbody, current, dispose;
+		var button0, t1, h10, t2, t3_value = ctx.thisUser.user_name, t3, t4, t5, div7, div3, h11, button1, t7, div2, div1, div0, t8, div6, h12, button2, t10, div5, div4, table, thead, tr, th0, t12, th1, t14, th2, t16, th3, t18, tbody, current, dispose;
 
 		var if_block = (ctx.adminBool) && create_if_block$2(ctx);
 
@@ -3515,36 +3515,43 @@ var app = (function () {
 				t4 = space();
 				if (if_block) if_block.c();
 				t5 = space();
+				div7 = element("div");
 				div3 = element("div");
+				h11 = element("h1");
+				button1 = element("button");
+				button1.textContent = "Kategorien";
+				t7 = space();
+				div2 = element("div");
+				div1 = element("div");
+				div0 = element("div");
 
 				for (var i = 0; i < each_blocks_1.length; i += 1) {
 					each_blocks_1[i].c();
 				}
 
-				t6 = space();
-				div2 = element("div");
-				h2 = element("h2");
-				button1 = element("button");
-				h11 = element("h1");
-				h11.textContent = "Ratings";
 				t8 = space();
-				div1 = element("div");
-				div0 = element("div");
+				div6 = element("div");
+				h12 = element("h1");
+				button2 = element("button");
+				button2.textContent = "Voting";
+				t10 = space();
+				div5 = element("div");
+				div4 = element("div");
 				table = element("table");
 				thead = element("thead");
 				tr = element("tr");
 				th0 = element("th");
 				th0.textContent = "#";
-				t10 = space();
+				t12 = space();
 				th1 = element("th");
 				th1.textContent = "Name";
-				t12 = space();
+				t14 = space();
 				th2 = element("th");
 				th2.textContent = "Category";
-				t14 = space();
+				t16 = space();
 				th3 = element("th");
 				th3.textContent = "Rating";
-				t16 = space();
+				t18 = space();
 				tbody = element("tbody");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -3552,44 +3559,65 @@ var app = (function () {
 				}
 				button0.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1lkipq6";
 				button0.type = "button";
-				add_location(button0, file$b, 129, 0, 2700);
-				add_location(h10, file$b, 133, 0, 2824);
-				add_location(h11, file$b, 195, 8, 4904);
+				add_location(button0, file$b, 125, 0, 2692);
+				add_location(h10, file$b, 129, 0, 2816);
 				button1.className = "accordion-button";
 				button1.type = "button";
 				button1.dataset.bsToggle = "collapse";
-				button1.dataset.bsTarget = "#collapseRating";
+				button1.dataset.bsTarget = "#collapseCategories";
 				attr(button1, "aria-expanded", "true");
 				attr(button1, "aria-controls", "collapseOne");
-				add_location(button1, file$b, 194, 6, 4740);
-				h2.className = "accordion-header";
-				h2.id = "headingRating";
-				add_location(h2, file$b, 193, 4, 4685);
+				add_location(button1, file$b, 174, 6, 4518);
+				h11.className = "accordion-header";
+				h11.id = "headingCategories";
+				add_location(h11, file$b, 173, 4, 4459);
+				div0.className = "accordion";
+				div0.id = "accordionExample2";
+				add_location(div0, file$b, 180, 8, 4908);
+				div1.className = "accordion-body";
+				add_location(div1, file$b, 179, 6, 4871);
+				div2.id = "collapseCategories";
+				div2.className = "accordion-collapse collapse";
+				attr(div2, "aria-labelledby", "headingCategories");
+				div2.dataset.bsParent = "#accordionExample1";
+				add_location(div2, file$b, 178, 4, 4727);
+				div3.className = "accordion-item";
+				add_location(div3, file$b, 172, 2, 4426);
+				button2.className = "accordion-button";
+				button2.type = "button";
+				button2.dataset.bsToggle = "collapse";
+				button2.dataset.bsTarget = "#collapseRating";
+				attr(button2, "aria-expanded", "true");
+				attr(button2, "aria-controls", "collapseOne");
+				add_location(button2, file$b, 196, 6, 5255);
+				h12.className = "accordion-header";
+				h12.id = "headingRating";
+				add_location(h12, file$b, 194, 4, 5199);
 				th0.scope = "col";
-				add_location(th0, file$b, 203, 16, 5202);
+				add_location(th0, file$b, 209, 16, 5717);
 				th1.scope = "col";
-				add_location(th1, file$b, 204, 16, 5241);
+				add_location(th1, file$b, 210, 16, 5756);
 				th2.scope = "col";
-				add_location(th2, file$b, 205, 16, 5283);
+				add_location(th2, file$b, 211, 16, 5798);
 				th3.scope = "col";
-				add_location(th3, file$b, 206, 16, 5329);
-				add_location(tr, file$b, 202, 14, 5181);
-				add_location(thead, file$b, 201, 12, 5159);
-				add_location(tbody, file$b, 209, 12, 5410);
+				add_location(th3, file$b, 212, 16, 5844);
+				add_location(tr, file$b, 208, 14, 5696);
+				add_location(thead, file$b, 207, 12, 5674);
+				add_location(tbody, file$b, 215, 12, 5925);
 				table.className = "table";
-				add_location(table, file$b, 200, 10, 5125);
-				div0.className = "accordion-body";
-				add_location(div0, file$b, 199, 6, 5086);
-				div1.id = "collapseRating";
-				div1.className = "accordion-collapse collapse";
-				attr(div1, "aria-labelledby", "headingRating");
-				div1.dataset.bsParent = "#accordionExample";
-				add_location(div1, file$b, 198, 4, 4951);
-				div2.className = "accordion-item";
-				add_location(div2, file$b, 192, 2, 4652);
-				div3.className = "accordion";
-				div3.id = "accordionExample";
-				add_location(div3, file$b, 181, 0, 4471);
+				add_location(table, file$b, 206, 10, 5640);
+				div4.className = "accordion-body";
+				add_location(div4, file$b, 202, 6, 5593);
+				div5.id = "collapseRating";
+				div5.className = "accordion-collapse collapse";
+				attr(div5, "aria-labelledby", "headingRating");
+				div5.dataset.bsParent = "#accordionExample1";
+				add_location(div5, file$b, 201, 4, 5457);
+				div6.className = "accordion-item";
+				add_location(div6, file$b, 193, 2, 5166);
+				div7.className = "accordion";
+				div7.id = "accordionExample1";
+				add_location(div7, file$b, 171, 0, 4377);
 				dispose = listen(button0, "click", ausloggen);
 			},
 
@@ -3606,31 +3634,37 @@ var app = (function () {
 				insert(target, t4, anchor);
 				if (if_block) if_block.m(target, anchor);
 				insert(target, t5, anchor);
-				insert(target, div3, anchor);
-
-				for (var i = 0; i < each_blocks_1.length; i += 1) {
-					each_blocks_1[i].m(div3, null);
-				}
-
-				append(div3, t6);
+				insert(target, div7, anchor);
+				append(div7, div3);
+				append(div3, h11);
+				append(h11, button1);
+				append(div3, t7);
 				append(div3, div2);
-				append(div2, h2);
-				append(h2, button1);
-				append(button1, h11);
-				append(div2, t8);
 				append(div2, div1);
 				append(div1, div0);
-				append(div0, table);
+
+				for (var i = 0; i < each_blocks_1.length; i += 1) {
+					each_blocks_1[i].m(div0, null);
+				}
+
+				append(div7, t8);
+				append(div7, div6);
+				append(div6, h12);
+				append(h12, button2);
+				append(div6, t10);
+				append(div6, div5);
+				append(div5, div4);
+				append(div4, table);
 				append(table, thead);
 				append(thead, tr);
 				append(tr, th0);
-				append(tr, t10);
-				append(tr, th1);
 				append(tr, t12);
-				append(tr, th2);
+				append(tr, th1);
 				append(tr, t14);
+				append(tr, th2);
+				append(tr, t16);
 				append(tr, th3);
-				append(table, t16);
+				append(table, t18);
 				append(table, tbody);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -3671,7 +3705,7 @@ var app = (function () {
 							each_blocks_1[i] = create_each_block_1(child_ctx);
 							each_blocks_1[i].c();
 							each_blocks_1[i].i(1);
-							each_blocks_1[i].m(div3, t6);
+							each_blocks_1[i].m(div0, null);
 						}
 					}
 
@@ -3728,7 +3762,7 @@ var app = (function () {
 
 				if (detaching) {
 					detach(t5);
-					detach(div3);
+					detach(div7);
 				}
 
 				destroy_each(each_blocks_1, detaching);
