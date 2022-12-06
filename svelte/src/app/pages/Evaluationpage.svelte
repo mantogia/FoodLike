@@ -134,7 +134,7 @@ function isBigEnough(value) {
   <div class="accordion-item">
       <h2 class="accordion-header" id="panelsStayOpen-headingSearch">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSearch" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-          Frgabogen suchen
+          Fragebogen suchen
         </button>
       </h2>
       <div id="panelsStayOpen-collapseSearch" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSearch">
