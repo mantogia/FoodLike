@@ -158,6 +158,7 @@ public class UserRestController {
             
             if(u.get().getVegetarisch()){
                 newListCategories.remove("Fleisch und Innereien");
+                newListCategories.remove("Fleisch- und Wurstwaren");
             }
             
 
