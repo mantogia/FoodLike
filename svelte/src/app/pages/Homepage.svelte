@@ -94,36 +94,37 @@ function setInfos(){
 }
 
 </script>
+<div class="mx-auto" style="width: 50%;">
+  <h1 class="text-center mx-auto">FoodLike</h1>
 
-<h1>FoodLike</h1>
 
-{#if !loggedIn}
-  {#if neu}
-  <FormComponent on:logIn={einloggen}/>
+  {#if !loggedIn}
+    {#if neu}
+    <FormComponent on:logIn={einloggen}/>
+
+    {:else}
+
+    <LoginComponent  on:logIn={einloggen}/>
+
+    {/if}
+
+    <button style="margin-top:1.0em ;" type="button" on:click={btnHandler} class="btn btn-secondary mb-3" >{text}</button>
 
   {:else}
+    
+    <button on:click={ausloggen} class="btn btn-secondary position-absolute top-0 end-0" type="button">
+      Ausloggen
+    </button>
 
-  <LoginComponent  on:logIn={einloggen}/>
+    {#if !infosDone}
+      <UserInfos on:save-Infos={setInfos} ></UserInfos>
+    {:else}
+      <StartComponent user ={user}/>
+    {/if}
+
 
   {/if}
-
-  <button style="margin-top:1.0em ;" type="button" on:click={btnHandler} class="btn btn-secondary mb-3" >{text}</button>
-
-{:else}
-  
-  <button on:click={ausloggen} class="btn btn-secondary position-absolute top-0 end-0" type="button">
-    Ausloggen
-  </button>
-
-  {#if !infosDone}
-    <UserInfos on:save-Infos={setInfos} ></UserInfos>
-  {:else}
-    <StartComponent user ={user}/>
-  {/if}
-
-
-{/if}
-
+</div>
 
 <style>
 
@@ -132,5 +133,17 @@ function setInfos(){
     margin-right: 1.0rem !important;
     margin-top: 1.0rem !important;
   }
+
+h1 {
+    background-color: #00DD95;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #212529;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    margin-bottom: 30px;
+    border-radius: 15px
+    
+}
+
 
 </style>

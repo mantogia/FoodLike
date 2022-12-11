@@ -16,6 +16,7 @@
     "java": "rollup -c"
   },
   "dependencies": {
+    "chart.js": "^4.0.1",
     "svelte-chartjs": "^3.1.0",
     "yarn": "^1.22.19"
   }

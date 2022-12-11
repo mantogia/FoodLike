@@ -75,8 +75,8 @@ function saveAngaben(){
     Ihre Angaben
   </div>
   <div class="card-body">
-    <p>Geben Sie bitte an, ob Sie über einzelne 
-      <u>Allergien/Unverträglichkeiten/Präferenzen</u> verfügen. Die Angaben werden benutzt, damit der Fragebogen auf Sie zugeschnitten werden kann. </p>
+    <p>Bitte geben Sie an, ob Sie über einzelne <b>Allergien oder Unverträglichkeiten</b> verfügen. <br>
+      Die Angaben sind notwendig, damit der Fragebogen auf Sie zugeschnitten werden kann.</p>
     
       <div class="form-check form-switch">
         <input bind:checked={allergie1} class="form-check-input" type="checkbox" role="switch" id="allergie1">
@@ -130,13 +130,15 @@ function saveAngaben(){
         <input bind:checked={allergie12} class="form-check-input" type="checkbox" role="switch" id="allergie12">
         <label class="form-check-label" for="allergie12">Weizen (Gluten)</label>
       </div>
+      <br>
+      <p>Ernähren Sie sich <u>ausschliesslich</u> vegetarisch?</p>
       <div class="form-check form-switch">
         <input bind:checked={vegetarisch} class="form-check-input" type="checkbox" role="switch" id="vegetarisch">
         <label class="form-check-label" for="vegetarisch">Vegetarisch</label>
       </div>
+      <br>
 
-
-      <p class="card-text">Wenn Sie alle Fragen beantwortet haben, können Sie auf <b>Sichern</b> drücken. Ihre Angaben sind vorerst nicht anpassbar.</p>
+      <p class="card-text">Wenn Sie alle Fragen beantwortet haben, können Sie auf <b>Sichern</b> drücken.</p>
       <button on:click={saveAngaben} class="btn btn-primary">Sichern</button>
     </div>
 
