@@ -34,9 +34,9 @@ public interface Food_RatingRepository extends JpaRepository<Food_Rating, Long> 
     " f.category as category, sum(ft.rating) as summe, count(*) as anzahl, sum(ft.rating) / count(*) as average,  " +
     "SUM(CASE WHEN ft.rating = 0 THEN 1 ELSE 0 END), " +
     "SUM(CASE WHEN ft.rating = 1 THEN 1 ELSE 0 END), " +
-    "SUM(CASE WHEN ft.rating = 2 THEN 1 ELSE 0 END) " +
-    
-    
+    "SUM(CASE WHEN ft.rating = 2 THEN 1 ELSE 0 END), " +
+    "ROUND(sum(ft.rating) / (count(*) * 2) * 100,0) as ergebnis " +
+
     "FROM Food_Rating ft " +
     "LEFT JOIN Food f ON ft.fk_food_id = f.food_id " + 
     "WHERE ft.fk_user_id = :id " +

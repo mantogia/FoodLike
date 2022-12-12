@@ -1,5 +1,7 @@
 <script>
 
+
+
 export let evaluation;
 
 export let index;
@@ -7,7 +9,7 @@ export let index;
 import {onMount} from 'svelte'
 
 function createChart() {
-  let ctx = document.getElementById('myChart').getContext('2d');
+  let ctx = document.getElementById('myChart' + index).getContext('2d');
   let labels = ['Dislikes', 'Likes', 'Superlikes'];
   let colorHex = ['#FB3640', '#43AA8B', '#253D5B'];
 
@@ -51,6 +53,8 @@ function createChart() {
 }
 
 onMount(createChart);
+let bgOpacity = evaluation[7] / 100;
+$: color = evaluation[7] < 50 ? '#000' : '#000';
 
 </script>
 
@@ -58,6 +62,12 @@ onMount(createChart);
   <h2 class="accordion-header" id="heading{index}">
     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{index}" aria-expanded="true" aria-controls="collapseOne">
       <b>Kategorie: {evaluation[0]}</b>
+
+      <div class="num-display" style="color: {color}; --opacity: {bgOpacity};">
+
+       {evaluation[7]}%
+
+    </div>
     </button>
   </h2>
   <div id="collapse{index}" class="accordion-collapse collapse" aria-labelledby="heading{index}" data-bs-parent="#accordionExample2">
@@ -71,7 +81,7 @@ onMount(createChart);
       <p>Anzahl likes: {evaluation[5]}</p>
       <p>Anzahl superlikes: {evaluation[6]}</p>
       <div class="chart-wrapper">
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart{index}"></canvas>
       </div>
     </div>
   </div>
@@ -84,4 +94,21 @@ onMount(createChart);
     height: 500px;
     margin: 0 auto;
   }
+
+  .num-display {
+      position: absolute;
+      top: -25px;
+      right: -25px;
+      width: 50px;
+      height: 50px;
+      
+      background: rgba(62, 255, 0, var(--opacity));
+
+      color: #fff;
+      border: 1px #eee solid;
+      border-radius: 50%;
+      padding: 10px;
+      text-align: center;
+      font-size: 19px;
+    }
 </style>

@@ -153,7 +153,8 @@ public class UserRestController {
 
             
 
-            List<String> allergien = u.get().getAllergien();
+            List<String> allergien = new ArrayList<String>();
+            allergien  = u.get().getAllergien();
 
             
             if(u.get().getVegetarisch()){
@@ -161,14 +162,24 @@ public class UserRestController {
                 newListCategories.remove("Fleisch- und Wurstwaren");
             }
             
-
-            for (String c : newListCategories) 
-            {
-                Optional<List<Food>> f = foodRepository.getTenFragen(c, allergien);
-                if(!f.isEmpty()){
-                    listFood.addAll(f.get());
+            if (allergien.size() > 0 ){
+                for (String c : newListCategories) 
+                {
+                    Optional<List<Food>> f = foodRepository.getTenFragen(c, allergien);
+                    if(!f.isEmpty()){
+                        listFood.addAll(f.get());
+                    }
+                }
+            }else{
+                for (String c : newListCategories) 
+                {
+                    Optional<List<Food>> f = foodRepository.getTenFragenWOAllergien(c);
+                    if(!f.isEmpty()){
+                        listFood.addAll(f.get());
+                    }
                 }
             }
+           
         }
 
         Optional<List<Integer>> fragebogenList = foodRatingRepository.getNewFragebogen(id);

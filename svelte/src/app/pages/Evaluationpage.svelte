@@ -122,6 +122,16 @@ function isBigEnough(value) {
      
       }*/
 
+  //Suchtabelle Benutzer    
+  jQuery(document).ready(function(){
+  jQuery("#Username").on("keyup", function() {
+    var value = jQuery(this).val().toLowerCase();
+    jQuery("#table-names tr").filter(function() {
+      jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+  });
+
   //Suchtabelle einzelne Lebensmittel    
   jQuery(document).ready(function(){
   jQuery("#myInput").on("keyup", function() {
@@ -214,7 +224,7 @@ function isBigEnough(value) {
     <div class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-headingSearch">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSearch" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-            Fragebogen suchen
+            <b>Fragebogen suchen</b>
           </button>
         </h2>
         <div id="panelsStayOpen-collapseSearch" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSearch">
@@ -225,19 +235,30 @@ function isBigEnough(value) {
                   <label for="Username">Benutzername</label>
                   <input on:change={listeAnpassen} placeholder="gesuchter Benutzername" bind:value={user_name} type="String" class="form-control" id="Username" >
 
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                    
-                    {#each listAnzeigen as name, i}
-                    <option value={name}>{name}</option>
-                    
-                    {/each}
-  
-                  </select>
+
+                  <button on:click={changeUser} type="button" class="btn btn-dark mt-2">Wechseln</button>
+                  <button on:click={reset} type="button" class="btn btn-dark mt-2">Zurücksetzen</button>
+
+                  <table class="table" id="myTableSuche">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-names">
+                      {#each listAnzeigen as name, i}
+                      <tr>
+                        <td><b>{i}</b></td>
+                        <td>{name}</td>
+                      </tr>
+                      {/each}
+                    </tbody>
+                  </table>
                   
                 </div>
 
-                  <button on:click={changeUser} type="button" class="btn btn-dark mt-2">Suchen</button>
-                  <button on:click={reset} type="button" class="btn btn-dark mt-2">Zurücksetzen</button>
+                 
               </form>
             
           </div>

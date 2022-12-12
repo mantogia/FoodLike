@@ -25,6 +25,16 @@ public interface FoodRepository  extends JpaRepository <Food, Long> {
     nativeQuery = true)
     Optional<List<Food>> getTenFragen(@Param("kategorie") String kategorie, @Param("allergien") List<String> allergien);
 
+    @Query(
+    value = 
+    "SELECT " + 
+    "f.*  " +
+    "FROM Food f " +
+    "WHERE f.category = :kategorie " +
+    " limit 20 ",
+
+    nativeQuery = true)
+    Optional<List<Food>> getTenFragenWOAllergien(@Param("kategorie") String kategorie);
 
     @Query(
     value = 
