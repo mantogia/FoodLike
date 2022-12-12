@@ -97,6 +97,14 @@ var app = (function () {
 		else node.setAttribute(attribute, value);
 	}
 
+	function set_custom_element_data(node, prop, value) {
+		if (prop in node) {
+			node[prop] = value;
+		} else {
+			attr(node, prop, value);
+		}
+	}
+
 	function children(element) {
 		return Array.from(element.childNodes);
 	}
@@ -425,7 +433,7 @@ var app = (function () {
 	const file = "src\\app\\component\\FoodComponent.svelte";
 
 	function create_fragment(ctx) {
-		var div1, img0, img0_src_value, img0_alt_value, t0, div0, p, b, t1_value = ctx.food.food_name, t1, t2, img1, t3, img2, t4, img3, dispose;
+		var div1, img0, img0_src_value, t0, div0, p, b, t1_value = ctx.food.food_name, t1, t2, img1, t3, img2, t4, img3, dispose;
 
 		return {
 			c: function create() {
@@ -443,30 +451,32 @@ var app = (function () {
 				t4 = space();
 				img3 = element("img");
 				img0.src = img0_src_value = "./images/" + ctx.food_nr + ".jpg";
-				img0.className = "card-img-top svelte-am28gp";
-				img0.alt = img0_alt_value = ctx.food.food_name;
-				add_location(img0, file, 70, 4, 1824);
-				add_location(b, file, 77, 9, 2204);
-				add_location(p, file, 77, 6, 2201);
+				attr(img0, "onerror", "this.src='images/alt.jpg'");
+				img0.className = "card-img-top svelte-1bmos6x";
+				img0.alt = "food";
+				add_location(img0, file, 85, 4, 2418);
+				add_location(b, file, 92, 9, 2822);
+				add_location(p, file, 92, 6, 2819);
 				img1.src = "./icons/dislike.png";
-				img1.className = "dislike svelte-am28gp";
+				img1.className = "dislike svelte-1bmos6x";
 				img1.alt = "dislike";
-				add_location(img1, file, 78, 6, 2239);
+				add_location(img1, file, 93, 6, 2857);
 				img2.src = "./icons/like.png";
-				img2.className = "like svelte-am28gp";
+				img2.className = "like svelte-1bmos6x";
 				img2.alt = "like";
-				add_location(img2, file, 79, 6, 2333);
+				add_location(img2, file, 94, 6, 2951);
 				img3.src = "./icons/superlike.png";
-				img3.className = "superlike svelte-am28gp";
+				img3.className = "superlike svelte-1bmos6x";
+				img3.id = "superlike";
 				img3.alt = "superlike";
-				add_location(img3, file, 80, 6, 2418);
-				div0.className = "card-body svelte-am28gp";
-				add_location(div0, file, 71, 4, 1908);
-				div1.className = "card mx-auto mt-5 svelte-am28gp";
+				add_location(img3, file, 95, 6, 3036);
+				div0.className = "card-body svelte-1bmos6x";
+				add_location(div0, file, 86, 4, 2526);
+				div1.className = "card mx-auto mt-5 svelte-1bmos6x";
 				div1.id = "card-element";
 				set_style(div1, "width", "18rem");
 				set_style(div1, "text-align", "center");
-				add_location(div1, file, 69, 0, 1727);
+				add_location(div1, file, 84, 0, 2321);
 
 				dispose = [
 					listen(img1, "click", ctx.click_handler),
@@ -498,10 +508,6 @@ var app = (function () {
 			p: function update_1(changed, ctx) {
 				if ((changed.food_nr) && img0_src_value !== (img0_src_value = "./images/" + ctx.food_nr + ".jpg")) {
 					img0.src = img0_src_value;
-				}
-
-				if ((changed.food) && img0_alt_value !== (img0_alt_value = ctx.food.food_name)) {
-					img0.alt = img0_alt_value;
 				}
 
 				if ((changed.food) && t1_value !== (t1_value = ctx.food.food_name)) {
@@ -540,8 +546,9 @@ var app = (function () {
 	    
 	    onMount(() => update());
 
+	    
 	    function update(){
-	        axios.get("/foods/" + food_nr)
+	        axios.get("/foods/" + food_nr)  
 	        .then((response) => {
 	            //console.log(response.data);
 	            $$invalidate('food', food = response.data);
@@ -550,30 +557,42 @@ var app = (function () {
 	            console.log(error);
 	        });
 	    }
+	    
 
 	    async function init(vote) {
 
 	        var element = document.getElementById("card-element");
+	        var element2 = document.getElementById("superlike");
 
 	        if (vote == 0) {
 	            console.log("dislike!!!");
 	            element.classList.add("card-element-dislike");
-	            await delay(1000);
+	            await delay(800);
 	            element.classList.remove("card-element-dislike");
+	            element.classList.add("card-element-hide");
 	            handleVote(vote);
 	        } else if (vote == 1) {
 	            console.log("like!!!");
 	            element.classList.add("card-element-like");
-	            await delay(1000);
+	            await delay(800);
 	            element.classList.remove("card-element-like");
+	            element.classList.add("card-element-hide");
 	            handleVote(vote);
 	        } else {
 	            console.log("superlike!!!");
+	            element2.classList.add("icon-superlike");
+	            await delay(400);
 	            element.classList.add("card-element-superlike");
-	            await delay(1000);
+	            await delay(800);
 	            element.classList.remove("card-element-superlike");
+	            element2.classList.remove("icon-superlike");
+	            element.classList.add("card-element-hide");
 	            handleVote(vote);
 	        }
+	        element.classList.remove("card-element-hide");
+	        element.classList.add("card-element-fade-in");
+	        await delay(500);
+	        element.classList.remove("card-element-fade-in");
 	    }
 
 	    const handleVote = (vote) => {
@@ -682,44 +701,44 @@ var app = (function () {
 				div3 = element("div");
 				button = element("button");
 				t11 = text("Registrieren");
-				add_location(h2, file$1, 91, 0, 1740);
+				add_location(h2, file$1, 90, 4, 1742);
 				label0.htmlFor = "usernameInput";
 				label0.className = "form-label";
-				add_location(label0, file$1, 95, 4, 1825);
+				add_location(label0, file$1, 94, 8, 1839);
 				attr(input0, "type", "String");
 				input0.className = "form-control";
 				input0.id = "usernameInput";
 				input0.placeholder = "Dein Benutzername";
-				add_location(input0, file$1, 96, 4, 1897);
+				add_location(input0, file$1, 95, 8, 1915);
 				div0.className = "mb-3";
-				add_location(div0, file$1, 94, 0, 1801);
+				add_location(div0, file$1, 93, 4, 1811);
 				label1.htmlFor = "exampleFormControlInput1";
 				label1.className = "form-label";
-				add_location(label1, file$1, 99, 4, 2078);
+				add_location(label1, file$1, 98, 8, 2108);
 				attr(input1, "type", "email");
 				input1.className = "form-control";
 				input1.id = "exampleFormControlInput1";
 				input1.placeholder = "name@example.com";
-				add_location(input1, file$1, 100, 4, 2163);
+				add_location(input1, file$1, 99, 8, 2197);
 				div1.className = "mb-3";
-				add_location(div1, file$1, 98, 0, 2054);
+				add_location(div1, file$1, 97, 4, 2080);
 				label2.htmlFor = "inputPassword";
 				label2.className = "col-sm-2 col-form-label";
-				add_location(label2, file$1, 103, 4, 2357);
+				add_location(label2, file$1, 102, 8, 2403);
 				attr(input2, "type", "password");
 				input2.className = "form-control";
 				input2.id = "inputPassword";
-				add_location(input2, file$1, 105, 6, 2495);
+				add_location(input2, file$1, 104, 8, 2547);
 				div2.className = "mb-3";
-				add_location(div2, file$1, 102, 0, 2333);
+				add_location(div2, file$1, 101, 4, 2375);
 				button.disabled = ctx.disabled;
 				button.type = "button";
 				button.className = "btn btn-primary mb-3";
-				add_location(button, file$1, 109, 4, 2678);
+				add_location(button, file$1, 108, 8, 2742);
 				div3.className = "col-auto";
-				add_location(div3, file$1, 108, 2, 2650);
+				add_location(div3, file$1, 107, 4, 2710);
 				form.className = "row g-3";
-				add_location(form, file$1, 93, 0, 1777);
+				add_location(form, file$1, 92, 4, 1783);
 
 				dispose = [
 					listen(input0, "input", ctx.input0_input_handler),
@@ -797,9 +816,9 @@ var app = (function () {
 	let minLength = 4;
 
 	function hasNumbers(t)
-	  {
-	  var regex = /\d/g;
-	  return regex.test(t);
+	{
+	var regex = /\d/g;
+	return regex.test(t);
 	}
 
 	function instance$1($$self, $$props, $$invalidate) {
@@ -1250,67 +1269,135 @@ var app = (function () {
 	const file$4 = "src\\app\\component\\StartComponent.svelte";
 
 	function create_fragment$4(ctx) {
-		var div2, div0, t1, div1, h5, t3, p, t4, br0, br1, t5, b0, t7, br2, t8, b1, t10, br3, t11, b2, t13, u, t15, br4, br5, t16, t17, button, dispose;
+		var div8, div0, t1, div7, h50, t3, p0, t4, br0, t5, br1, t6, b0, t8, b1, t10, b2, t12, br2, t13, div2, img0, t14, div1, h51, t16, p1, t18, div4, img1, t19, div3, h52, t21, p2, t23, div6, img2, t24, div5, h53, t26, p3, t27, u, t29, t30, p4, br3, t31, t32, button, dispose;
 
 		return {
 			c: function create() {
-				div2 = element("div");
+				div8 = element("div");
 				div0 = element("div");
 				div0.textContent = "Fragebogen";
 				t1 = space();
-				div1 = element("div");
-				h5 = element("h5");
-				h5.textContent = "Inhalt";
+				div7 = element("div");
+				h50 = element("h5");
+				h50.textContent = "Inhalt";
 				t3 = space();
-				p = element("p");
-				t4 = text("Dieser Fragbogen beinhaltet eine vielzahl an Lebensmittel. \r\n        Geben Sie bitte an, ob Sie die einzelne Lebensmittel mögen oder nicht. Unterscheiden können Sie dabei zwischen \"dislike\", \"like\" und \"superlike\".\r\n        ");
+				p0 = element("p");
+				t4 = text("Dieser Fragbogen beinhaltet eine Vielzahl an Lebensmittel. \r\n        ");
 				br0 = element("br");
+				t5 = text("Geben Sie bitte an, ob Sie die einzelne Lebensmittel mögen oder nicht. ");
 				br1 = element("br");
-				t5 = space();
+				t6 = text("Unterscheiden können Sie dabei zwischen ");
 				b0 = element("b");
-				b0.textContent = "dislike";
-				t7 = text(" = dieses Lebensmittel mag ich nicht.");
-				br2 = element("br");
-				t8 = space();
+				b0.textContent = "\"dislike\"";
+				t8 = text(", ");
 				b1 = element("b");
-				b1.textContent = "like";
-				t10 = text(" = dieses Lebensmittel mag ich.");
-				br3 = element("br");
-				t11 = space();
+				b1.textContent = "\"like\"";
+				t10 = text(" und ");
 				b2 = element("b");
-				b2.textContent = "superlike";
-				t13 = text(" = dieses Lebensmittel mag ich ");
+				b2.textContent = "\"superlike\"";
+				t12 = text(".\r\n        ");
+				br2 = element("br");
+				t13 = space();
+				div2 = element("div");
+				img0 = element("img");
+				t14 = space();
+				div1 = element("div");
+				h51 = element("h5");
+				h51.textContent = "dislike";
+				t16 = space();
+				p1 = element("p");
+				p1.textContent = "Dieses Lebensmittel mag ich nicht.";
+				t18 = space();
+				div4 = element("div");
+				img1 = element("img");
+				t19 = space();
+				div3 = element("div");
+				h52 = element("h5");
+				h52.textContent = "like";
+				t21 = space();
+				p2 = element("p");
+				p2.textContent = "Dieses Lebensmittel mag ich.";
+				t23 = space();
+				div6 = element("div");
+				img2 = element("img");
+				t24 = space();
+				div5 = element("div");
+				h53 = element("h5");
+				h53.textContent = "superlike";
+				t26 = space();
+				p3 = element("p");
+				t27 = text("Dieses Lebensmittel mag ich ");
 				u = element("u");
 				u.textContent = "sehr";
-				t15 = text(".\r\n        ");
-				br4 = element("br");
-				br5 = element("br");
-				t16 = text("\r\n        Mit diesen Angaben wird eine erste Evaluation durchgeführt.");
-				t17 = space();
+				t29 = text(".");
+				t30 = space();
+				p4 = element("p");
+				br3 = element("br");
+				t31 = text("\r\n        Mit diesen Angaben wird eine erste Evaluation durchgeführt.");
+				t32 = space();
 				button = element("button");
 				button.textContent = "Zur Umfrage";
 				div0.className = "card-header";
-				add_location(div0, file$4, 26, 4, 476);
-				h5.className = "card-title";
-				add_location(h5, file$4, 30, 6, 570);
-				add_location(br0, file$4, 35, 8, 877);
-				add_location(br1, file$4, 35, 12, 881);
-				add_location(b0, file$4, 36, 8, 895);
-				add_location(br2, file$4, 36, 59, 946);
-				add_location(b1, file$4, 37, 8, 960);
-				add_location(br3, file$4, 37, 50, 1002);
-				add_location(b2, file$4, 38, 8, 1016);
-				add_location(u, file$4, 38, 55, 1063);
-				add_location(br4, file$4, 39, 8, 1085);
-				add_location(br5, file$4, 39, 12, 1089);
-				p.className = "card-text";
-				add_location(p, file$4, 31, 6, 612);
-				button.className = "btn btn-primary";
-				add_location(button, file$4, 44, 6, 1200);
+				add_location(div0, file$4, 26, 4, 496);
+				h50.className = "card-title";
+				add_location(h50, file$4, 30, 6, 590);
+				add_location(br0, file$4, 33, 8, 732);
+				add_location(br1, file$4, 33, 83, 807);
+				add_location(b0, file$4, 33, 127, 851);
+				add_location(b1, file$4, 33, 145, 869);
+				add_location(b2, file$4, 33, 163, 887);
+				add_location(br2, file$4, 34, 8, 916);
+				p0.className = "card-text";
+				add_location(p0, file$4, 31, 6, 632);
+				img0.className = "card-img-top svelte-1noysea";
+				img0.src = "./icons/dislike.png";
+				img0.alt = "Card image cap";
+				add_location(img0, file$4, 37, 8, 996);
+				h51.className = "card-title text-center";
+				add_location(h51, file$4, 39, 10, 1114);
+				p1.className = "card-text text-center";
+				add_location(p1, file$4, 40, 10, 1173);
 				div1.className = "card-body";
-				add_location(div1, file$4, 29, 4, 539);
-				div2.className = "card";
-				add_location(div2, file$4, 25, 0, 452);
+				add_location(div1, file$4, 38, 8, 1079);
+				div2.className = "card icons svelte-1noysea";
+				set_style(div2, "width", "10rem");
+				add_location(div2, file$4, 36, 6, 940);
+				img1.className = "card-img-top svelte-1noysea";
+				img1.src = "./icons/like.png";
+				img1.alt = "Card image cap";
+				add_location(img1, file$4, 44, 8, 1339);
+				h52.className = "card-title text-center";
+				add_location(h52, file$4, 46, 10, 1454);
+				p2.className = "card-text text-center";
+				add_location(p2, file$4, 47, 10, 1510);
+				div3.className = "card-body";
+				add_location(div3, file$4, 45, 8, 1419);
+				div4.className = "card icons svelte-1noysea";
+				set_style(div4, "width", "10rem");
+				add_location(div4, file$4, 43, 6, 1283);
+				img2.className = "card-img-top svelte-1noysea";
+				img2.src = "./icons/superlike.png";
+				img2.alt = "Card image cap";
+				add_location(img2, file$4, 51, 8, 1670);
+				h53.className = "card-title text-center";
+				add_location(h53, file$4, 53, 10, 1790);
+				add_location(u, file$4, 54, 72, 1913);
+				p3.className = "card-text text-center";
+				add_location(p3, file$4, 54, 10, 1851);
+				div5.className = "card-body";
+				add_location(div5, file$4, 52, 8, 1755);
+				div6.className = "card icons svelte-1noysea";
+				set_style(div6, "width", "10rem");
+				add_location(div6, file$4, 50, 6, 1614);
+				add_location(br3, file$4, 58, 8, 1998);
+				p4.className = "card-text";
+				add_location(p4, file$4, 57, 6, 1967);
+				button.className = "btn btn-primary";
+				add_location(button, file$4, 63, 6, 2109);
+				div7.className = "card-body";
+				add_location(div7, file$4, 29, 4, 559);
+				div8.className = "card text-center mx-auto";
+				add_location(div8, file$4, 25, 0, 452);
 				dispose = listen(button, "click", ctx.createNewFragebogen);
 			},
 
@@ -1319,34 +1406,58 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div2, anchor);
-				append(div2, div0);
-				append(div2, t1);
+				insert(target, div8, anchor);
+				append(div8, div0);
+				append(div8, t1);
+				append(div8, div7);
+				append(div7, h50);
+				append(div7, t3);
+				append(div7, p0);
+				append(p0, t4);
+				append(p0, br0);
+				append(p0, t5);
+				append(p0, br1);
+				append(p0, t6);
+				append(p0, b0);
+				append(p0, t8);
+				append(p0, b1);
+				append(p0, t10);
+				append(p0, b2);
+				append(p0, t12);
+				append(p0, br2);
+				append(div7, t13);
+				append(div7, div2);
+				append(div2, img0);
+				append(div2, t14);
 				append(div2, div1);
-				append(div1, h5);
-				append(div1, t3);
-				append(div1, p);
-				append(p, t4);
-				append(p, br0);
-				append(p, br1);
-				append(p, t5);
-				append(p, b0);
-				append(p, t7);
-				append(p, br2);
-				append(p, t8);
-				append(p, b1);
-				append(p, t10);
-				append(p, br3);
-				append(p, t11);
-				append(p, b2);
-				append(p, t13);
-				append(p, u);
-				append(p, t15);
-				append(p, br4);
-				append(p, br5);
-				append(p, t16);
-				append(div1, t17);
-				append(div1, button);
+				append(div1, h51);
+				append(div1, t16);
+				append(div1, p1);
+				append(div7, t18);
+				append(div7, div4);
+				append(div4, img1);
+				append(div4, t19);
+				append(div4, div3);
+				append(div3, h52);
+				append(div3, t21);
+				append(div3, p2);
+				append(div7, t23);
+				append(div7, div6);
+				append(div6, img2);
+				append(div6, t24);
+				append(div6, div5);
+				append(div5, h53);
+				append(div5, t26);
+				append(div5, p3);
+				append(p3, t27);
+				append(p3, u);
+				append(p3, t29);
+				append(div7, t30);
+				append(div7, p4);
+				append(p4, br3);
+				append(p4, t31);
+				append(div7, t32);
+				append(div7, button);
 			},
 
 			p: noop,
@@ -1355,7 +1466,7 @@ var app = (function () {
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(div2);
+					detach(div8);
 				}
 
 				dispose();
@@ -1418,7 +1529,7 @@ var app = (function () {
 	const file$5 = "src\\app\\component\\UserInfos.svelte";
 
 	function create_fragment$5(ctx) {
-		var div15, div0, t1, div14, p0, t2, u, t4, t5, div1, input0, t6, label0, t8, div2, input1, t9, label1, t11, div3, input2, t12, label2, t14, div4, input3, t15, label3, t17, div5, input4, t18, label4, t20, div6, input5, t21, label5, t23, div7, input6, t24, label6, t26, div8, input7, t27, label7, t29, div9, input8, t30, label8, t32, div10, input9, t33, label9, t35, div11, input10, t36, label10, t38, div12, input11, t39, label11, t41, div13, input12, t42, label12, t44, p1, t45, b, t47, t48, button, dispose;
+		var div15, div0, t1, div14, p0, t2, b0, t4, br0, t5, t6, div1, input0, t7, label0, t9, div2, input1, t10, label1, t12, div3, input2, t13, label2, t15, div4, input3, t16, label3, t18, div5, input4, t19, label4, t21, div6, input5, t22, label5, t24, div7, input6, t25, label6, t27, div8, input7, t28, label7, t30, div9, input8, t31, label8, t33, div10, input9, t34, label9, t36, div11, input10, t37, label10, t39, div12, input11, t40, label11, t42, br1, t43, p1, t44, u, t46, t47, div13, input12, t48, label12, t50, br2, t51, p2, t52, b1, t54, t55, button, dispose;
 
 		return {
 			c: function create() {
@@ -1428,236 +1539,253 @@ var app = (function () {
 				t1 = space();
 				div14 = element("div");
 				p0 = element("p");
-				t2 = text("Geben Sie bitte an, ob Sie über einzelne \r\n      ");
-				u = element("u");
-				u.textContent = "Allergien/Unverträglichkeiten/Präferenzen";
-				t4 = text(" verfügen. Die Angaben werden benutzt, damit der Fragebogen auf Sie zugeschnitten werden kann.");
-				t5 = space();
+				t2 = text("Bitte geben Sie an, ob Sie über einzelne ");
+				b0 = element("b");
+				b0.textContent = "Allergien oder Unverträglichkeiten";
+				t4 = text(" verfügen. ");
+				br0 = element("br");
+				t5 = text("\r\n      Die Angaben sind notwendig, damit der Fragebogen auf Sie zugeschnitten werden kann.");
+				t6 = space();
 				div1 = element("div");
 				input0 = element("input");
-				t6 = space();
+				t7 = space();
 				label0 = element("label");
 				label0.textContent = "Ei";
-				t8 = space();
+				t9 = space();
 				div2 = element("div");
 				input1 = element("input");
-				t9 = space();
+				t10 = space();
 				label1 = element("label");
 				label1.textContent = "Erdnuss";
-				t11 = space();
+				t12 = space();
 				div3 = element("div");
 				input2 = element("input");
-				t12 = space();
+				t13 = space();
 				label2 = element("label");
 				label2.textContent = "Fisch";
-				t14 = space();
+				t15 = space();
 				div4 = element("div");
 				input3 = element("input");
-				t15 = space();
+				t16 = space();
 				label3 = element("label");
 				label3.textContent = "Krustentiere";
-				t17 = space();
+				t18 = space();
 				div5 = element("div");
 				input4 = element("input");
-				t18 = space();
+				t19 = space();
 				label4 = element("label");
 				label4.textContent = "Kuhmilch";
-				t20 = space();
+				t21 = space();
 				div6 = element("div");
 				input5 = element("input");
-				t21 = space();
+				t22 = space();
 				label5 = element("label");
 				label5.textContent = "Schalenfrüchte";
-				t23 = space();
+				t24 = space();
 				div7 = element("div");
 				input6 = element("input");
-				t24 = space();
+				t25 = space();
 				label6 = element("label");
 				label6.textContent = "Sellerie";
-				t26 = space();
+				t27 = space();
 				div8 = element("div");
 				input7 = element("input");
-				t27 = space();
+				t28 = space();
 				label7 = element("label");
 				label7.textContent = "Senf";
-				t29 = space();
+				t30 = space();
 				div9 = element("div");
 				input8 = element("input");
-				t30 = space();
+				t31 = space();
 				label8 = element("label");
 				label8.textContent = "Sesamsamen";
-				t32 = space();
+				t33 = space();
 				div10 = element("div");
 				input9 = element("input");
-				t33 = space();
+				t34 = space();
 				label9 = element("label");
 				label9.textContent = "Sojabohnen";
-				t35 = space();
+				t36 = space();
 				div11 = element("div");
 				input10 = element("input");
-				t36 = space();
+				t37 = space();
 				label10 = element("label");
 				label10.textContent = "Weichtiere";
-				t38 = space();
+				t39 = space();
 				div12 = element("div");
 				input11 = element("input");
-				t39 = space();
+				t40 = space();
 				label11 = element("label");
 				label11.textContent = "Weizen (Gluten)";
-				t41 = space();
+				t42 = space();
+				br1 = element("br");
+				t43 = space();
+				p1 = element("p");
+				t44 = text("Ernähren Sie sich ");
+				u = element("u");
+				u.textContent = "ausschliesslich";
+				t46 = text(" vegetarisch?");
+				t47 = space();
 				div13 = element("div");
 				input12 = element("input");
-				t42 = space();
+				t48 = space();
 				label12 = element("label");
 				label12.textContent = "Vegetarisch";
-				t44 = space();
-				p1 = element("p");
-				t45 = text("Wenn Sie alle Fragen beantwortet haben, können Sie auf ");
-				b = element("b");
-				b.textContent = "Sichern";
-				t47 = text(" drücken. Ihre Angaben sind vorerst nicht anpassbar.");
-				t48 = space();
+				t50 = space();
+				br2 = element("br");
+				t51 = space();
+				p2 = element("p");
+				t52 = text("Wenn Sie alle Fragen beantwortet haben, können Sie auf ");
+				b1 = element("b");
+				b1.textContent = "Sichern";
+				t54 = text(" drücken.");
+				t55 = space();
 				button = element("button");
 				button.textContent = "Sichern";
 				div0.className = "card-header";
 				add_location(div0, file$5, 73, 2, 1860);
-				add_location(u, file$5, 78, 6, 1998);
+				add_location(b0, file$5, 77, 48, 1990);
+				add_location(br0, file$5, 77, 100, 2042);
 				add_location(p0, file$5, 77, 4, 1946);
 				input0.className = "form-check-input";
 				attr(input0, "type", "checkbox");
 				attr(input0, "role", "switch");
 				input0.id = "allergie1";
-				add_location(input0, file$5, 81, 8, 2205);
+				add_location(input0, file$5, 81, 8, 2201);
 				label0.className = "form-check-label";
 				label0.htmlFor = "allergie1";
-				add_location(label0, file$5, 82, 8, 2317);
+				add_location(label0, file$5, 82, 8, 2313);
 				div1.className = "form-check form-switch";
-				add_location(div1, file$5, 80, 6, 2159);
+				add_location(div1, file$5, 80, 6, 2155);
 				input1.className = "form-check-input";
 				attr(input1, "type", "checkbox");
 				attr(input1, "role", "switch");
 				input1.id = "allergie2";
-				add_location(input1, file$5, 86, 8, 2446);
+				add_location(input1, file$5, 86, 8, 2442);
 				label1.className = "form-check-label";
 				label1.htmlFor = "allergie2";
-				add_location(label1, file$5, 87, 8, 2558);
+				add_location(label1, file$5, 87, 8, 2554);
 				div2.className = "form-check form-switch";
-				add_location(div2, file$5, 85, 6, 2400);
+				add_location(div2, file$5, 85, 6, 2396);
 				input2.className = "form-check-input";
 				attr(input2, "type", "checkbox");
 				attr(input2, "role", "switch");
 				input2.id = "allergie3";
-				add_location(input2, file$5, 91, 8, 2691);
+				add_location(input2, file$5, 91, 8, 2687);
 				label2.className = "form-check-label";
 				label2.htmlFor = "allergie3";
-				add_location(label2, file$5, 92, 8, 2803);
+				add_location(label2, file$5, 92, 8, 2799);
 				div3.className = "form-check form-switch";
-				add_location(div3, file$5, 90, 6, 2645);
+				add_location(div3, file$5, 90, 6, 2641);
 				input3.className = "form-check-input";
 				attr(input3, "type", "checkbox");
 				attr(input3, "role", "switch");
 				input3.id = "allergie4";
-				add_location(input3, file$5, 96, 8, 2940);
+				add_location(input3, file$5, 96, 8, 2936);
 				label3.className = "form-check-label";
 				label3.htmlFor = "allergie4";
-				add_location(label3, file$5, 97, 8, 3052);
+				add_location(label3, file$5, 97, 8, 3048);
 				div4.className = "form-check form-switch";
-				add_location(div4, file$5, 95, 6, 2894);
+				add_location(div4, file$5, 95, 6, 2890);
 				input4.className = "form-check-input";
 				attr(input4, "type", "checkbox");
 				attr(input4, "role", "switch");
 				input4.id = "allergie5";
-				add_location(input4, file$5, 101, 8, 3190);
+				add_location(input4, file$5, 101, 8, 3186);
 				label4.className = "form-check-label";
 				label4.htmlFor = "allergie5";
-				add_location(label4, file$5, 102, 8, 3302);
+				add_location(label4, file$5, 102, 8, 3298);
 				div5.className = "form-check form-switch";
-				add_location(div5, file$5, 100, 6, 3144);
+				add_location(div5, file$5, 100, 6, 3140);
 				input5.className = "form-check-input";
 				attr(input5, "type", "checkbox");
 				attr(input5, "role", "switch");
 				input5.id = "allergie6";
-				add_location(input5, file$5, 105, 8, 3434);
+				add_location(input5, file$5, 105, 8, 3430);
 				label5.className = "form-check-label";
 				label5.htmlFor = "allergie6";
-				add_location(label5, file$5, 106, 8, 3546);
+				add_location(label5, file$5, 106, 8, 3542);
 				div6.className = "form-check form-switch";
-				add_location(div6, file$5, 104, 6, 3388);
+				add_location(div6, file$5, 104, 6, 3384);
 				input6.className = "form-check-input";
 				attr(input6, "type", "checkbox");
 				attr(input6, "role", "switch");
 				input6.id = "allergie7";
-				add_location(input6, file$5, 109, 8, 3684);
+				add_location(input6, file$5, 109, 8, 3680);
 				label6.className = "form-check-label";
 				label6.htmlFor = "allergie7";
-				add_location(label6, file$5, 110, 8, 3796);
+				add_location(label6, file$5, 110, 8, 3792);
 				div7.className = "form-check form-switch";
-				add_location(div7, file$5, 108, 6, 3638);
+				add_location(div7, file$5, 108, 6, 3634);
 				input7.className = "form-check-input";
 				attr(input7, "type", "checkbox");
 				attr(input7, "role", "switch");
 				input7.id = "allergie8";
-				add_location(input7, file$5, 113, 8, 3928);
+				add_location(input7, file$5, 113, 8, 3924);
 				label7.className = "form-check-label";
 				label7.htmlFor = "allergie8";
-				add_location(label7, file$5, 114, 8, 4040);
+				add_location(label7, file$5, 114, 8, 4036);
 				div8.className = "form-check form-switch";
-				add_location(div8, file$5, 112, 6, 3882);
+				add_location(div8, file$5, 112, 6, 3878);
 				input8.className = "form-check-input";
 				attr(input8, "type", "checkbox");
 				attr(input8, "role", "switch");
 				input8.id = "allergie9";
-				add_location(input8, file$5, 117, 8, 4168);
+				add_location(input8, file$5, 117, 8, 4164);
 				label8.className = "form-check-label";
 				label8.htmlFor = "allergie9";
-				add_location(label8, file$5, 118, 8, 4280);
+				add_location(label8, file$5, 118, 8, 4276);
 				div9.className = "form-check form-switch";
-				add_location(div9, file$5, 116, 6, 4122);
+				add_location(div9, file$5, 116, 6, 4118);
 				input9.className = "form-check-input";
 				attr(input9, "type", "checkbox");
 				attr(input9, "role", "switch");
 				input9.id = "allergie10";
-				add_location(input9, file$5, 121, 8, 4414);
+				add_location(input9, file$5, 121, 8, 4410);
 				label9.className = "form-check-label";
 				label9.htmlFor = "allergie10";
-				add_location(label9, file$5, 122, 8, 4528);
+				add_location(label9, file$5, 122, 8, 4524);
 				div10.className = "form-check form-switch";
-				add_location(div10, file$5, 120, 6, 4368);
+				add_location(div10, file$5, 120, 6, 4364);
 				input10.className = "form-check-input";
 				attr(input10, "type", "checkbox");
 				attr(input10, "role", "switch");
 				input10.id = "allergie11";
-				add_location(input10, file$5, 125, 8, 4663);
+				add_location(input10, file$5, 125, 8, 4659);
 				label10.className = "form-check-label";
 				label10.htmlFor = "allergie11";
-				add_location(label10, file$5, 126, 8, 4777);
+				add_location(label10, file$5, 126, 8, 4773);
 				div11.className = "form-check form-switch";
-				add_location(div11, file$5, 124, 6, 4617);
+				add_location(div11, file$5, 124, 6, 4613);
 				input11.className = "form-check-input";
 				attr(input11, "type", "checkbox");
 				attr(input11, "role", "switch");
 				input11.id = "allergie12";
-				add_location(input11, file$5, 129, 8, 4912);
+				add_location(input11, file$5, 129, 8, 4908);
 				label11.className = "form-check-label";
 				label11.htmlFor = "allergie12";
-				add_location(label11, file$5, 130, 8, 5026);
+				add_location(label11, file$5, 130, 8, 5022);
 				div12.className = "form-check form-switch";
-				add_location(div12, file$5, 128, 6, 4866);
+				add_location(div12, file$5, 128, 6, 4862);
+				add_location(br1, file$5, 132, 6, 5116);
+				add_location(u, file$5, 133, 27, 5149);
+				add_location(p1, file$5, 133, 6, 5128);
 				input12.className = "form-check-input";
 				attr(input12, "type", "checkbox");
 				attr(input12, "role", "switch");
 				input12.id = "vegetarisch";
-				add_location(input12, file$5, 133, 8, 5166);
+				add_location(input12, file$5, 135, 8, 5242);
 				label12.className = "form-check-label";
 				label12.htmlFor = "vegetarisch";
-				add_location(label12, file$5, 134, 8, 5282);
+				add_location(label12, file$5, 136, 8, 5358);
 				div13.className = "form-check form-switch";
-				add_location(div13, file$5, 132, 6, 5120);
-				add_location(b, file$5, 138, 82, 5453);
-				p1.className = "card-text";
-				add_location(p1, file$5, 138, 6, 5377);
+				add_location(div13, file$5, 134, 6, 5196);
+				add_location(br2, file$5, 138, 6, 5449);
+				add_location(b1, file$5, 140, 82, 5539);
+				p2.className = "card-text";
+				add_location(p2, file$5, 140, 6, 5463);
 				button.className = "btn btn-primary";
-				add_location(button, file$5, 139, 6, 5531);
+				add_location(button, file$5, 141, 6, 5574);
 				div14.className = "card-body";
 				add_location(div14, file$5, 76, 2, 1917);
 				div15.className = "card mb-3";
@@ -1692,118 +1820,129 @@ var app = (function () {
 				append(div15, div14);
 				append(div14, p0);
 				append(p0, t2);
-				append(p0, u);
+				append(p0, b0);
 				append(p0, t4);
-				append(div14, t5);
+				append(p0, br0);
+				append(p0, t5);
+				append(div14, t6);
 				append(div14, div1);
 				append(div1, input0);
 
 				input0.checked = ctx.allergie1;
 
-				append(div1, t6);
+				append(div1, t7);
 				append(div1, label0);
-				append(div14, t8);
+				append(div14, t9);
 				append(div14, div2);
 				append(div2, input1);
 
 				input1.checked = ctx.allergie2;
 
-				append(div2, t9);
+				append(div2, t10);
 				append(div2, label1);
-				append(div14, t11);
+				append(div14, t12);
 				append(div14, div3);
 				append(div3, input2);
 
 				input2.checked = ctx.allergie3;
 
-				append(div3, t12);
+				append(div3, t13);
 				append(div3, label2);
-				append(div14, t14);
+				append(div14, t15);
 				append(div14, div4);
 				append(div4, input3);
 
 				input3.checked = ctx.allergie4;
 
-				append(div4, t15);
+				append(div4, t16);
 				append(div4, label3);
-				append(div14, t17);
+				append(div14, t18);
 				append(div14, div5);
 				append(div5, input4);
 
 				input4.checked = ctx.allergie5;
 
-				append(div5, t18);
+				append(div5, t19);
 				append(div5, label4);
-				append(div14, t20);
+				append(div14, t21);
 				append(div14, div6);
 				append(div6, input5);
 
 				input5.checked = ctx.allergie6;
 
-				append(div6, t21);
+				append(div6, t22);
 				append(div6, label5);
-				append(div14, t23);
+				append(div14, t24);
 				append(div14, div7);
 				append(div7, input6);
 
 				input6.checked = ctx.allergie7;
 
-				append(div7, t24);
+				append(div7, t25);
 				append(div7, label6);
-				append(div14, t26);
+				append(div14, t27);
 				append(div14, div8);
 				append(div8, input7);
 
 				input7.checked = ctx.allergie8;
 
-				append(div8, t27);
+				append(div8, t28);
 				append(div8, label7);
-				append(div14, t29);
+				append(div14, t30);
 				append(div14, div9);
 				append(div9, input8);
 
 				input8.checked = ctx.allergie9;
 
-				append(div9, t30);
+				append(div9, t31);
 				append(div9, label8);
-				append(div14, t32);
+				append(div14, t33);
 				append(div14, div10);
 				append(div10, input9);
 
 				input9.checked = ctx.allergie10;
 
-				append(div10, t33);
+				append(div10, t34);
 				append(div10, label9);
-				append(div14, t35);
+				append(div14, t36);
 				append(div14, div11);
 				append(div11, input10);
 
 				input10.checked = ctx.allergie11;
 
-				append(div11, t36);
+				append(div11, t37);
 				append(div11, label10);
-				append(div14, t38);
+				append(div14, t39);
 				append(div14, div12);
 				append(div12, input11);
 
 				input11.checked = ctx.allergie12;
 
-				append(div12, t39);
+				append(div12, t40);
 				append(div12, label11);
-				append(div14, t41);
+				append(div14, t42);
+				append(div14, br1);
+				append(div14, t43);
+				append(div14, p1);
+				append(p1, t44);
+				append(p1, u);
+				append(p1, t46);
+				append(div14, t47);
 				append(div14, div13);
 				append(div13, input12);
 
 				input12.checked = ctx.vegetarisch;
 
-				append(div13, t42);
+				append(div13, t48);
 				append(div13, label12);
-				append(div14, t44);
-				append(div14, p1);
-				append(p1, t45);
-				append(p1, b);
-				append(p1, t47);
-				append(div14, t48);
+				append(div14, t50);
+				append(div14, br2);
+				append(div14, t51);
+				append(div14, p2);
+				append(p2, t52);
+				append(p2, b1);
+				append(p2, t54);
+				append(div14, t55);
 				append(div14, button);
 			},
 
@@ -2026,7 +2165,7 @@ var app = (function () {
 
 	const file$6 = "src\\app\\pages\\Homepage.svelte";
 
-	// (112:0) {:else}
+	// (113:2) {:else}
 	function create_else_block_1(ctx) {
 		var button, t_1, current_block_type_index, if_block, if_block_anchor, current, dispose;
 
@@ -2052,9 +2191,9 @@ var app = (function () {
 				t_1 = space();
 				if_block.c();
 				if_block_anchor = empty();
-				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-d3qick";
+				button.className = "btn btn-secondary position-absolute top-0 end-0 svelte-ecnfgu";
 				button.type = "button";
-				add_location(button, file$6, 113, 2, 2373);
+				add_location(button, file$6, 114, 4, 2466);
 				dispose = listen(button, "click", ausloggen);
 			},
 
@@ -2118,7 +2257,7 @@ var app = (function () {
 		};
 	}
 
-	// (100:0) {#if !loggedIn}
+	// (101:2) {#if !loggedIn}
 	function create_if_block(ctx) {
 		var current_block_type_index, if_block, t0, button, t1, current, dispose;
 
@@ -2145,8 +2284,8 @@ var app = (function () {
 				t1 = text(ctx.text);
 				set_style(button, "margin-top", "1.0em ");
 				button.type = "button";
-				button.className = "btn btn-secondary mb-3 svelte-d3qick";
-				add_location(button, file$6, 109, 2, 2236);
+				button.className = "btn btn-secondary mb-3 svelte-ecnfgu";
+				add_location(button, file$6, 110, 4, 2323);
 				dispose = listen(button, "click", ctx.btnHandler);
 			},
 
@@ -2210,7 +2349,7 @@ var app = (function () {
 		};
 	}
 
-	// (120:2) {:else}
+	// (121:4) {:else}
 	function create_else_block_2(ctx) {
 		var current;
 
@@ -2253,7 +2392,7 @@ var app = (function () {
 		};
 	}
 
-	// (118:2) {#if !infosDone}
+	// (119:4) {#if !infosDone}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -2290,7 +2429,7 @@ var app = (function () {
 		};
 	}
 
-	// (104:2) {:else}
+	// (105:4) {:else}
 	function create_else_block(ctx) {
 		var current;
 
@@ -2327,7 +2466,7 @@ var app = (function () {
 		};
 	}
 
-	// (101:2) {#if neu}
+	// (102:4) {#if neu}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -2365,7 +2504,7 @@ var app = (function () {
 	}
 
 	function create_fragment$6(ctx) {
-		var h1, t_1, current_block_type_index, if_block, if_block_anchor, current;
+		var div, h1, t_1, current_block_type_index, if_block, current;
 
 		var if_block_creators = [
 			create_if_block,
@@ -2384,12 +2523,16 @@ var app = (function () {
 
 		return {
 			c: function create() {
+				div = element("div");
 				h1 = element("h1");
 				h1.textContent = "FoodLike";
 				t_1 = space();
 				if_block.c();
-				if_block_anchor = empty();
-				add_location(h1, file$6, 97, 0, 2071);
+				h1.className = "text-center mx-auto svelte-ecnfgu";
+				add_location(h1, file$6, 97, 2, 2114);
+				div.className = "mx-auto";
+				set_style(div, "width", "50%");
+				add_location(div, file$6, 96, 0, 2069);
 			},
 
 			l: function claim(nodes) {
@@ -2397,10 +2540,10 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, h1, anchor);
-				insert(target, t_1, anchor);
-				if_blocks[current_block_type_index].m(target, anchor);
-				insert(target, if_block_anchor, anchor);
+				insert(target, div, anchor);
+				append(div, h1);
+				append(div, t_1);
+				if_blocks[current_block_type_index].m(div, null);
 				current = true;
 			},
 
@@ -2424,7 +2567,7 @@ var app = (function () {
 						if_block.c();
 					}
 					if_block.i(1);
-					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					if_block.m(div, null);
 				}
 			},
 
@@ -2441,15 +2584,10 @@ var app = (function () {
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(h1);
-					detach(t_1);
+					detach(div);
 				}
 
-				if_blocks[current_block_type_index].d(detaching);
-
-				if (detaching) {
-					detach(if_block_anchor);
-				}
+				if_blocks[current_block_type_index].d();
 			}
 		};
 	}
@@ -2609,36 +2747,53 @@ var app = (function () {
 	const file$8 = "src\\app\\component\\EndComponent.svelte";
 
 	function create_fragment$8(ctx) {
-		var div1, h50, t1, div0, h51, t3, p, t5, a;
+		var div2, script, t0, div1, h50, t2, div0, h51, t4, p, t6, lottie_player, a;
 
 		return {
 			c: function create() {
+				div2 = element("div");
+				script = element("script");
+				t0 = space();
 				div1 = element("div");
 				h50 = element("h5");
 				h50.textContent = "Ihr Fragebogen";
-				t1 = space();
+				t2 = space();
 				div0 = element("div");
 				h51 = element("h5");
-				h51.textContent = "Der Fragebogen wurde beendet.";
-				t3 = space();
+				h51.textContent = "Der Fragebogen wurde beendet 🎉";
+				t4 = space();
 				p = element("p");
 				p.textContent = "Sie haben alle Fragen beantwortet.";
-				t5 = space();
+				t6 = space();
+				lottie_player = element("lottie-player");
 				a = element("a");
 				a.textContent = "Zur Evaluation";
+				script.src = "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js";
+				add_location(script, file$8, 7, 6, 54);
 				h50.className = "card-header";
-				add_location(h50, file$8, 8, 4, 67);
+				add_location(h50, file$8, 9, 6, 225);
 				h51.className = "card-title";
-				add_location(h51, file$8, 10, 6, 147);
+				add_location(h51, file$8, 11, 12, 313);
 				p.className = "card-text";
-				add_location(p, file$8, 15, 6, 253);
+				add_location(p, file$8, 16, 12, 448);
+				set_custom_element_data(lottie_player, "src", "https://assets3.lottiefiles.com/private_files/lf30_axdai8zf.json");
+				set_custom_element_data(lottie_player, "background", "transparent");
+				set_custom_element_data(lottie_player, "speed", "1");
+				set_style(lottie_player, "width", "300px");
+				set_style(lottie_player, "height", "300px");
+				set_custom_element_data(lottie_player, "loop", "");
+				set_custom_element_data(lottie_player, "autoplay", "");
+				lottie_player.className = "svelte-8b54wy";
+				add_location(lottie_player, file$8, 17, 12, 521);
 				a.href = "#/evaluation";
-				a.className = "btn btn-primary";
-				add_location(a, file$8, 20, 6, 346);
+				a.className = "btn btn-primary svelte-8b54wy";
+				add_location(a, file$8, 17, 205, 714);
 				div0.className = "card-body";
-				add_location(div0, file$8, 9, 4, 116);
-				div1.className = "card";
-				add_location(div1, file$8, 7, 0, 43);
+				add_location(div0, file$8, 10, 6, 276);
+				div1.className = "card text-center mx-auto";
+				set_style(div1, "width", "50%");
+				add_location(div1, file$8, 8, 6, 159);
+				add_location(div2, file$8, 6, 0, 41);
 			},
 
 			l: function claim(nodes) {
@@ -2646,14 +2801,18 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
+				insert(target, div2, anchor);
+				append(div2, script);
+				append(div2, t0);
+				append(div2, div1);
 				append(div1, h50);
-				append(div1, t1);
+				append(div1, t2);
 				append(div1, div0);
 				append(div0, h51);
-				append(div0, t3);
+				append(div0, t4);
 				append(div0, p);
-				append(div0, t5);
+				append(div0, t6);
+				append(div0, lottie_player);
 				append(div0, a);
 			},
 
@@ -2663,7 +2822,7 @@ var app = (function () {
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(div1);
+					detach(div2);
 				}
 			}
 		};
@@ -2965,69 +3124,77 @@ var app = (function () {
 	const file$a = "src\\app\\evaluation\\EvaluationComponent.svelte";
 
 	function create_fragment$a(ctx) {
-		var div2, h2, button, t0, t1, t2_value = ctx.evaluation[0], t2, button_data_bs_target_value, h2_id_value, t3, div1, div0, strong, p0, t4, t5_value = ctx.evaluation[2], t5, t6, p1, t7, t8_value = ctx.evaluation[1], t8, t9, p2, t10, t11_value = ctx.evaluation[3], t11, t12, p3, t13, t14_value = ctx.evaluation[4], t14, t15, p4, t16, t17_value = ctx.evaluation[5], t17, t18, p5, t19, t20_value = ctx.evaluation[6], t20, div1_id_value, div1_aria_labelledby_value;
+		var div3, h2, button, b, t0, t1_value = ctx.evaluation[0], t1, button_data_bs_target_value, h2_id_value, t2, div2, div1, strong, p0, t3, t4_value = ctx.evaluation[2], t4, t5, p1, t6, t7_value = ctx.evaluation[1], t7, t8, p2, t9, t10_value = ctx.evaluation[3], t10, t11, p3, t12, t13_value = ctx.evaluation[4], t13, t14, p4, t15, t16_value = ctx.evaluation[5], t16, t17, p5, t18, t19_value = ctx.evaluation[6], t19, t20, div0, canvas, div2_id_value, div2_aria_labelledby_value;
 
 		return {
 			c: function create() {
-				div2 = element("div");
+				div3 = element("div");
 				h2 = element("h2");
 				button = element("button");
-				t0 = text(ctx.index);
-				t1 = text(" Kategorie: ");
-				t2 = text(t2_value);
-				t3 = space();
+				b = element("b");
+				t0 = text("Kategorie: ");
+				t1 = text(t1_value);
+				t2 = space();
+				div2 = element("div");
 				div1 = element("div");
-				div0 = element("div");
 				strong = element("strong");
 				p0 = element("p");
-				t4 = text("Anzahl Ratings in dieser Kategorie: ");
-				t5 = text(t5_value);
-				t6 = space();
+				t3 = text("Anzahl Ratings in dieser Kategorie: ");
+				t4 = text(t4_value);
+				t5 = space();
 				p1 = element("p");
-				t7 = text("Summe aller Ratings in dieser Kategorie: ");
-				t8 = text(t8_value);
-				t9 = space();
+				t6 = text("Summe aller Ratings in dieser Kategorie: ");
+				t7 = text(t7_value);
+				t8 = space();
 				p2 = element("p");
-				t10 = text("Durchschnittliches Rating in dieser Kategorie: ");
-				t11 = text(t11_value);
-				t12 = space();
+				t9 = text("Durchschnittliches Rating in dieser Kategorie: ");
+				t10 = text(t10_value);
+				t11 = space();
 				p3 = element("p");
-				t13 = text("Anzahl dislikes: ");
-				t14 = text(t14_value);
-				t15 = space();
+				t12 = text("Anzahl dislikes: ");
+				t13 = text(t13_value);
+				t14 = space();
 				p4 = element("p");
-				t16 = text("Anzahl likes: ");
-				t17 = text(t17_value);
-				t18 = space();
+				t15 = text("Anzahl likes: ");
+				t16 = text(t16_value);
+				t17 = space();
 				p5 = element("p");
-				t19 = text("Anzahl superlikes: ");
-				t20 = text(t20_value);
+				t18 = text("Anzahl superlikes: ");
+				t19 = text(t19_value);
+				t20 = space();
+				div0 = element("div");
+				canvas = element("canvas");
+				add_location(b, file$a, 59, 6, 1449);
 				button.className = "accordion-button";
 				button.type = "button";
 				button.dataset.bsToggle = "collapse";
 				button.dataset.bsTarget = button_data_bs_target_value = "#collapse" + ctx.index;
 				attr(button, "aria-expanded", "true");
 				attr(button, "aria-controls", "collapseOne");
-				add_location(button, file$a, 11, 4, 161);
+				add_location(button, file$a, 58, 4, 1285);
 				h2.className = "accordion-header";
 				h2.id = h2_id_value = "heading" + ctx.index;
-				add_location(h2, file$a, 10, 2, 106);
-				add_location(p0, file$a, 18, 6, 576);
-				add_location(strong, file$a, 17, 6, 560);
-				add_location(p1, file$a, 20, 6, 660);
-				add_location(p2, file$a, 21, 6, 731);
-				add_location(p3, file$a, 22, 6, 808);
-				add_location(p4, file$a, 23, 6, 855);
-				add_location(p5, file$a, 24, 6, 899);
-				div0.className = "accordion-body";
-				add_location(div0, file$a, 16, 4, 524);
-				div1.id = div1_id_value = "collapse" + ctx.index;
-				div1.className = "accordion-collapse collapse";
-				attr(div1, "aria-labelledby", div1_aria_labelledby_value = "heading" + ctx.index);
-				div1.dataset.bsParent = "#accordionExample2";
-				add_location(div1, file$a, 15, 2, 387);
-				div2.className = "accordion-item";
-				add_location(div2, file$a, 9, 0, 74);
+				add_location(h2, file$a, 57, 2, 1230);
+				add_location(p0, file$a, 65, 6, 1699);
+				add_location(strong, file$a, 64, 6, 1683);
+				add_location(p1, file$a, 67, 6, 1783);
+				add_location(p2, file$a, 68, 6, 1854);
+				add_location(p3, file$a, 69, 6, 1931);
+				add_location(p4, file$a, 70, 6, 1978);
+				add_location(p5, file$a, 71, 6, 2022);
+				canvas.id = "myChart";
+				add_location(canvas, file$a, 73, 8, 2108);
+				div0.className = "chart-wrapper svelte-2vpluf";
+				add_location(div0, file$a, 72, 6, 2071);
+				div1.className = "accordion-body";
+				add_location(div1, file$a, 63, 4, 1647);
+				div2.id = div2_id_value = "collapse" + ctx.index;
+				div2.className = "accordion-collapse collapse";
+				attr(div2, "aria-labelledby", div2_aria_labelledby_value = "heading" + ctx.index);
+				div2.dataset.bsParent = "#accordionExample2";
+				add_location(div2, file$a, 62, 2, 1510);
+				div3.className = "accordion-item";
+				add_location(div3, file$a, 56, 0, 1198);
 			},
 
 			l: function claim(nodes) {
@@ -3035,48 +3202,47 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div2, anchor);
-				append(div2, h2);
+				insert(target, div3, anchor);
+				append(div3, h2);
 				append(h2, button);
-				append(button, t0);
-				append(button, t1);
-				append(button, t2);
-				append(div2, t3);
+				append(button, b);
+				append(b, t0);
+				append(b, t1);
+				append(div3, t2);
+				append(div3, div2);
 				append(div2, div1);
-				append(div1, div0);
-				append(div0, strong);
+				append(div1, strong);
 				append(strong, p0);
+				append(p0, t3);
 				append(p0, t4);
-				append(p0, t5);
-				append(div0, t6);
-				append(div0, p1);
+				append(div1, t5);
+				append(div1, p1);
+				append(p1, t6);
 				append(p1, t7);
-				append(p1, t8);
-				append(div0, t9);
-				append(div0, p2);
+				append(div1, t8);
+				append(div1, p2);
+				append(p2, t9);
 				append(p2, t10);
-				append(p2, t11);
-				append(div0, t12);
-				append(div0, p3);
+				append(div1, t11);
+				append(div1, p3);
+				append(p3, t12);
 				append(p3, t13);
-				append(p3, t14);
-				append(div0, t15);
-				append(div0, p4);
+				append(div1, t14);
+				append(div1, p4);
+				append(p4, t15);
 				append(p4, t16);
-				append(p4, t17);
-				append(div0, t18);
-				append(div0, p5);
+				append(div1, t17);
+				append(div1, p5);
+				append(p5, t18);
 				append(p5, t19);
-				append(p5, t20);
+				append(div1, t20);
+				append(div1, div0);
+				append(div0, canvas);
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.index) {
-					set_data(t0, ctx.index);
-				}
-
-				if ((changed.evaluation) && t2_value !== (t2_value = ctx.evaluation[0])) {
-					set_data(t2, t2_value);
+				if ((changed.evaluation) && t1_value !== (t1_value = ctx.evaluation[0])) {
+					set_data(t1, t1_value);
 				}
 
 				if ((changed.index) && button_data_bs_target_value !== (button_data_bs_target_value = "#collapse" + ctx.index)) {
@@ -3087,36 +3253,36 @@ var app = (function () {
 					h2.id = h2_id_value;
 				}
 
-				if ((changed.evaluation) && t5_value !== (t5_value = ctx.evaluation[2])) {
-					set_data(t5, t5_value);
+				if ((changed.evaluation) && t4_value !== (t4_value = ctx.evaluation[2])) {
+					set_data(t4, t4_value);
 				}
 
-				if ((changed.evaluation) && t8_value !== (t8_value = ctx.evaluation[1])) {
-					set_data(t8, t8_value);
+				if ((changed.evaluation) && t7_value !== (t7_value = ctx.evaluation[1])) {
+					set_data(t7, t7_value);
 				}
 
-				if ((changed.evaluation) && t11_value !== (t11_value = ctx.evaluation[3])) {
-					set_data(t11, t11_value);
+				if ((changed.evaluation) && t10_value !== (t10_value = ctx.evaluation[3])) {
+					set_data(t10, t10_value);
 				}
 
-				if ((changed.evaluation) && t14_value !== (t14_value = ctx.evaluation[4])) {
-					set_data(t14, t14_value);
+				if ((changed.evaluation) && t13_value !== (t13_value = ctx.evaluation[4])) {
+					set_data(t13, t13_value);
 				}
 
-				if ((changed.evaluation) && t17_value !== (t17_value = ctx.evaluation[5])) {
-					set_data(t17, t17_value);
+				if ((changed.evaluation) && t16_value !== (t16_value = ctx.evaluation[5])) {
+					set_data(t16, t16_value);
 				}
 
-				if ((changed.evaluation) && t20_value !== (t20_value = ctx.evaluation[6])) {
-					set_data(t20, t20_value);
+				if ((changed.evaluation) && t19_value !== (t19_value = ctx.evaluation[6])) {
+					set_data(t19, t19_value);
 				}
 
-				if ((changed.index) && div1_id_value !== (div1_id_value = "collapse" + ctx.index)) {
-					div1.id = div1_id_value;
+				if ((changed.index) && div2_id_value !== (div2_id_value = "collapse" + ctx.index)) {
+					div2.id = div2_id_value;
 				}
 
-				if ((changed.index) && div1_aria_labelledby_value !== (div1_aria_labelledby_value = "heading" + ctx.index)) {
-					attr(div1, "aria-labelledby", div1_aria_labelledby_value);
+				if ((changed.index) && div2_aria_labelledby_value !== (div2_aria_labelledby_value = "heading" + ctx.index)) {
+					attr(div2, "aria-labelledby", div2_aria_labelledby_value);
 				}
 			},
 
@@ -3125,7 +3291,7 @@ var app = (function () {
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(div2);
+					detach(div3);
 				}
 			}
 		};
@@ -3133,6 +3299,52 @@ var app = (function () {
 
 	function instance$8($$self, $$props, $$invalidate) {
 		let { evaluation, index } = $$props;
+
+	function createChart() {
+	  let ctx = document.getElementById('myChart').getContext('2d');
+	  let labels = ['Dislikes', 'Likes', 'Superlikes'];
+	  let colorHex = ['#FB3640', '#43AA8B', '#253D5B'];
+
+	  let myChart = new Chart(ctx, {
+	    type: 'pie',
+	    data: {
+	      datasets: [{
+	        data: [evaluation[4], evaluation[5], evaluation[6]],
+	        backgroundColor: colorHex
+	      }],
+	      labels: labels
+	    },
+	    options: {
+	      responsive: true,
+	      legend: {
+	        position: 'bottom'
+	      },
+	      plugins: {
+	        datalabels: {
+	          color: '#fff',
+	          anchor: 'end',
+	          align: 'start',
+	          offset: -10,
+	          borderWidth: 2,
+	          borderColor: '#fff',
+	          borderRadius: 25,
+	          backgroundColor: (context) => {
+	            return context.dataset.backgroundColor;
+	          },
+	          font: {
+	            weight: 'bold',
+	            size: '10'
+	          },
+	          formatter: (value) => {
+	            return value + ' %';
+	          }
+	        }
+	      }
+	    }
+	  });
+	}
+
+	onMount(createChart);
 
 		$$self.$set = $$props => {
 			if ('evaluation' in $$props) $$invalidate('evaluation', evaluation = $$props.evaluation);
@@ -3198,8 +3410,8 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (132:0) {#if adminBool}
-	function create_if_block$2(ctx) {
+	// (212:2) {#if adminBool}
+	function create_if_block_2$1(ctx) {
 		var div4, div3, h2, button0, t1, div2, div1, form, div0, label, t3, input, t4, select, t5, button1, t7, button2, dispose;
 
 		var each_value_2 = ctx.listAnzeigen;
@@ -3245,40 +3457,40 @@ var app = (function () {
 				button0.dataset.bsTarget = "#panelsStayOpen-collapseSearch";
 				attr(button0, "aria-expanded", "false");
 				attr(button0, "aria-controls", "panelsStayOpen-collapseTwo");
-				add_location(button0, file$b, 135, 8, 3183);
+				add_location(button0, file$b, 215, 10, 6111);
 				h2.className = "accordion-header";
 				h2.id = "panelsStayOpen-headingSearch";
-				add_location(h2, file$b, 134, 6, 3110);
+				add_location(h2, file$b, 214, 8, 6036);
 				label.htmlFor = "Username";
-				add_location(label, file$b, 144, 16, 3688);
+				add_location(label, file$b, 224, 18, 6632);
 				input.placeholder = "gesuchter Benutzername";
 				attr(input, "type", "String");
 				input.className = "form-control";
 				input.id = "Username";
-				add_location(input, file$b, 145, 16, 3748);
+				add_location(input, file$b, 225, 18, 6694);
 				select.className = "form-select form-select-lg mb-3";
 				attr(select, "aria-label", ".form-select-lg example");
-				add_location(select, file$b, 147, 16, 3911);
+				add_location(select, file$b, 227, 18, 6859);
 				div0.className = "form-group ";
-				add_location(div0, file$b, 143, 14, 3645);
+				add_location(div0, file$b, 223, 16, 6587);
 				button1.type = "button";
-				button1.className = "btn btn-dark mt-2 svelte-139kkod";
-				add_location(button1, file$b, 158, 16, 4260);
+				button1.className = "btn btn-dark mt-2 svelte-1m06vzk";
+				add_location(button1, file$b, 238, 18, 7227);
 				button2.type = "button";
-				button2.className = "btn btn-dark mt-2 svelte-139kkod";
-				add_location(button2, file$b, 159, 16, 4363);
-				add_location(form, file$b, 142, 10, 3623);
+				button2.className = "btn btn-dark mt-2 svelte-1m06vzk";
+				add_location(button2, file$b, 239, 18, 7332);
+				add_location(form, file$b, 222, 12, 6563);
 				div1.className = "accordion-body";
-				add_location(div1, file$b, 140, 8, 3581);
+				add_location(div1, file$b, 220, 10, 6519);
 				div2.id = "panelsStayOpen-collapseSearch";
 				div2.className = "accordion-collapse collapse";
 				attr(div2, "aria-labelledby", "panelsStayOpen-headingSearch");
-				add_location(div2, file$b, 139, 6, 3448);
+				add_location(div2, file$b, 219, 8, 6384);
 				div3.className = "accordion-item";
-				add_location(div3, file$b, 133, 2, 3074);
+				add_location(div3, file$b, 213, 4, 5998);
 				div4.className = "accordion mb-3";
 				div4.id = "accordionPanelsStayOpenExample";
-				add_location(div4, file$b, 132, 0, 3006);
+				add_location(div4, file$b, 212, 2, 5928);
 
 				dispose = [
 					listen(input, "input", ctx.input_input_handler),
@@ -3354,7 +3566,7 @@ var app = (function () {
 		};
 	}
 
-	// (150:18) {#each listAnzeigen as name, i}
+	// (230:20) {#each listAnzeigen as name, i}
 	function create_each_block_2(ctx) {
 		var option, t_value = ctx.name, t, option_value_value;
 
@@ -3364,7 +3576,7 @@ var app = (function () {
 				t = text(t_value);
 				option.__value = option_value_value = ctx.name;
 				option.value = option.__value;
-				add_location(option, file$b, 150, 18, 4087);
+				add_location(option, file$b, 230, 20, 7041);
 			},
 
 			m: function mount(target, anchor) {
@@ -3392,7 +3604,7 @@ var app = (function () {
 		};
 	}
 
-	// (183:10) {#each listEvaluation as evaluation, i}
+	// (262:12) {#each listEvaluation as evaluation, i}
 	function create_each_block_1(ctx) {
 		var current;
 
@@ -3438,46 +3650,131 @@ var app = (function () {
 		};
 	}
 
-	// (217:14) {#each newList as foodRating}
+	// (310:22) {:else}
+	function create_else_block$2(ctx) {
+		var t;
+
+		return {
+			c: function create() {
+				t = text("Superlike");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, t, anchor);
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(t);
+				}
+			}
+		};
+	}
+
+	// (308:55) 
+	function create_if_block_1$1(ctx) {
+		var t;
+
+		return {
+			c: function create() {
+				t = text("Liked");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, t, anchor);
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(t);
+				}
+			}
+		};
+	}
+
+	// (306:22) {#if foodRating.rating == 0}
+	function create_if_block$2(ctx) {
+		var t;
+
+		return {
+			c: function create() {
+				t = text("Dislike");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, t, anchor);
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(t);
+				}
+			}
+		};
+	}
+
+	// (300:16) {#each newList as foodRating}
 	function create_each_block(ctx) {
-		var tr, th, t0_value = ctx.foodRating.id, t0, t1, td0, t2_value = ctx.foodRating.food.food_name, t2, t3, td1, t4_value = ctx.foodRating.food.category, t4, t5, td2, t6_value = ctx.foodRating.rating, t6, t7;
+		var tr, td0, b, t0_value = ctx.foodRating.id, t0, t1, td1, t2_value = ctx.foodRating.food.food_name, t2, t3, td2, t4_value = ctx.foodRating.food.category, t4, t5, td3, t6, td4, img, img_src_value, t7;
+
+		function select_block_type(ctx) {
+			if (ctx.foodRating.rating == 0) return create_if_block$2;
+			if (ctx.foodRating.rating == 1) return create_if_block_1$1;
+			return create_else_block$2;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(ctx);
 
 		return {
 			c: function create() {
 				tr = element("tr");
-				th = element("th");
+				td0 = element("td");
+				b = element("b");
 				t0 = text(t0_value);
 				t1 = space();
-				td0 = element("td");
+				td1 = element("td");
 				t2 = text(t2_value);
 				t3 = space();
-				td1 = element("td");
+				td2 = element("td");
 				t4 = text(t4_value);
 				t5 = space();
-				td2 = element("td");
-				t6 = text(t6_value);
+				td3 = element("td");
+				if_block.c();
+				t6 = space();
+				td4 = element("td");
+				img = element("img");
 				t7 = space();
-				th.scope = "row";
-				add_location(th, file$b, 218, 20, 6263);
-				add_location(td0, file$b, 219, 20, 6321);
-				add_location(td1, file$b, 220, 20, 6380);
-				add_location(td2, file$b, 221, 20, 6438);
-				add_location(tr, file$b, 217, 16, 6237);
+				add_location(b, file$b, 301, 26, 9985);
+				add_location(td0, file$b, 301, 22, 9981);
+				add_location(td1, file$b, 302, 22, 10036);
+				add_location(td2, file$b, 303, 22, 10097);
+				add_location(td3, file$b, 304, 22, 10157);
+				img.src = img_src_value = "./evaluation/" + ctx.foodRating.rating + ".png";
+				img.className = "bewertung svelte-1m06vzk";
+				img.alt = "bewertung";
+				add_location(img, file$b, 313, 26, 10486);
+				add_location(td4, file$b, 313, 22, 10482);
+				add_location(tr, file$b, 300, 20, 9953);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, tr, anchor);
-				append(tr, th);
-				append(th, t0);
-				append(tr, t1);
 				append(tr, td0);
-				append(td0, t2);
-				append(tr, t3);
+				append(td0, b);
+				append(b, t0);
+				append(tr, t1);
 				append(tr, td1);
-				append(td1, t4);
-				append(tr, t5);
+				append(td1, t2);
+				append(tr, t3);
 				append(tr, td2);
-				append(td2, t6);
+				append(td2, t4);
+				append(tr, t5);
+				append(tr, td3);
+				if_block.m(td3, null);
+				append(tr, t6);
+				append(tr, td4);
+				append(td4, img);
 				append(tr, t7);
 			},
 
@@ -3494,8 +3791,17 @@ var app = (function () {
 					set_data(t4, t4_value);
 				}
 
-				if ((changed.newList) && t6_value !== (t6_value = ctx.foodRating.rating)) {
-					set_data(t6, t6_value);
+				if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+					if_block.d(1);
+					if_block = current_block_type(ctx);
+					if (if_block) {
+						if_block.c();
+						if_block.m(td3, null);
+					}
+				}
+
+				if ((changed.newList) && img_src_value !== (img_src_value = "./evaluation/" + ctx.foodRating.rating + ".png")) {
+					img.src = img_src_value;
 				}
 			},
 
@@ -3503,14 +3809,16 @@ var app = (function () {
 				if (detaching) {
 					detach(tr);
 				}
+
+				if_block.d();
 			}
 		};
 	}
 
 	function create_fragment$b(ctx) {
-		var button0, t1, h10, t2, t3_value = ctx.thisUser.user_name, t3, t4, t5, div7, div3, h11, button1, t7, div2, div1, div0, t8, div6, h12, button2, t10, div5, div4, table, thead, tr, th0, t12, th1, t14, th2, t16, th3, t18, tbody, current, dispose;
+		var button0, t1, div9, h10, t2, t3_value = ctx.thisUser.user_name, t3, t4, t5, div4, div3, h11, button1, b0, t7, div2, div1, div0, t8, br, t9, div8, div7, h12, button2, b1, t11, div6, div5, button3, i0, t12, t13, input, t14, table, thead, tr, th0, t16, th1, t17, i1, t18, th2, t19, i2, t20, th3, t21, i3, t22, th4, t23, tbody, current, dispose;
 
-		var if_block = (ctx.adminBool) && create_if_block$2(ctx);
+		var if_block = (ctx.adminBool) && create_if_block_2$1(ctx);
 
 		var each_value_1 = ctx.listEvaluation;
 
@@ -3546,17 +3854,19 @@ var app = (function () {
 				button0 = element("button");
 				button0.textContent = "Ausloggen";
 				t1 = space();
+				div9 = element("div");
 				h10 = element("h1");
 				t2 = text("Evaluation ");
 				t3 = text(t3_value);
 				t4 = space();
 				if (if_block) if_block.c();
 				t5 = space();
-				div7 = element("div");
+				div4 = element("div");
 				div3 = element("div");
 				h11 = element("h1");
 				button1 = element("button");
-				button1.textContent = "Nach Kategorien";
+				b0 = element("b");
+				b0.textContent = "Nach Kategorien";
 				t7 = space();
 				div2 = element("div");
 				div1 = element("div");
@@ -3567,95 +3877,151 @@ var app = (function () {
 				}
 
 				t8 = space();
-				div6 = element("div");
+				br = element("br");
+				t9 = space();
+				div8 = element("div");
+				div7 = element("div");
 				h12 = element("h1");
 				button2 = element("button");
-				button2.textContent = "Nach einzelnen Lebensmittel";
-				t10 = space();
+				b1 = element("b");
+				b1.textContent = "Nach einzelnen Lebensmitteln";
+				t11 = space();
+				div6 = element("div");
 				div5 = element("div");
-				div4 = element("div");
+				button3 = element("button");
+				i0 = element("i");
+				t12 = text(" Excel");
+				t13 = space();
+				input = element("input");
+				t14 = space();
 				table = element("table");
 				thead = element("thead");
 				tr = element("tr");
 				th0 = element("th");
 				th0.textContent = "#";
-				t12 = space();
-				th1 = element("th");
-				th1.textContent = "Name";
-				t14 = space();
-				th2 = element("th");
-				th2.textContent = "Category";
 				t16 = space();
-				th3 = element("th");
-				th3.textContent = "Rating";
+				th1 = element("th");
+				t17 = text("Name ");
+				i1 = element("i");
 				t18 = space();
+				th2 = element("th");
+				t19 = text("Kategorie ");
+				i2 = element("i");
+				t20 = space();
+				th3 = element("th");
+				t21 = text("Bewertung ");
+				i3 = element("i");
+				t22 = space();
+				th4 = element("th");
+				t23 = space();
 				tbody = element("tbody");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				button0.className = "btn btn-secondary position-absolute top-0 end-0 svelte-139kkod";
+				button0.className = "btn btn-secondary position-absolute top-0 end-0 svelte-1m06vzk";
 				button0.type = "button";
-				add_location(button0, file$b, 125, 0, 2817);
-				add_location(h10, file$b, 129, 0, 2945);
+				add_location(button0, file$b, 205, 0, 5672);
+				h10.className = "text-center";
+				add_location(h10, file$b, 209, 2, 5843);
+				add_location(b0, file$b, 254, 10, 7853);
 				button1.className = "accordion-button";
 				button1.type = "button";
 				button1.dataset.bsToggle = "collapse";
 				button1.dataset.bsTarget = "#collapseCategories";
 				attr(button1, "aria-expanded", "true");
 				attr(button1, "aria-controls", "collapseOne");
-				add_location(button1, file$b, 174, 6, 4693);
+				add_location(button1, file$b, 253, 8, 7682);
 				h11.className = "accordion-header";
 				h11.id = "headingCategories";
-				add_location(h11, file$b, 173, 4, 4633);
+				add_location(h11, file$b, 252, 6, 7620);
 				div0.className = "accordion";
 				div0.id = "accordionExample2";
-				add_location(div0, file$b, 180, 8, 5094);
+				add_location(div0, file$b, 259, 10, 8102);
 				div1.className = "accordion-body";
-				add_location(div1, file$b, 179, 6, 5056);
+				add_location(div1, file$b, 258, 8, 8062);
 				div2.id = "collapseCategories";
 				div2.className = "accordion-collapse collapse";
 				attr(div2, "aria-labelledby", "headingCategories");
 				div2.dataset.bsParent = "#accordionExample1";
-				add_location(div2, file$b, 178, 4, 4911);
+				add_location(div2, file$b, 257, 6, 7915);
 				div3.className = "accordion-item";
-				add_location(div3, file$b, 172, 2, 4599);
+				add_location(div3, file$b, 251, 4, 7584);
+				div4.className = "accordion";
+				div4.id = "accordionExample1";
+				add_location(div4, file$b, 250, 2, 7532);
+				add_location(br, file$b, 272, 2, 8395);
+				add_location(b1, file$b, 278, 10, 8720);
 				button2.className = "accordion-button";
 				button2.type = "button";
 				button2.dataset.bsToggle = "collapse";
 				button2.dataset.bsTarget = "#collapseRating";
 				attr(button2, "aria-expanded", "true");
 				attr(button2, "aria-controls", "collapseOne");
-				add_location(button2, file$b, 196, 6, 5457);
+				add_location(button2, file$b, 277, 8, 8553);
 				h12.className = "accordion-header";
 				h12.id = "headingRating";
-				add_location(h12, file$b, 194, 4, 5399);
+				add_location(h12, file$b, 275, 6, 8493);
+				i0.className = "fa-regular fa-file-excel";
+				add_location(i0, file$b, 286, 112, 9098);
+				button3.className = "btn btn-success float-right svelte-1m06vzk";
+				add_location(button3, file$b, 286, 12, 8998);
+				input.className = "form-control";
+				input.id = "myInput";
+				attr(input, "type", "text");
+				input.placeholder = "Suchen nach Name, Kategorie oder Bewertung...";
+				add_location(input, file$b, 287, 12, 9167);
 				th0.scope = "col";
-				add_location(th0, file$b, 209, 16, 5953);
+				th0.className = "svelte-1m06vzk";
+				add_location(th0, file$b, 291, 18, 9394);
+				i1.className = "fa-solid fa-sort";
+				add_location(i1, file$b, 292, 69, 9487);
 				th1.scope = "col";
-				add_location(th1, file$b, 210, 16, 5993);
+				th1.className = "svelte-1m06vzk";
+				add_location(th1, file$b, 292, 18, 9436);
+				i2.className = "fa-solid fa-sort";
+				add_location(i2, file$b, 293, 74, 9600);
 				th2.scope = "col";
-				add_location(th2, file$b, 211, 16, 6036);
+				th2.className = "svelte-1m06vzk";
+				add_location(th2, file$b, 293, 18, 9544);
+				i3.className = "fa-solid fa-sort";
+				add_location(i3, file$b, 294, 74, 9713);
 				th3.scope = "col";
-				add_location(th3, file$b, 212, 16, 6083);
-				add_location(tr, file$b, 208, 14, 5931);
-				add_location(thead, file$b, 207, 12, 5908);
-				add_location(tbody, file$b, 215, 12, 6167);
+				th3.className = "svelte-1m06vzk";
+				add_location(th3, file$b, 294, 18, 9657);
+				th4.scope = "col";
+				th4.className = "svelte-1m06vzk";
+				add_location(th4, file$b, 295, 18, 9770);
+				add_location(tr, file$b, 290, 16, 9370);
+				add_location(thead, file$b, 289, 14, 9345);
+				tbody.id = "single-food-table";
+				add_location(tbody, file$b, 298, 14, 9854);
 				table.className = "table";
-				add_location(table, file$b, 206, 10, 5873);
-				div4.className = "accordion-body";
-				add_location(div4, file$b, 202, 6, 5822);
-				div5.id = "collapseRating";
-				div5.className = "accordion-collapse collapse";
-				attr(div5, "aria-labelledby", "headingRating");
-				div5.dataset.bsParent = "#accordionExample1";
-				add_location(div5, file$b, 201, 4, 5685);
-				div6.className = "accordion-item";
-				add_location(div6, file$b, 193, 2, 5365);
-				div7.className = "accordion";
-				div7.id = "accordionExample1";
-				add_location(div7, file$b, 171, 0, 4549);
-				dispose = listen(button0, "click", ausloggen);
+				table.id = "myTable2";
+				add_location(table, file$b, 288, 12, 9294);
+				div5.className = "accordion-body";
+				add_location(div5, file$b, 284, 8, 8944);
+				div6.id = "collapseRating";
+				div6.className = "accordion-collapse collapse";
+				attr(div6, "aria-labelledby", "headingRating");
+				div6.dataset.bsParent = "#accordionExample1";
+				add_location(div6, file$b, 283, 6, 8805);
+				div7.className = "accordion-item";
+				add_location(div7, file$b, 274, 4, 8457);
+				div8.className = "accordion";
+				div8.id = "accordionExample1";
+				add_location(div8, file$b, 273, 2, 8405);
+				div9.className = "mx-auto";
+				set_style(div9, "width", "80%");
+				add_location(div9, file$b, 208, 0, 5798);
+
+				dispose = [
+					listen(button0, "click", ausloggen),
+					listen(button3, "click", ctx.click_handler),
+					listen(th1, "click", ctx.click_handler_1),
+					listen(th2, "click", ctx.click_handler_2),
+					listen(th3, "click", ctx.click_handler_3)
+				];
 			},
 
 			l: function claim(nodes) {
@@ -3665,16 +4031,18 @@ var app = (function () {
 			m: function mount(target, anchor) {
 				insert(target, button0, anchor);
 				insert(target, t1, anchor);
-				insert(target, h10, anchor);
+				insert(target, div9, anchor);
+				append(div9, h10);
 				append(h10, t2);
 				append(h10, t3);
-				insert(target, t4, anchor);
-				if (if_block) if_block.m(target, anchor);
-				insert(target, t5, anchor);
-				insert(target, div7, anchor);
-				append(div7, div3);
+				append(div9, t4);
+				if (if_block) if_block.m(div9, null);
+				append(div9, t5);
+				append(div9, div4);
+				append(div4, div3);
 				append(div3, h11);
 				append(h11, button1);
+				append(button1, b0);
 				append(div3, t7);
 				append(div3, div2);
 				append(div2, div1);
@@ -3684,24 +4052,42 @@ var app = (function () {
 					each_blocks_1[i].m(div0, null);
 				}
 
-				append(div7, t8);
-				append(div7, div6);
-				append(div6, h12);
+				append(div9, t8);
+				append(div9, br);
+				append(div9, t9);
+				append(div9, div8);
+				append(div8, div7);
+				append(div7, h12);
 				append(h12, button2);
-				append(div6, t10);
+				append(button2, b1);
+				append(div7, t11);
+				append(div7, div6);
 				append(div6, div5);
-				append(div5, div4);
-				append(div4, table);
+				append(div5, button3);
+				append(button3, i0);
+				append(button3, t12);
+				append(div5, t13);
+				append(div5, input);
+				append(div5, t14);
+				append(div5, table);
 				append(table, thead);
 				append(thead, tr);
 				append(tr, th0);
-				append(tr, t12);
-				append(tr, th1);
-				append(tr, t14);
-				append(tr, th2);
 				append(tr, t16);
+				append(tr, th1);
+				append(th1, t17);
+				append(th1, i1);
+				append(tr, t18);
+				append(tr, th2);
+				append(th2, t19);
+				append(th2, i2);
+				append(tr, t20);
 				append(tr, th3);
-				append(table, t18);
+				append(th3, t21);
+				append(th3, i3);
+				append(tr, t22);
+				append(tr, th4);
+				append(table, t23);
 				append(table, tbody);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -3720,9 +4106,9 @@ var app = (function () {
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$2(ctx);
+						if_block = create_if_block_2$1(ctx);
 						if_block.c();
-						if_block.m(t5.parentNode, t5);
+						if_block.m(div9, t5);
 					}
 				} else if (if_block) {
 					if_block.d(1);
@@ -3791,28 +4177,89 @@ var app = (function () {
 				if (detaching) {
 					detach(button0);
 					detach(t1);
-					detach(h10);
-					detach(t4);
+					detach(div9);
 				}
 
-				if (if_block) if_block.d(detaching);
-
-				if (detaching) {
-					detach(t5);
-					detach(div7);
-				}
+				if (if_block) if_block.d();
 
 				destroy_each(each_blocks_1, detaching);
 
 				destroy_each(each_blocks, detaching);
 
-				dispose();
+				run_all(dispose);
 			}
 		};
 	}
 
+	function sortTable(n) {
+	  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	  table = document.getElementById("myTable2");
+	  switching = true;
+	  // Set the sorting direction to ascending:
+	  dir = "asc";
+	  /* Make a loop that will continue until
+	  no switching has been done: */
+	  while (switching) {
+	    // Start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /* Loop through all table rows (except the
+	    first, which contains table headers): */
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      // Start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /* Get the two elements you want to compare,
+	      one from current row and one from the next: */
+	      x = rows[i].getElementsByTagName("TD")[n];
+	      y = rows[i + 1].getElementsByTagName("TD")[n];
+	      /* Check if the two rows should switch place,
+	      based on the direction, asc or desc: */
+	      if (dir == "asc") {
+	        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+	          // If so, mark as a switch and break the loop:
+	          shouldSwitch = true;
+	          break;
+	        }
+	      } else if (dir == "desc") {
+	        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+	          // If so, mark as a switch and break the loop:
+	          shouldSwitch = true;
+	          break;
+	        }
+	      }
+	    }
+	    if (shouldSwitch) {
+	      /* If a switch has been marked, make the switch
+	      and mark that a switch has been done: */
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	      // Each time a switch is done, increase this count by 1:
+	      switchcount ++;
+	    } else {
+	      /* If no switching has been done AND the direction is "asc",
+	      set the direction to "desc" and run the while loop again. */
+	      if (switchcount == 0 && dir == "asc") {
+	        dir = "desc";
+	        switching = true;
+	      }
+	    }
+	  }
+	}
+
+	function exportTableToExcel (username) {
+	    let date = new Date().toJSON();
+
+	    jQuery(document).ready(function () {
+	    jQuery("#myTable2").table2excel({
+	        filename: "Evaluation_" + username + "_" + date + ".xls"
+	    });
+	  });
+	}
+
 	function instance$9($$self, $$props, $$invalidate) {
 		
+
+	  
 
 	    let user = JSON.parse(localStorage.current_user);
 	    let thisUser = user;
@@ -3926,9 +4373,35 @@ var app = (function () {
 	     
 	      }*/
 
+	  //Suchtabelle einzelne Lebensmittel    
+	  jQuery(document).ready(function(){
+	  jQuery("#myInput").on("keyup", function() {
+	    var value = jQuery(this).val().toLowerCase();
+	    jQuery("#single-food-table tr").filter(function() {
+	      jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(value) > -1);
+	    });
+	  });
+	  });
+
 		function input_input_handler() {
 			user_name = this.value;
 			$$invalidate('user_name', user_name);
+		}
+
+		function click_handler() {
+			return exportTableToExcel(thisUser.user_name);
+		}
+
+		function click_handler_1() {
+			return sortTable(1);
+		}
+
+		function click_handler_2() {
+			return sortTable(2);
+		}
+
+		function click_handler_3() {
+			return sortTable(3);
 		}
 
 		return {
@@ -3941,7 +4414,11 @@ var app = (function () {
 			adminBool,
 			reset,
 			listeAnpassen,
-			input_input_handler
+			input_input_handler,
+			click_handler,
+			click_handler_1,
+			click_handler_2,
+			click_handler_3
 		};
 	}
 
