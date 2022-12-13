@@ -134,16 +134,4 @@ function setInfos(){
     margin-top: 1.0rem !important;
   }
 
-h1 {
-    background-color: #00DD95;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: #212529;
-    padding-bottom: 20px;
-    padding-top: 10px;
-    margin-bottom: 30px;
-    border-radius: 15px
-    
-}
-
-
 </style>

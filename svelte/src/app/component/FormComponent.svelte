@@ -101,8 +101,8 @@ function check(){
     </div>
     <div class="mb-3">
         <label for="inputPassword" class="col-sm-2 col-form-label">Passwort</label>
-        <!-- Bruchts das Div? <div class="col-sm-10"> -->
-        <input on:change={checkPassword} bind:value={user.user_password} type="password" class="form-control" id="inputPassword">
+        <!-- <div class="col-sm-10"> -->
+        <input on:change={checkPassword} bind:value={user.user_password} type="password" class="form-control" id="inputPassword" placeholder="Mindestens vier Zeichen. Mindestens eine Zahl.">
         <!-- </div>-->
     </div>
     <div class="col-auto">

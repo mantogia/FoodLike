@@ -72,7 +72,7 @@ function saveAngaben(){
 
 <div class="card mb-3">
   <div class="card-header">
-    Ihre Angaben
+    <b>Ihre Angaben</b>
   </div>
   <div class="card-body">
     <p>Bitte geben Sie an, ob Sie über einzelne <b>Allergien oder Unverträglichkeiten</b> verfügen. <br>
