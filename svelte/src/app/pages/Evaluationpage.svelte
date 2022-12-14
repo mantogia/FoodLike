@@ -72,7 +72,7 @@
         .then((response) => {
             console.log(response.data);
             thisUser = response.data;
-            getData(thisUser);
+            getEvaluations(thisUser);
 
          })
         .catch((error) => {

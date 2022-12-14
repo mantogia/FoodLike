@@ -3239,7 +3239,7 @@ var app = (function () {
 				div3 = element("div");
 				canvas1 = element("canvas");
 				add_location(b0, file$a, 149, 6, 3528);
-				div0.className = "num-display svelte-6c8o3v";
+				div0.className = "num-display svelte-5g6v80";
 				set_style(div0, "color", ctx.color);
 				set_style(div0, "--opacity", ctx.bgOpacity);
 				add_location(div0, file$a, 151, 6, 3571);
@@ -3255,50 +3255,50 @@ var app = (function () {
 				add_location(h2, file$a, 147, 2, 3309);
 				add_location(p0, file$a, 162, 8, 3938);
 				add_location(strong, file$a, 161, 8, 3920);
-				p1.className = "p-category svelte-6c8o3v";
+				p1.className = "p-category svelte-5g6v80";
 				add_location(p1, file$a, 164, 8, 4030);
-				p2.className = "p-category svelte-6c8o3v";
+				p2.className = "p-category svelte-5g6v80";
 				add_location(p2, file$a, 165, 8, 4098);
-				p3.className = "p-category svelte-6c8o3v";
+				p3.className = "p-category svelte-5g6v80";
 				add_location(p3, file$a, 166, 8, 4163);
 				add_location(br, file$a, 166, 68, 4223);
-				p4.className = "p-category svelte-6c8o3v";
+				p4.className = "p-category svelte-5g6v80";
 				add_location(p4, file$a, 167, 8, 4237);
 				add_location(b1, file$a, 168, 28, 4367);
 				add_location(i0, file$a, 168, 25, 4364);
-				p5.className = "comment svelte-6c8o3v";
+				p5.className = "comment svelte-5g6v80";
 				add_location(p5, file$a, 168, 8, 4347);
-				p6.className = "p-category svelte-6c8o3v";
+				p6.className = "p-category svelte-5g6v80";
 				add_location(p6, file$a, 169, 8, 4524);
 				add_location(b2, file$a, 170, 28, 4642);
 				add_location(i1, file$a, 170, 25, 4639);
-				p7.className = "comment svelte-6c8o3v";
+				p7.className = "comment svelte-5g6v80";
 				add_location(p7, file$a, 170, 8, 4622);
-				div1.className = "p-category svelte-6c8o3v";
+				div1.className = "p-category svelte-5g6v80";
 				add_location(div1, file$a, 160, 6, 3886);
 				add_location(hr0, file$a, 172, 6, 4795);
 				add_location(b3, file$a, 173, 30, 4832);
-				p8.className = "p-category svelte-6c8o3v";
+				p8.className = "p-category svelte-5g6v80";
 				add_location(p8, file$a, 173, 8, 4810);
 				add_location(b4, file$a, 174, 28, 4918);
 				add_location(i2, file$a, 174, 25, 4915);
-				p9.className = "comment svelte-6c8o3v";
+				p9.className = "comment svelte-5g6v80";
 				add_location(p9, file$a, 174, 8, 4898);
 				canvas0.id = canvas0_id_value = "myChart2" + ctx.index;
 				add_location(canvas0, file$a, 176, 10, 5026);
-				div2.className = "chart-wrapper svelte-6c8o3v";
+				div2.className = "chart-wrapper svelte-5g6v80";
 				add_location(div2, file$a, 175, 8, 4987);
 				add_location(hr1, file$a, 178, 6, 5088);
 				add_location(b5, file$a, 179, 30, 5125);
-				p10.className = "p-category svelte-6c8o3v";
+				p10.className = "p-category svelte-5g6v80";
 				add_location(p10, file$a, 179, 8, 5103);
 				add_location(b6, file$a, 180, 28, 5210);
 				add_location(i3, file$a, 180, 25, 5207);
-				p11.className = "comment svelte-6c8o3v";
+				p11.className = "comment svelte-5g6v80";
 				add_location(p11, file$a, 180, 8, 5190);
 				canvas1.id = canvas1_id_value = "myChart" + ctx.index;
 				add_location(canvas1, file$a, 182, 10, 5318);
-				div3.className = "chart-wrapper svelte-6c8o3v";
+				div3.className = "chart-wrapper svelte-5g6v80";
 				add_location(div3, file$a, 181, 8, 5279);
 				div4.className = "accordion-body";
 				add_location(div4, file$a, 159, 4, 3850);
@@ -3738,57 +3738,57 @@ var app = (function () {
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				add_location(b, file$b, 227, 12, 6678);
+				add_location(b, file$b, 227, 12, 6685);
 				button0.className = "accordion-button collapsed";
 				button0.type = "button";
 				button0.dataset.bsToggle = "collapse";
 				button0.dataset.bsTarget = "#panelsStayOpen-collapseSearch";
 				attr(button0, "aria-expanded", "false");
 				attr(button0, "aria-controls", "panelsStayOpen-collapseTwo");
-				add_location(button0, file$b, 226, 10, 6468);
+				add_location(button0, file$b, 226, 10, 6475);
 				h2.className = "accordion-header";
 				h2.id = "panelsStayOpen-headingSearch";
-				add_location(h2, file$b, 225, 8, 6393);
+				add_location(h2, file$b, 225, 8, 6400);
 				label.htmlFor = "Username";
-				add_location(label, file$b, 235, 18, 6996);
+				add_location(label, file$b, 235, 18, 7003);
 				input.placeholder = "gesuchter Benutzername";
 				attr(input, "type", "String");
 				input.className = "form-control";
 				input.id = "Username";
-				add_location(input, file$b, 236, 18, 7058);
+				add_location(input, file$b, 236, 18, 7065);
 				button1.type = "button";
 				button1.className = "btn btn-dark mt-2 svelte-jz8vks";
-				add_location(button1, file$b, 239, 18, 7225);
+				add_location(button1, file$b, 239, 18, 7232);
 				button2.type = "button";
 				button2.className = "btn btn-dark mt-2 svelte-jz8vks";
-				add_location(button2, file$b, 240, 18, 7332);
+				add_location(button2, file$b, 240, 18, 7339);
 				th0.scope = "col";
 				th0.className = "svelte-jz8vks";
-				add_location(th0, file$b, 245, 24, 7562);
+				add_location(th0, file$b, 245, 24, 7569);
 				th1.scope = "col";
 				th1.className = "svelte-jz8vks";
-				add_location(th1, file$b, 246, 24, 7610);
-				add_location(tr, file$b, 244, 22, 7532);
-				add_location(thead, file$b, 243, 20, 7501);
+				add_location(th1, file$b, 246, 24, 7617);
+				add_location(tr, file$b, 244, 22, 7539);
+				add_location(thead, file$b, 243, 20, 7508);
 				tbody.id = "table-names";
-				add_location(tbody, file$b, 249, 20, 7716);
+				add_location(tbody, file$b, 249, 20, 7723);
 				table.className = "table";
 				table.id = "myTableSuche";
-				add_location(table, file$b, 242, 18, 7440);
+				add_location(table, file$b, 242, 18, 7447);
 				div0.className = "form-group ";
-				add_location(div0, file$b, 234, 16, 6951);
-				add_location(form, file$b, 233, 12, 6927);
+				add_location(div0, file$b, 234, 16, 6958);
+				add_location(form, file$b, 233, 12, 6934);
 				div1.className = "accordion-body";
-				add_location(div1, file$b, 231, 10, 6883);
+				add_location(div1, file$b, 231, 10, 6890);
 				div2.id = "panelsStayOpen-collapseSearch";
 				div2.className = "accordion-collapse collapse";
 				attr(div2, "aria-labelledby", "panelsStayOpen-headingSearch");
-				add_location(div2, file$b, 230, 8, 6748);
+				add_location(div2, file$b, 230, 8, 6755);
 				div3.className = "accordion-item";
-				add_location(div3, file$b, 224, 4, 6355);
+				add_location(div3, file$b, 224, 4, 6362);
 				div4.className = "accordion mb-3";
 				div4.id = "accordionPanelsStayOpenExample";
-				add_location(div4, file$b, 223, 2, 6285);
+				add_location(div4, file$b, 223, 2, 6292);
 
 				dispose = [
 					listen(input, "input", ctx.input_input_handler),
@@ -3884,10 +3884,10 @@ var app = (function () {
 				t1 = space();
 				td1 = element("td");
 				t2 = text(t2_value);
-				add_location(b, file$b, 252, 28, 7853);
-				add_location(td0, file$b, 252, 24, 7849);
-				add_location(td1, file$b, 253, 24, 7894);
-				add_location(tr, file$b, 251, 22, 7819);
+				add_location(b, file$b, 252, 28, 7860);
+				add_location(td0, file$b, 252, 24, 7856);
+				add_location(td1, file$b, 253, 24, 7901);
+				add_location(tr, file$b, 251, 22, 7826);
 			},
 
 			m: function mount(target, anchor) {
@@ -4076,17 +4076,17 @@ var app = (function () {
 				t6 = space();
 				td4 = element("td");
 				img = element("img");
-				add_location(b, file$b, 341, 26, 11571);
-				add_location(td0, file$b, 341, 22, 11567);
-				add_location(td1, file$b, 342, 22, 11622);
-				add_location(td2, file$b, 343, 22, 11683);
-				add_location(td3, file$b, 344, 22, 11743);
+				add_location(b, file$b, 341, 26, 11578);
+				add_location(td0, file$b, 341, 22, 11574);
+				add_location(td1, file$b, 342, 22, 11629);
+				add_location(td2, file$b, 343, 22, 11690);
+				add_location(td3, file$b, 344, 22, 11750);
 				img.src = img_src_value = "./evaluation/" + ctx.foodRating.rating + ".png";
 				img.className = "bewertung svelte-jz8vks";
 				img.alt = "";
-				add_location(img, file$b, 355, 26, 12169);
-				add_location(td4, file$b, 355, 22, 12165);
-				add_location(tr, file$b, 340, 20, 11539);
+				add_location(img, file$b, 355, 26, 12176);
+				add_location(td4, file$b, 355, 22, 12172);
+				add_location(tr, file$b, 340, 20, 11546);
 			},
 
 			m: function mount(target, anchor) {
@@ -4287,122 +4287,122 @@ var app = (function () {
 				p3.textContent = "🍇🍈🍉🍊🍋🍌🍍🥭🍎🥨🥯🥞🧇🧀🍖🍗🥩🥓🍔🍟🍕🌭🥪🌮";
 				button0.className = "btn btn-secondary position-absolute top-0 end-0 svelte-jz8vks";
 				button0.type = "button";
-				add_location(button0, file$b, 216, 0, 6029);
+				add_location(button0, file$b, 216, 0, 6036);
 				h1.className = "text-center";
-				add_location(h1, file$b, 220, 2, 6200);
-				add_location(b0, file$b, 272, 6, 8264);
+				add_location(h1, file$b, 220, 2, 6207);
+				add_location(b0, file$b, 272, 6, 8271);
 				div0.className = "card-header";
-				add_location(div0, file$b, 271, 4, 8231);
-				add_location(b1, file$b, 275, 31, 8363);
-				add_location(br0, file$b, 275, 70, 8402);
-				add_location(br1, file$b, 276, 65, 8473);
-				add_location(br2, file$b, 277, 78, 8557);
-				add_location(br3, file$b, 277, 82, 8561);
-				add_location(p0, file$b, 275, 6, 8338);
+				add_location(div0, file$b, 271, 4, 8238);
+				add_location(b1, file$b, 275, 31, 8370);
+				add_location(br0, file$b, 275, 70, 8409);
+				add_location(br1, file$b, 276, 65, 8480);
+				add_location(br2, file$b, 277, 78, 8564);
+				add_location(br3, file$b, 277, 82, 8568);
+				add_location(p0, file$b, 275, 6, 8345);
 				div1.className = "card-body";
-				add_location(div1, file$b, 274, 4, 8307);
+				add_location(div1, file$b, 274, 4, 8314);
 				div2.className = "card mb-3";
-				add_location(div2, file$b, 270, 2, 8202);
-				add_location(b2, file$b, 292, 10, 9081);
+				add_location(div2, file$b, 270, 2, 8209);
+				add_location(b2, file$b, 292, 10, 9088);
 				button1.className = "accordion-button";
 				button1.type = "button";
 				button1.dataset.bsToggle = "collapse";
 				button1.dataset.bsTarget = "#collapseCategories";
 				attr(button1, "aria-expanded", "true");
 				attr(button1, "aria-controls", "collapseOne");
-				add_location(button1, file$b, 291, 8, 8910);
+				add_location(button1, file$b, 291, 8, 8917);
 				h20.className = "accordion-header";
 				h20.id = "headingCategories";
-				add_location(h20, file$b, 290, 6, 8848);
+				add_location(h20, file$b, 290, 6, 8855);
 				div3.className = "accordion";
 				div3.id = "accordionExample2";
-				add_location(div3, file$b, 297, 10, 9330);
+				add_location(div3, file$b, 297, 10, 9337);
 				div4.className = "accordion-body";
-				add_location(div4, file$b, 296, 8, 9290);
+				add_location(div4, file$b, 296, 8, 9297);
 				div5.id = "collapseCategories";
 				div5.className = "accordion-collapse collapse";
 				attr(div5, "aria-labelledby", "headingCategories");
 				div5.dataset.bsParent = "#accordionExample1";
-				add_location(div5, file$b, 295, 6, 9143);
+				add_location(div5, file$b, 295, 6, 9150);
 				div6.className = "accordion-item";
-				add_location(div6, file$b, 289, 4, 8812);
+				add_location(div6, file$b, 289, 4, 8819);
 				div7.className = "accordion";
 				div7.id = "accordionExample1";
-				add_location(div7, file$b, 288, 2, 8760);
-				add_location(br4, file$b, 310, 2, 9623);
-				add_location(b3, file$b, 316, 10, 9948);
+				add_location(div7, file$b, 288, 2, 8767);
+				add_location(br4, file$b, 310, 2, 9630);
+				add_location(b3, file$b, 316, 10, 9955);
 				button2.className = "accordion-button";
 				button2.type = "button";
 				button2.dataset.bsToggle = "collapse";
 				button2.dataset.bsTarget = "#collapseRating";
 				attr(button2, "aria-expanded", "true");
 				attr(button2, "aria-controls", "collapseOne");
-				add_location(button2, file$b, 315, 8, 9781);
+				add_location(button2, file$b, 315, 8, 9788);
 				h21.className = "accordion-header";
 				h21.id = "headingRating";
-				add_location(h21, file$b, 313, 6, 9721);
-				add_location(br5, file$b, 323, 123, 10325);
+				add_location(h21, file$b, 313, 6, 9728);
+				add_location(br5, file$b, 323, 123, 10332);
 				p1.className = "p-category svelte-jz8vks";
-				add_location(p1, file$b, 323, 12, 10214);
+				add_location(p1, file$b, 323, 12, 10221);
 				i0.className = "fa-regular fa-file-excel";
-				add_location(i0, file$b, 325, 112, 10534);
+				add_location(i0, file$b, 325, 112, 10541);
 				button3.className = "btn btn-success float-right svelte-jz8vks";
-				add_location(button3, file$b, 325, 12, 10434);
-				add_location(b4, file$b, 326, 34, 10625);
-				add_location(i1, file$b, 326, 31, 10622);
+				add_location(button3, file$b, 325, 12, 10441);
+				add_location(b4, file$b, 326, 34, 10632);
+				add_location(i1, file$b, 326, 31, 10629);
 				p2.className = "comment svelte-jz8vks";
-				add_location(p2, file$b, 326, 12, 10603);
+				add_location(p2, file$b, 326, 12, 10610);
 				input.className = "form-control";
 				input.id = "myInput";
 				attr(input, "type", "text");
 				input.placeholder = "Suchen nach Name, Kategorie oder Bewertung...";
-				add_location(input, file$b, 327, 12, 10753);
+				add_location(input, file$b, 327, 12, 10760);
 				th0.scope = "col";
 				th0.className = "svelte-jz8vks";
-				add_location(th0, file$b, 331, 18, 10980);
+				add_location(th0, file$b, 331, 18, 10987);
 				i2.className = "fa-solid fa-sort";
-				add_location(i2, file$b, 332, 69, 11073);
+				add_location(i2, file$b, 332, 69, 11080);
 				th1.scope = "col";
 				th1.className = "svelte-jz8vks";
-				add_location(th1, file$b, 332, 18, 11022);
+				add_location(th1, file$b, 332, 18, 11029);
 				i3.className = "fa-solid fa-sort";
-				add_location(i3, file$b, 333, 74, 11186);
+				add_location(i3, file$b, 333, 74, 11193);
 				th2.scope = "col";
 				th2.className = "svelte-jz8vks";
-				add_location(th2, file$b, 333, 18, 11130);
+				add_location(th2, file$b, 333, 18, 11137);
 				i4.className = "fa-solid fa-sort";
-				add_location(i4, file$b, 334, 74, 11299);
+				add_location(i4, file$b, 334, 74, 11306);
 				th3.scope = "col";
 				th3.className = "svelte-jz8vks";
-				add_location(th3, file$b, 334, 18, 11243);
+				add_location(th3, file$b, 334, 18, 11250);
 				th4.scope = "col";
 				th4.className = "svelte-jz8vks";
-				add_location(th4, file$b, 335, 18, 11356);
-				add_location(tr, file$b, 330, 16, 10956);
-				add_location(thead, file$b, 329, 14, 10931);
+				add_location(th4, file$b, 335, 18, 11363);
+				add_location(tr, file$b, 330, 16, 10963);
+				add_location(thead, file$b, 329, 14, 10938);
 				tbody.id = "single-food-table";
-				add_location(tbody, file$b, 338, 14, 11440);
+				add_location(tbody, file$b, 338, 14, 11447);
 				table.className = "table";
 				table.id = "myTable2";
-				add_location(table, file$b, 328, 12, 10880);
+				add_location(table, file$b, 328, 12, 10887);
 				div8.className = "accordion-body";
-				add_location(div8, file$b, 322, 8, 10172);
+				add_location(div8, file$b, 322, 8, 10179);
 				div9.id = "collapseRating";
 				div9.className = "accordion-collapse collapse";
 				attr(div9, "aria-labelledby", "headingRating");
 				div9.dataset.bsParent = "#accordionExample1";
-				add_location(div9, file$b, 321, 6, 10033);
+				add_location(div9, file$b, 321, 6, 10040);
 				div10.className = "accordion-item";
-				add_location(div10, file$b, 312, 4, 9685);
+				add_location(div10, file$b, 312, 4, 9692);
 				div11.className = "accordion";
 				div11.id = "accordionExample1";
-				add_location(div11, file$b, 311, 2, 9633);
-				add_location(br6, file$b, 364, 2, 12398);
+				add_location(div11, file$b, 311, 2, 9640);
+				add_location(br6, file$b, 364, 2, 12405);
 				set_style(p3, "text-align", "center");
-				add_location(p3, file$b, 365, 2, 12406);
+				add_location(p3, file$b, 365, 2, 12413);
 				div12.className = "mx-auto";
 				set_style(div12, "width", "80%");
-				add_location(div12, file$b, 219, 0, 6155);
+				add_location(div12, file$b, 219, 0, 6162);
 
 				dispose = [
 					listen(button0, "click", ausloggen),
@@ -4744,7 +4744,7 @@ var app = (function () {
 	        .then((response) => {
 	            console.log(response.data);
 	            $$invalidate('thisUser', thisUser = response.data);
-	            getData(thisUser);
+	            getEvaluations(thisUser);
 
 	         })
 	        .catch((error) => {
@@ -4881,8 +4881,8 @@ var app = (function () {
 			c: function create() {
 				main = element("main");
 				if (switch_instance) switch_instance.$$.fragment.c();
-				main.className = "svelte-12zwhwq";
-				add_location(main, file$c, 40, 0, 787);
+				main.className = "svelte-1s5dl5z";
+				add_location(main, file$c, 40, 0, 789);
 			},
 
 			l: function claim(nodes) {
@@ -4961,7 +4961,7 @@ var app = (function () {
 	        case 'evaluation':
 	        $$invalidate('value', value = Evaluationpage);
 	        break;
-	      default:
+	        default:
 	        $$invalidate('value', value = Notfound);
 	    }
 	  });
@@ -4980,7 +4980,7 @@ var app = (function () {
 
 	const file$d = "src\\app\\component\\Sidenav.svelte";
 
-	// (27:6) <RouterLink url=''>
+	// (51:8) <RouterLink tag="li" url=''>
 	function create_default_slot_2(ctx) {
 		var t;
 
@@ -5001,7 +5001,7 @@ var app = (function () {
 		};
 	}
 
-	// (31:6) <RouterLink url='questions'>
+	// (55:8) <RouterLink url='questions'>
 	function create_default_slot_1(ctx) {
 		var t;
 
@@ -5022,7 +5022,7 @@ var app = (function () {
 		};
 	}
 
-	// (35:6) <RouterLink url='evaluation'>
+	// (59:8) <RouterLink url='evaluation'>
 	function create_default_slot(ctx) {
 		var t;
 
@@ -5044,10 +5044,11 @@ var app = (function () {
 	}
 
 	function create_fragment$d(ctx) {
-		var nav, h1, t1, ul, li0, t2, li1, t3, li2, current;
+		var nav, div, ul, li0, t0, li1, t1, li2, current;
 
 		var routerlink0 = new RouterLink({
 			props: {
+			tag: "li",
 			url: "",
 			$$slots: { default: [create_default_slot_2] },
 			$$scope: { ctx }
@@ -5076,29 +5077,28 @@ var app = (function () {
 		return {
 			c: function create() {
 				nav = element("nav");
-				h1 = element("h1");
-				h1.textContent = "Navigation";
-				t1 = space();
+				div = element("div");
 				ul = element("ul");
 				li0 = element("li");
 				routerlink0.$$.fragment.c();
-				t2 = space();
+				t0 = space();
 				li1 = element("li");
 				routerlink1.$$.fragment.c();
-				t3 = space();
+				t1 = space();
 				li2 = element("li");
 				routerlink2.$$.fragment.c();
-				add_location(h1, file$d, 22, 2, 300);
-				li0.className = "svelte-1qeq5wx";
-				add_location(li0, file$d, 25, 4, 335);
-				li1.className = "svelte-1qeq5wx";
-				add_location(li1, file$d, 29, 4, 406);
-				li2.className = "svelte-1qeq5wx";
-				add_location(li2, file$d, 33, 4, 485);
-				ul.className = "svelte-1qeq5wx";
-				add_location(ul, file$d, 23, 2, 323);
-				nav.className = "svelte-1qeq5wx";
-				add_location(nav, file$d, 21, 0, 291);
+				li0.className = "svelte-f6rh1k";
+				add_location(li0, file$d, 49, 6, 820);
+				li1.className = "svelte-f6rh1k";
+				add_location(li1, file$d, 53, 6, 906);
+				li2.className = "svelte-f6rh1k";
+				add_location(li2, file$d, 57, 6, 991);
+				ul.className = "svelte-f6rh1k";
+				add_location(ul, file$d, 48, 4, 807);
+				div.className = "nav-frame svelte-f6rh1k";
+				add_location(div, file$d, 46, 2, 772);
+				nav.className = "svelte-f6rh1k";
+				add_location(nav, file$d, 45, 0, 763);
 			},
 
 			l: function claim(nodes) {
@@ -5107,15 +5107,14 @@ var app = (function () {
 
 			m: function mount(target, anchor) {
 				insert(target, nav, anchor);
-				append(nav, h1);
-				append(nav, t1);
-				append(nav, ul);
+				append(nav, div);
+				append(div, ul);
 				append(ul, li0);
 				mount_component(routerlink0, li0, null);
-				append(ul, t2);
+				append(ul, t0);
 				append(ul, li1);
 				mount_component(routerlink1, li1, null);
-				append(ul, t3);
+				append(ul, t1);
 				append(ul, li2);
 				mount_component(routerlink2, li2, null);
 				current = true;
@@ -5178,7 +5177,7 @@ var app = (function () {
 
 	const file$e = "src\\App.svelte";
 
-	// (30:2) {#if adminRigths}
+	// (23:2) {#if adminRigths}
 	function create_if_block$3(ctx) {
 		var current;
 
@@ -5228,8 +5227,8 @@ var app = (function () {
 				if (if_block) if_block.c();
 				t = space();
 				router.$$.fragment.c();
-				div.className = "app-shell svelte-17simda";
-				add_location(div, file$e, 27, 0, 419);
+				div.className = "app-shell";
+				add_location(div, file$e, 20, 0, 297);
 			},
 
 			l: function claim(nodes) {

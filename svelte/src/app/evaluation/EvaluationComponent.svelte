@@ -200,7 +200,7 @@ $: color = evaluation[7] < 50 ? '#000' : '#000';
       width: 50px;
       height: 50px;
       
-      background: rgba(62, 255, 0, var(--opacity));
+      background: rgba(90, 147, 213, var(--opacity));
 
       color: #fff;
       border: 1px #eee solid;
