@@ -200,10 +200,11 @@ function isBigEnough(value) {
 
   //Tabelle einzelne Lebensmittel herunterladen als Excel
   function exportTableToExcel (username) {
-      let date = new Date().toJSON();
+      let date = new Date().toString();
 
       jQuery(document).ready(function () {
       jQuery("#myTable2").table2excel({
+          exclude_img: true,
           filename: "Evaluation_" + username + "_" + date + ".xls"
       });
     });
@@ -267,15 +268,31 @@ function isBigEnough(value) {
   </div>
   {/if}
 
+  <div class="card mb-3">
+    <div class="card-header">
+      <b>Ihre Auswertung 📊</b>
+    </div>
+    <div class="card-body">
+      <p>Sie befinden sich nun <b>im letzten Teil</b> des Fragebogens.<br>
+      Hier können Sie die Auswertung Ihrer Bewertungen einsehen. <br>
+      Entweder sortiert nach Kategorien oder nach den einzelnen Lebensmitteln.<br><br>
+    
+    Im Abschnitt "Nach einzelnen Lebensmitteln" haben Sie zudem die Möglichkeit, ihre Auswertung als Excel-Datei herunterzuladen.</p>
+        
+      </div>
+  
+  
+  
+  </div>
 
 
   <div class="accordion" id="accordionExample1">
     <div class="accordion-item">
-      <h1 class="accordion-header" id="headingCategories">
+      <h2 class="accordion-header" id="headingCategories">
         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategories" aria-expanded="true" aria-controls="collapseOne">
           <b>Nach Kategorien</b>
         </button>
-      </h1>
+      </h2>
       <div id="collapseCategories" class="accordion-collapse collapse" aria-labelledby="headingCategories" data-bs-parent="#accordionExample1">
         <div class="accordion-body">
           <div class="accordion" id="accordionExample2">
@@ -294,18 +311,20 @@ function isBigEnough(value) {
   <br>  
   <div class="accordion" id="accordionExample1">
     <div class="accordion-item">
-      <h1 class="accordion-header" id="headingRating">
+      <h2 class="accordion-header" id="headingRating">
 
         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRating" aria-expanded="true" aria-controls="collapseOne">
           <b>Nach einzelnen Lebensmitteln</b>
         </button>
 
-      </h1>
+      </h2>
       
       <div id="collapseRating" class="accordion-collapse collapse" aria-labelledby="headingRating" data-bs-parent="#accordionExample1">
         <div class="accordion-body">
-          
+            <p class="p-category">Hier sehen Sie nochmals alle Lebensmittel einzeln aufgelistet, welche Sie bewertet haben.<br>
+            Die Liste können Sie hier auf- und absteigend sortieren oder durchsuchen.</p>
             <button on:click={() => exportTableToExcel(thisUser.user_name)} class="btn btn-success float-right"><i class="fa-regular fa-file-excel"></i> Excel</button>
+            <p class="comment"><i><b>Tipp:</b> bei Bedarf können Sie hier die komplette Liste auch als Excel-Datei herunterladen.</i></p>           
             <input class="form-control" id="myInput" type="text" placeholder="Suchen nach Name, Kategorie oder Bewertung...">
             <table class="table" id="myTable2">
               <thead>
@@ -328,11 +347,13 @@ function isBigEnough(value) {
                         Dislike
                       {:else if foodRating.rating == 1}
                         Liked
-                      {:else}
+                      {:else if foodRating.rating == 2}
                         Superlike
+                      {:else}
+                        Nicht bewertet
                       {/if}
                       </td>
-                      <td><img src="./evaluation/{foodRating.rating}.png" class="bewertung" alt="bewertung"></td> 
+                      <td><img src="./evaluation/{foodRating.rating}.png" class="bewertung" alt=""></td> 
                   </tr>
               {/each}
               </tbody>
@@ -341,6 +362,8 @@ function isBigEnough(value) {
       </div>
     </div>
   </div>
+  <br>
+  <p style="text-align:center">🍇🍈🍉🍊🍋🍌🍍🥭🍎🥨🥯🥞🧇🧀🍖🍗🥩🥓🍔🍟🍕🌭🥪🌮</p>
 </div>
 
 <style>
@@ -356,5 +379,16 @@ function isBigEnough(value) {
   th {
   cursor: pointer;
   }
+
+  .p-category {
+	    margin-bottom: 0; 
+  }
+  
+  .comment {
+      font-size: 16px;
+      color:grey;
+      margin-top: 0; 		
+  }
+
 </style>
   

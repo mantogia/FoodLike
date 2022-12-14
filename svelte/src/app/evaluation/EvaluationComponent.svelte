@@ -1,17 +1,16 @@
 <script>
 
-
-
 export let evaluation;
 
 export let index;
 
 import {onMount} from 'svelte'
 
+//Pie-Chart
 function createChart() {
   let ctx = document.getElementById('myChart' + index).getContext('2d');
   let labels = ['Dislikes', 'Likes', 'Superlikes'];
-  let colorHex = ['#FB3640', '#43AA8B', '#253D5B'];
+  let colorHex = ['#F44133', '#00DE96', '#37B7FD'];
 
   let myChart = new Chart(ctx, {
     type: 'pie',
@@ -24,8 +23,17 @@ function createChart() {
     },
     options: {
       responsive: true,
+      title: {
+                display: true,
+                text: evaluation[0] 
+      },
       legend: {
         position: 'bottom'
+      },
+      animation: {
+        onComplete: function () {
+          console.log(myChart.toBase64Image());
+        },
       },
       plugins: {
         datalabels: {
@@ -52,7 +60,85 @@ function createChart() {
   })
 }
 
+
+//Bar-Chart
+function createChart2() {
+  let ctx = document.getElementById('myChart2' + index).getContext('2d');
+  let labels = ['Dislikes', 'Likes', 'Superlikes'];
+  let colordislike = ['#F44133'];
+  let colorlike = ['#00DE96'];
+  let colorsuperlike = ['#37B7FD'];
+
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      datasets: [{
+        label: 'Dislikes',
+        data: [evaluation[4]],
+        backgroundColor: colordislike
+      },
+      {
+        label: 'Likes',
+        data: [evaluation[5]],
+        backgroundColor: colorlike
+      },
+      {
+        label: 'Superlikes',
+        data: [evaluation[6]],
+        backgroundColor: colorsuperlike
+      }],
+      
+    },
+    options: {
+      responsive: true,
+      title: {
+                display: true,
+                text: evaluation[0] 
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+      },
+      legend: {
+         position: 'bottom'
+      },
+      animation: {
+        onComplete: function () {
+          console.log(myChart.toBase64Image());
+        },
+      },
+      plugins: {
+          datalabels: {
+          color: '#fff',
+          anchor: 'end',
+          align: 'start',
+          offset: -10,
+          borderWidth: 2,
+          borderColor: '#fff',
+          borderRadius: 25,
+          backgroundColor: (context) => {
+            return context.dataset.backgroundColor;
+          },
+          font: {
+            weight: 'bold',
+            size: '10'
+          },
+          formatter: (value) => {
+            return value + ' %';
+          }
+        }
+      }
+    }
+  })
+}
+
 onMount(createChart);
+onMount(createChart2);
+
+
 let bgOpacity = evaluation[7] / 100;
 $: color = evaluation[7] < 50 ? '#000' : '#000';
 
@@ -72,17 +158,30 @@ $: color = evaluation[7] < 50 ? '#000' : '#000';
   </h2>
   <div id="collapse{index}" class="accordion-collapse collapse" aria-labelledby="heading{index}" data-bs-parent="#accordionExample2">
     <div class="accordion-body">
-      <strong>
-      <p>Anzahl Ratings in dieser Kategorie: {evaluation[2]}</p>
-      </strong> 
-      <p>Summe aller Ratings in dieser Kategorie: {evaluation[1]}</p>
-      <p>Durchschnittliches Rating in dieser Kategorie: {evaluation[3]}</p>
-      <p>Anzahl dislikes: {evaluation[4]}</p>
-      <p>Anzahl likes: {evaluation[5]}</p>
-      <p>Anzahl superlikes: {evaluation[6]}</p>
-      <div class="chart-wrapper">
-        <canvas id="myChart{index}"></canvas>
+      <div class="p-category">
+        <strong>
+        <p>Anzahl Bewertungen in dieser Kategorie: {evaluation[2]}</p>
+        </strong> 
+        <p class="p-category">Anzahl dislikes: {evaluation[4]}</p>
+        <p class="p-category">Anzahl likes: {evaluation[5]}</p>
+        <p class="p-category">Anzahl superlikes: {evaluation[6]}</p><br>
+        <p class="p-category">Gewichtete Auswertung der Bewertungen in dieser Kategorie: {evaluation[1]}</p>
+        <p class=comment><i><b>Kommentar:</b> die gewichtete Auswertung wird folgendermassen berechnet = Anzahl Dislikes * 0 + Anzahl Likes * 1 + Anzahl Superlikes * 2</i></p>
+        <p class="p-category">Durchschnittliches Rating in dieser Kategorie: {evaluation[3]}</p>
+        <p class=comment><i><b>Kommentar:</b> das durchschnittliche Rating wird folgendermassen berechnet = Gewichtete Auswertung / Anzahl Bewertungen</i></p> 
       </div>
+      <hr> 
+        <p class="p-category"><b>Säulendiagramm der Kategorie: {evaluation[0]}</b></p>
+        <p class=comment><i><b>Tipp:</b> Rechtsklick ➔ Bild speichern unter...</i></p> 
+        <div class="chart-wrapper">
+          <canvas id="myChart2{index}"></canvas>
+        </div>
+      <hr> 
+        <p class="p-category"><b>Kreisdiagramm der Kategorie: {evaluation[0]}</b></p>
+        <p class=comment><i><b>Tipp:</b> Rechtsklick ➔ Bild speichern unter...</i></p> 
+        <div class="chart-wrapper">
+          <canvas id="myChart{index}"></canvas>
+        </div>
     </div>
   </div>
 </div>
@@ -90,9 +189,8 @@ $: color = evaluation[7] < 50 ? '#000' : '#000';
 <style>
 
   .chart-wrapper {
-    width: 500px;
-    height: 500px;
-    margin: 0 auto;
+      width: 50%;
+    
   }
 
   .num-display {
@@ -109,6 +207,17 @@ $: color = evaluation[7] < 50 ? '#000' : '#000';
       border-radius: 50%;
       padding: 10px;
       text-align: center;
-      font-size: 19px;
+      font-size: 18px;
     }
+
+    .p-category {
+	    margin-bottom: 0; 
+    }
+
+    .comment {
+      font-size: 16px;
+      color:grey;
+      margin-top: 0; 		
+    }
+
 </style>

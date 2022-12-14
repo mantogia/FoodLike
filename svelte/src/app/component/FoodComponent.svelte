@@ -147,7 +147,7 @@
     }
 
     :global(.card-element-fade-in){
-        animation: fade-in 500ms forwards;
+        animation: fade-in 400ms forwards;
     }
 
     :global(.card-element-hide){
@@ -195,7 +195,7 @@
     @keyframes fade-in {
         0% {
             opacity: 0;
-            transform: scale(0.3);
+            transform: scale(0.6);
         }
         100% {
             opacity: 1;

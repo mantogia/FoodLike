@@ -81,7 +81,7 @@
 </button>
 
 
-<h1>Fragebogen</h1>
+<h1 class="text-center mx-auto">Fragebogen</h1>
 
 	{#if !endOfList}
     <FoodComponent food_nr={food_nr} on:save-vote={saveRelation} onChange={newFood => food = newFood} />
@@ -97,6 +97,7 @@
     display: flex; /* or grid */
     justify-content: center;
     align-items: center;
+    width: 50%;
   }
 
   

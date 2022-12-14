@@ -7,7 +7,7 @@
 <div>
       <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
       <div class="card text-center mx-auto" style="width: 50%;">
-      <h5 class="card-header">Ihr Fragebogen</h5>
+      <h5 class="card-header"><b>Ihr Fragebogen</b></h5>
       <div class="card-body">
             <h5 class="card-title">
             
