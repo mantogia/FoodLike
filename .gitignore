@@ -32,7 +32,7 @@ h2-db.mv.db
 
 
 ### neu
-bundle.class
-bundle.css.map
-bundle.js
-bundles.js.map
+/src/resources/static/bundle.class
+/src/resources/static/bundle.css.map
+/src/resources/static/bundle.js
+/src/resources/static/bundles.js.map
