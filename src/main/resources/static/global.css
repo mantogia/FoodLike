@@ -1,8 +1,8 @@
 html, body {
 	position: relative;
 	width: 100%;
-  height: 100%;
-  font-size: 24px;
+  	height: 100%;
+ 	font-size: 24px;
 }
 
 .card{
@@ -31,16 +31,31 @@ body {
 }
 
 h1 {
-	background-color: #00DD95;
+	background-image: url("./icons/head.webp");
+	background-size: cover;
 	font-family: 'Unbounded';
-    color: #212529;
+    color: #ffffff;
 	font-size: 70px;
 	font-weight: 700;
-    padding-bottom: 20px;
-    padding-top: 20px;
+    padding-bottom: 40px;
+    padding-top: 40px;
     margin-bottom: 30px;
-    border-radius: 15px
+    border-radius: 15px;
+	border-color: #5A93D5;
+	border-width: 10px;	
+	border: solid;
+	animation: glow 1s ease-in-out infinite alternate;
 }
+
+@-webkit-keyframes glow {
+	from {
+	  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #5A93D5, 0 0 40px #5A93D5, 0 0 50px #5A93D5, 0 0 60px #5A93D5, 0 0 70px #5A93D5;
+	}
+	
+	to {
+	  text-shadow: 0 0 20px #fff, 0 0 30px #5a74d5, 0 0 40px #5a74d5, 0 0 50px #5a74d5, 0 0 60px #5a74d5, 0 0 70px #5a74d5, 0 0 80px #5a74d5;
+	}
+  }
 
 h2 {
 	font-weight: 600;

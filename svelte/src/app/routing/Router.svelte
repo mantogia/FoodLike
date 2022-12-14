@@ -18,7 +18,7 @@
         case 'evaluation':
         value = Evaluationpage;
         break;
-      default:
+        default:
         value = Notfound;
     }
   });
@@ -30,7 +30,7 @@
   main {
     flex-grow: 1;
     background-color: #212529;
-    color: #00DD95;
+    color: #5A93D5;
     padding: 1rem;
   }
 
