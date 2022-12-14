@@ -3239,11 +3239,7 @@ var app = (function () {
 				div3 = element("div");
 				canvas1 = element("canvas");
 				add_location(b0, file$a, 149, 6, 3528);
-<<<<<<< HEAD
 				div0.className = "num-display svelte-5g6v80";
-=======
-				div0.className = "num-display svelte-1w06n9j";
->>>>>>> 3391c7aa5c1102e8e2e059b74e396a1a1cea8e6b
 				set_style(div0, "color", ctx.color);
 				set_style(div0, "--opacity", ctx.bgOpacity);
 				add_location(div0, file$a, 151, 6, 3571);
@@ -3259,7 +3255,6 @@ var app = (function () {
 				add_location(h2, file$a, 147, 2, 3309);
 				add_location(p0, file$a, 162, 8, 3938);
 				add_location(strong, file$a, 161, 8, 3920);
-<<<<<<< HEAD
 				p1.className = "p-category svelte-5g6v80";
 				add_location(p1, file$a, 164, 8, 4030);
 				p2.className = "p-category svelte-5g6v80";
@@ -3304,52 +3299,6 @@ var app = (function () {
 				canvas1.id = canvas1_id_value = "myChart" + ctx.index;
 				add_location(canvas1, file$a, 182, 10, 5318);
 				div3.className = "chart-wrapper svelte-5g6v80";
-=======
-				p1.className = "p-category svelte-1w06n9j";
-				add_location(p1, file$a, 164, 8, 4030);
-				p2.className = "p-category svelte-1w06n9j";
-				add_location(p2, file$a, 165, 8, 4098);
-				p3.className = "p-category svelte-1w06n9j";
-				add_location(p3, file$a, 166, 8, 4163);
-				add_location(br, file$a, 166, 68, 4223);
-				p4.className = "p-category svelte-1w06n9j";
-				add_location(p4, file$a, 167, 8, 4237);
-				add_location(b1, file$a, 168, 28, 4367);
-				add_location(i0, file$a, 168, 25, 4364);
-				p5.className = "comment svelte-1w06n9j";
-				add_location(p5, file$a, 168, 8, 4347);
-				p6.className = "p-category svelte-1w06n9j";
-				add_location(p6, file$a, 169, 8, 4524);
-				add_location(b2, file$a, 170, 28, 4642);
-				add_location(i1, file$a, 170, 25, 4639);
-				p7.className = "comment svelte-1w06n9j";
-				add_location(p7, file$a, 170, 8, 4622);
-				div1.className = "p-category svelte-1w06n9j";
-				add_location(div1, file$a, 160, 6, 3886);
-				add_location(hr0, file$a, 172, 6, 4795);
-				add_location(b3, file$a, 173, 30, 4832);
-				p8.className = "p-category svelte-1w06n9j";
-				add_location(p8, file$a, 173, 8, 4810);
-				add_location(b4, file$a, 174, 28, 4918);
-				add_location(i2, file$a, 174, 25, 4915);
-				p9.className = "comment svelte-1w06n9j";
-				add_location(p9, file$a, 174, 8, 4898);
-				canvas0.id = canvas0_id_value = "myChart2" + ctx.index;
-				add_location(canvas0, file$a, 176, 10, 5026);
-				div2.className = "chart-wrapper svelte-1w06n9j";
-				add_location(div2, file$a, 175, 8, 4987);
-				add_location(hr1, file$a, 178, 6, 5088);
-				add_location(b5, file$a, 179, 30, 5125);
-				p10.className = "p-category svelte-1w06n9j";
-				add_location(p10, file$a, 179, 8, 5103);
-				add_location(b6, file$a, 180, 28, 5210);
-				add_location(i3, file$a, 180, 25, 5207);
-				p11.className = "comment svelte-1w06n9j";
-				add_location(p11, file$a, 180, 8, 5190);
-				canvas1.id = canvas1_id_value = "myChart" + ctx.index;
-				add_location(canvas1, file$a, 182, 10, 5318);
-				div3.className = "chart-wrapper svelte-1w06n9j";
->>>>>>> 3391c7aa5c1102e8e2e059b74e396a1a1cea8e6b
 				add_location(div3, file$a, 181, 8, 5279);
 				div4.className = "accordion-body";
 				add_location(div4, file$a, 159, 4, 3850);
@@ -4932,13 +4881,8 @@ var app = (function () {
 			c: function create() {
 				main = element("main");
 				if (switch_instance) switch_instance.$$.fragment.c();
-<<<<<<< HEAD
 				main.className = "svelte-1s5dl5z";
 				add_location(main, file$c, 40, 0, 789);
-=======
-				main.className = "svelte-agre66";
-				add_location(main, file$c, 40, 0, 747);
->>>>>>> 3391c7aa5c1102e8e2e059b74e396a1a1cea8e6b
 			},
 
 			l: function claim(nodes) {
@@ -5143,7 +5087,6 @@ var app = (function () {
 				t1 = space();
 				li2 = element("li");
 				routerlink2.$$.fragment.c();
-<<<<<<< HEAD
 				li0.className = "svelte-f6rh1k";
 				add_location(li0, file$d, 49, 6, 820);
 				li1.className = "svelte-f6rh1k";
@@ -5156,19 +5099,6 @@ var app = (function () {
 				add_location(div, file$d, 46, 2, 772);
 				nav.className = "svelte-f6rh1k";
 				add_location(nav, file$d, 45, 0, 763);
-=======
-				add_location(h1, file$d, 22, 2, 278);
-				li0.className = "svelte-9jqyde";
-				add_location(li0, file$d, 25, 4, 310);
-				li1.className = "svelte-9jqyde";
-				add_location(li1, file$d, 29, 4, 377);
-				li2.className = "svelte-9jqyde";
-				add_location(li2, file$d, 33, 4, 452);
-				ul.className = "svelte-9jqyde";
-				add_location(ul, file$d, 23, 2, 300);
-				nav.className = "svelte-9jqyde";
-				add_location(nav, file$d, 21, 0, 270);
->>>>>>> 3391c7aa5c1102e8e2e059b74e396a1a1cea8e6b
 			},
 
 			l: function claim(nodes) {
@@ -5297,13 +5227,8 @@ var app = (function () {
 				if (if_block) if_block.c();
 				t = space();
 				router.$$.fragment.c();
-<<<<<<< HEAD
 				div.className = "app-shell";
 				add_location(div, file$e, 20, 0, 297);
-=======
-				div.className = "app-shell svelte-h5712t";
-				add_location(div, file$e, 27, 0, 392);
->>>>>>> 3391c7aa5c1102e8e2e059b74e396a1a1cea8e6b
 			},
 
 			l: function claim(nodes) {
