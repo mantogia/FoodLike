@@ -30,3 +30,4 @@ export function ausloggen(){
     admin.set(false);
     return false
   }
+cd
