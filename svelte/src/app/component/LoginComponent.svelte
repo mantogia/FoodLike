@@ -1,6 +1,7 @@
 <script>
 
     import { createEventDispatcher} from "svelte";
+    import {resetPage} from '../stores/stores.js';
     const dispatch = createEventDispatcher();
 
     let user = {
@@ -69,6 +70,8 @@
                 console.log(JSON.parse(localStorage.current_user).user_name)
                 console.log("localStorage gespeichert")
                 dispatch("logIn", response.data)
+                resetPage()
+                
                 
             } else{
 

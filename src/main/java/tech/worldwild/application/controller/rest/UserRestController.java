@@ -58,7 +58,7 @@ public class UserRestController {
         return userRepository.save(newUser);
     }
 
-    @PostMapping("/users/{id}/vegetrisch")
+    @PostMapping("/users/{id}/vegetarisch")
     @ResponseBody
     public ResponseEntity<User> setVegetarisch(@PathVariable("id") Long id){
         Optional<User> u  = userRepository.findById(id);

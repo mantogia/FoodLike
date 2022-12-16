@@ -7,7 +7,7 @@
   import StartComponent from '../component/StartComponent.svelte';
   import UserInfos from '../component/UserInfos.svelte';
   import { admin } from '../stores/stores.js';
-  import {resetPage} from '../stores/stores.js';
+ 
   import {ausloggen} from '../stores/stores.js';
   let neu = true;
   let text = "Bereits ein Konto?"
@@ -23,8 +23,8 @@
   }
   }
 
-//let loggedIn = false;
-let loggedIn = localStorage.current_user != null;
+let loggedIn = false;
+loggedIn = localStorage.current_user != null;
 $: loggedIn = localStorage.current_user != null;
 $: loggedIn && adminReset();
 
@@ -53,6 +53,8 @@ function einloggen(){
     setAdmin();
   }
   user = JSON.parse(localStorage.current_user)
+
+  
 }
 
 function setAdmin() {
@@ -61,15 +63,12 @@ function setAdmin() {
 
 }
 
-
-
 let infosDone = false;
 
-if (loggedIn){
 
+if (loggedIn){
   infosDone = getInfos();
 }
-
 
 let tempUser = {};
 function getInfos(){
@@ -81,12 +80,15 @@ function getInfos(){
             tempUser = response.data;
             if(tempUser.angaben == true){
               infosDone = true;
+              return true;
+            }else{
+              return false;
             }
           })
           .catch((error) => {
               console.log(error);
+              return false;
           })
-
 }
 
 function setInfos(){
@@ -104,7 +106,7 @@ function setInfos(){
 
     {:else}
 
-    <LoginComponent  on:logIn={einloggen}/>
+    <LoginComponent on:logIn={einloggen}/>
 
     {/if}
 

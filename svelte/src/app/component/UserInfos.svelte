@@ -35,7 +35,7 @@ function saveAngaben(){
   if(allergie12){list = [... list, "Weizen (Gluten)"]};
   if(vegetarisch){
     
-    axios.post("/users/" + user.user_id + "/vegetrisch")
+    axios.post("/users/" + user.user_id + "/vegetarisch")
           .then((response) => {
             console.log(response.data);
           })

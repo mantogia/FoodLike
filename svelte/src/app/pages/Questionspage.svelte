@@ -16,20 +16,29 @@
   let index = -1;
   let food_nr = 1;
   let indexList = [];
-
+  let länge = 0;
   let begin = getInformation();
-
+  let startIndex = 0;
+  $: besterMann =  startIndex + index
 
   async function  getInformation(){
     axios.get("/users/" + user.user_id + "/food_ratings")
         .then((response) => {
             newList = response.data
+            länge = newList.length;
+
             for (let fr in newList) {
 
               if (newList[fr].rating == 99){
+
                 anzahlEmpty = anzahlEmpty + 1
                 indexList = [...indexList, newList[fr].food.food_id]
+              }else{
+                startIndex = startIndex + 1;
               }
+
+
+
             }
             if(anzahlEmpty == 0){
               endOfList = true;
@@ -84,7 +93,7 @@
 <h1 class="text-center mx-auto">Fragebogen</h1>
 
 	{#if !endOfList}
-    <FoodComponent food_nr={food_nr} on:save-vote={saveRelation} onChange={newFood => food = newFood} />
+    <FoodComponent  länge={länge} index={besterMann} food_nr={food_nr} on:save-vote={saveRelation} onChange={newFood => food = newFood} />
   {:else}
     <EndComponent ></EndComponent>
   {/if}

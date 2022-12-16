@@ -11,6 +11,9 @@
     let food = {};
     export let onChange
     $: onChange(food)
+
+    export let index;
+    export let länge;
     
     onMount(() => update());
 
@@ -95,7 +98,10 @@
       <img src="./icons/like.png" class="like" alt="like" on:click={() => init(1)}>
       <img src="./icons/superlike.png" class="superlike" id="superlike" alt="superlike" on:click={() => init(2)}>
     </div>
+
+    <p>{index} von {länge}</p>
 </div>
+
 
 
 <style>

@@ -1,5 +1,4 @@
 <script>
-  import ChartComponent from "../component/ChartComponent.svelte";
   import EvaluationComponent from "../evaluation/EvaluationComponent.svelte";
   import {onMount} from "svelte";
   import {admin, ausloggen} from '../stores/stores.js';
