@@ -45,7 +45,7 @@ CREATE SCHEMA nutritionapp;
 After the Schema has been created and you have selected `Set as Default Schema`: insert the necessary MySQL statements into the database.  
 These statements can be found here `📂 ./src/main/resources/data.sql`  
 
-Please go through the **[Run Application](#run)** part again if necessary.  
+Please go through the **[Run Application](#run-application)** part again if necessary.  
 
 Now you should be able to access the application via `localhost:8082` with a browser of your choice.  
 
