@@ -3,23 +3,6 @@
 The web application FoodLike - nutritional analysis inspired by the mobile dating app [Tinder](https://tinder.com/).  
 A project by students of the ZHAW SML Winterthur.
 
-## Backend remarks 
-
-Please make sure that [MySQL](https://dev.mysql.com/downloads/mysql/) is **installed** and **running**.  
-Please replace the **username** and **password** for access permission to your personal MySQL database in the following file  
-`📂 ./src/main/resources/application.properties`  
-  
-Create a new Schema in **MySQL** with the following name 
-
-```sh
-CREATE SCHEMA nutritionapp;
-```
-  
-> **Note:** Please `Set as Default Schema`   
-
-After the Schema has been created and you have selected `Set as Default Schema`: insert the necessary MySQL statements into the database.  
-These statements can be found here `📂 ./src/main/resources/data.sql`
-
 ## Frontend Compilation
 
 Open a terminal on `📂 ./svelte/` folder 
@@ -43,7 +26,26 @@ To start the application, you can either use the [Visual Studio Code](https://co
 you can start the project directly through your terminal with the command:
 ```sh
 mvn spring-boot:run
-```  
+```
+
+## Backend remarks 
+
+Please make sure that [MySQL](https://dev.mysql.com/downloads/mysql/) is **installed** and **running**.  
+Please replace the **username** and **password** for access permission to your personal MySQL database in the following file  
+`📂 ./src/main/resources/application.properties`  
+  
+Create a new Schema in **MySQL** with the following name 
+
+```sh
+CREATE SCHEMA nutritionapp;
+```
+  
+> **Note:** Please `Set as Default Schema`   
+
+After the Schema has been created and you have selected `Set as Default Schema`: insert the necessary MySQL statements into the database.  
+These statements can be found here `📂 ./src/main/resources/data.sql`  
+
+Please go through the **Run Application** part again if necessary.
 
 Now you should be able to access the application via `localhost:8082` with a browser of your choice.  
 
