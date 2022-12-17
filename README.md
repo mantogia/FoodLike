@@ -43,7 +43,9 @@ To start the application, you can either use the [Visual Studio Code](https://co
 you can start the project directly through your terminal with the command:
 ```sh
 mvn spring-boot:run
-```
+```  
+
+Now you should be able to access the application via `localhost:8082` with a browser of your choice.  
 
 ## Important remarks
 
@@ -62,7 +64,7 @@ Not all are necessary for the execution of the application, but we highly recomm
 | Spring Boot Dashboard |v0.9.0| [here](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-boot-dashboard) |
 | Spring Boot Tools |v1.42.0| [here](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-spring-boot) |
 | Svelte for VS Code |v106.3.2| [here](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) |
-| Maven for Java |v0.37.1| [here](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test) |
+| Test Runner for Java |v0.37.1| [here](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test) |
 
 > **Note regarding Version:** These are the versions we have installed in our development environment, in case there are any problems with future updates.
 
