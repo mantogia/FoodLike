@@ -1,4 +1,10 @@
 # FoodLike
+Eine detailierte Anleitung im Videoformat, wie die Applikation ausgeführt werden kann, ist hier verfügbar (deutsch)  
+🎥: https://youtu.be/dnj27e1scMQ  
+
+Alternativ kann auch die schriftliche Anleitung unterhalb befolgt werden (englisch)
+
+---
 
 The web application FoodLike - nutritional analysis inspired by the mobile dating app [Tinder](https://tinder.com/).  
 A project by students of the ZHAW SML Winterthur.
@@ -110,4 +116,4 @@ https://fonts.google.com/knowledge
 
 ### Font Awesome
  
- https://fontawesome.com/
+https://fontawesome.com/
