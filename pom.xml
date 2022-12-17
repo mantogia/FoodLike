@@ -38,8 +38,7 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- Import die JDBC-Unterstützung für Spring Boot, damit H2 auch 
-        file-basiert sein kann -->  
+		<!-- Import die JDBC-Unterstützung für Spring Boot -->  
 		<dependency> 
 			<groupId>org.springframework.boot</groupId>  
 			<artifactId>spring-boot-starter-jdbc</artifactId> 
