@@ -1,6 +1,6 @@
 # FoodLike
 Eine detailierte Anleitung im Videoformat, wie die Applikation ausgeführt werden kann, ist hier verfügbar (deutsch)  
-🎥: https://youtu.be/dnj27e1scMQ  
+🎥: https://youtu.be/1XYtVwS1AL0
 
 Alternativ kann auch die schriftliche Anleitung unterhalb befolgt werden (englisch)
 
