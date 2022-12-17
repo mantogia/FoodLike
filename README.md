@@ -17,7 +17,7 @@ To launch frontend compilation in production mode:
 
 > **Note:** You will need to have [Node.js](https://nodejs.org) installed.
 
-# [Run application][run]
+## Run application
 
 To start the application, you can either use the [Visual Studio Code](https://code.visualstudio.com/) extension **[Spring Boot Dashboard](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-boot-dashboard)** *(Recommended)*  
 
